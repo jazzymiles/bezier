@@ -1,0 +1,6 @@
+#summary Bezier curve related links.
+
+ * [http://en.wikipedia.org/wiki/B%C3%A9zier_curve wiki]
+ * [http://mathworld.wolfram.com/BezierCurve.html mathworld]
+ * [http://www.kevlindev.com/tutorials/geometry/bezier/index.htm kevlindev]
+ * [http://www.ibiblio.org/e-notes/Splines/Bezier.htm Bezier spline curves]
