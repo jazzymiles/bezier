@@ -2,13 +2,13 @@
 
 = Classes =
 
-* Bezier
-* Line
-* Intersection
+ * Bezier
+ * Line
+ * Intersection
 
 and HowTo package 
 
 = Authors =
 
-* Ivan Dembicki ivan.dembicki@gmail.com
-* Alexander Sergeev a.sergeev@gmail.com
+ * Ivan Dembicki ivan.dembicki@gmail.com
+ * Alexander Sergeev a.sergeev@gmail.com
