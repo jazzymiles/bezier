@@ -7,7 +7,7 @@ public function Bezier(start:Point=undefined, control:Point=undefined, end:Point
 }}}
 
 = Properties =
-== basic ==
+=== description ===
 {{{
 public function get start ():Point
 public function set start (value:Point):void
@@ -22,8 +22,7 @@ public function get isSegment ():Boolean
 public function set isSegment (value:Boolean):void
 }}}
 
-
-== Geom properties ==
+=== geom properties ===
 {{{
 public function get length():Number
 
@@ -34,11 +33,10 @@ public function get bounds ():Rectangle
 
 public function get parabolaVertex():Number
 public function get parabolaFocusPoint():Point
-
-
 }}}
 
 = Methods =
+
 {{{
 public function getSegmentLength(time:Number):Number
 public function getSegment (fromTime:Number=0, toTime:Number=1):Bezier
@@ -56,13 +54,13 @@ public function getTimesSequence (step:Number, startShift:Number=0):Array
 public function getTangentAngle(time:Number=0):Number
 }}}
 
-== intersections ==
+=== intersections ===
 {{{
 public function intersectionLine (line:Line):Intersection
 public function intersectionBezier (target:Bezier):Intersection
 }}}
 
-== other ==
+=== other ===
 {{{
 public function toString ():String
 }}}
