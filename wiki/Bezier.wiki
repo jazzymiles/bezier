@@ -1,4 +1,4 @@
-#summary Bezier class methods
+#summary Bezier class
 
 = Constructor =
 
