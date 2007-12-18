@@ -10,5 +10,5 @@ and HowTo package
 
 = Authors =
 
- * Ivan Dembicki mailto:ivan.dembicki@gmail.com
- * Alexander Sergeev mailto:a.sergeev@gmail.com
+ * [mailto:ivan.dembicki@gmail.com Ivan Dembicki]
+ * [mailto:a.sergeev@gmail.com Alexander Sergeev]
