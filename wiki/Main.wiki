@@ -4,6 +4,12 @@
 
 == [http://www.bezier.ru http://www.bezier.ru] ==
 
+= Descriprion =
+
+Для программного рисования во Flash используется два метода: lineTo и curveTo. 
+Классы Line и Bezier обеспечивают базовую математическую поддержку этих методов.
+
+
 = Classes =
 
  * Bezier (quadratic Bezier curve)
