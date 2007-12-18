@@ -1,8 +1,8 @@
 #summary Wiki for ActionScript Bezier project.
 
-= Home ==
+= Homepage ==
 
-[http://www.bezier.ru http://www.bezier.ru]
+== [http://www.bezier.ru http://www.bezier.ru] ==
 
 = Classes =
 
