@@ -6,11 +6,18 @@
 
 = Classes =
 
- * Bezier
+ * Bezier (quadratic Bezier curve)
  * Line
  * Intersection
 
-and HowTo package 
+and _how_ _to_ _do_ package contained examples:
+ * building Bezier curve (understanding bezier basics)
+ * closest point on Bezier curve
+ * drag-n-drop Bezier curve editing
+ * cubic Bezier curve emulation
+ * cord: smooth concatenating Besier curve sequence
+ * finding point on bezier by distance from start
+ * bounce from Bezier curve (intersections)
 
 = Authors =
 
