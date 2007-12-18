@@ -1,0 +1,9 @@
+#summary Bezier class methods
+
+= Constructor =
+
+{{{
+public function Bezier(start:Point=undefined, control:Point=undefined, end:Point=undefined, isSegment:Boolean=true):void
+{{{
+
+= Properties =
