@@ -1,4 +1,8 @@
-#summary Wiki for ActionScript Bezier project. [http://www.bezier.ru http://www.bezier.ru]
+#summary Wiki for ActionScript Bezier project.
+
+= Home ==
+
+[http://www.bezier.ru http://www.bezier.ru]
 
 = Classes =
 
