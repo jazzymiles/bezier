@@ -1,0 +1,14 @@
+#summary Wiki for ActionScript Bezier project. http://www.bezier.ru
+
+= Classes =
+
+* Bezier
+* Line
+* Intersection
+
+and HowTo package 
+
+= Authors =
+
+* *Ivan Dembicki* ivan.dembicki@gmail.com
+* *Alexander Sergeev* a.sergeev@gmail.com
