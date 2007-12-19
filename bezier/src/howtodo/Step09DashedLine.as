@@ -58,7 +58,7 @@ package howtodo {
 				gapLength+=event.delta;
 				gapLength = Math.max(MIN_GAP_LENGTH, gapLength); 
 			} else if (event.altKey) {
-				speed+=event.delta;
+				speed+=event.delta/10;
 			} else {
 				lineLength+=event.delta;
 				lineLength = Math.max(MIN_LINE_LENGTH, lineLength);
