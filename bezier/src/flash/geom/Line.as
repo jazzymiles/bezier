@@ -406,18 +406,6 @@ package flash.geom {
 			return time;
 		}
 		
-		/**
-		 * 
-		 * @param step
-		 * @param start_shift
-		 * @return 
-		 * 
-		 */		
-		public function getPointsArray (step:Number, start_shift:Number=0):Array {
-			step; 
-			start_shift;
-			return undefined;
-		}
 
 
 //**************************************************
