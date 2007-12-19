@@ -39,7 +39,7 @@ package howtodo {
 	
 	public class Step02ClosestPoint extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "Red line - isSegment=false <BR/>Blue line - isSegment=true"
+		private static const DESCRIPTION:String = "Red line - isSegment=false <BR/>Blue line - isSegment=true";
 		
 		private const closestUnlimited:PointView = new PointView();
 		private const closestLimited:PointView = new PointView();
@@ -53,7 +53,7 @@ package howtodo {
 		}
 		
 		override protected function init():void {
-			super.init()
+			super.init();
 			
 			initDescription(DESCRIPTION);
 			
@@ -98,14 +98,14 @@ package howtodo {
 			
 			graphics.clear();
 			
-			graphics.lineStyle(0, 0xFF0000, .5)
+			graphics.lineStyle(0, 0xFF0000, .5);
 			drawBezier(bezier.getSegment(-1, 2));
-			graphics.lineStyle(0, 0x0000FF, 1)
+			graphics.lineStyle(0, 0x0000FF, 1);
 			drawBezier(bezier);
 			
-			graphics.lineStyle(0, 0xFF0000, .5)
+			graphics.lineStyle(0, 0xFF0000, .5);
 			drawLine(new Line(mouse, closestUnlimited.point));
-			graphics.lineStyle(0, 0x0000FF, 1)
+			graphics.lineStyle(0, 0x0000FF, 1);
 			drawLine(new Line(mouse, closestLimited.point));
 		}
 

@@ -5,7 +5,7 @@ package howtodo {
 	
 	public class Step09DashedLine extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "mouse wheel - change line length<BR/>shift+mouse wheel - change gap length<BR/>alt+mouse wheel - change speed"
+		private static const DESCRIPTION:String = "mouse wheel - change line length<BR/>shift+mouse wheel - change gap length<BR/>alt+mouse wheel - change speed";
 		
 		private static var MIN_LINE_LENGTH:uint = 1;
 		private static var MIN_GAP_LENGTH:uint = 1;

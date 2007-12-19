@@ -53,16 +53,16 @@ package howtodo {
 		protected function init():void {
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
 			stage.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
-			initControl(start)
-			initControl(end)
+			initControl(start);
+			initControl(end);
 			start.pointName = "S";
 			end.pointName = "E";
 			initRoupeControls(10);
 		}
 		
 		private function mouseMoveHandler(event:MouseEvent):void {
-			mouse.x = event.stageX
-			mouse.y = event.stageY
+			mouse.x = event.stageX;
+			mouse.y = event.stageY;
 		}
 		protected function enterFrameHandler(event:Event):void {
 			
@@ -104,6 +104,7 @@ package howtodo {
 		}
 		
 		protected function initControl(pt:PointView, color:uint=0xFFFFFF):void {
+			color;
 			randomizePosition(pt);
 			pt.dragable = true;
 			addChild(pt);
@@ -127,24 +128,25 @@ internal class RoupePoint extends Point {
 	private var stepX:Number = 0;
 	private var stepY:Number = 0;
 	
-	public function RoupePoint (x:Number=0, y:Number=0, prevPoint:Point=null) {
-		super(x, y);
-		this.prevPoint = prevPoint;
+	public function RoupePoint (ptX:Number=0, ptY:Number=0, prevPt:Point=null) {
+		super(ptX, ptY);
+		prevPoint = prevPt;
 	}
 	
 	public function updatePosition (mouse:Point):void {
+		mouse;
 		var targetX:Number = (prevPoint.x+nextPoint.x)/2;
-		stepX+= (targetX-x)*elasticity
+		stepX+= (targetX-x)*elasticity;
 		stepX+=gravityX;
-		stepX*=friction
+		stepX*=friction;
 		
-		x+=stepX
+		x+=stepX;
 		
 		var targetY:Number = (prevPoint.y+nextPoint.y)/2;
-		stepY+= (targetY-y)*elasticity
+		stepY+= (targetY-y)*elasticity;
 		stepY+=gravityY;
-		stepY*=friction
-		y+=stepY
+		stepY*=friction;
+		y+=stepY;
 		
 		
 	}

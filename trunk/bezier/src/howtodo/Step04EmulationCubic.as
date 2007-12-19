@@ -8,7 +8,7 @@ package howtodo {
 	
 	public class Step04EmulationCubic extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "Press Space button for enable/disable Cubic Bezier"
+		private static const DESCRIPTION:String = "Press Space button for enable/disable Cubic Bezier";
 		
 		private var controlS:PointView = new PointView();
 		private var controlE:PointView = new PointView();
@@ -141,10 +141,10 @@ package howtodo {
 		}
 		
 		
-		private function getCubicTangent(time:Number, start:Point, controlS:Point, controlE:Point, end:Point):Line {
-			var s:Line = new Line(start, controlS); 
-			var e:Line = new Line(controlE, end); 
-			var m:Line = new Line(controlS, controlE);
+		protected function getCubicTangent(time:Number, startPoint:Point, controlSPoint:Point, controlEPoint:Point, endPoint:Point):Line {
+			var s:Line = new Line(startPoint, controlSPoint); 
+			var e:Line = new Line(controlEPoint, endPoint); 
+			var m:Line = new Line(controlSPoint, controlEPoint);
 			
 			var sm:Line = new Line(s.getPoint(time), m.getPoint(time));
 			var me:Line = new Line(m.getPoint(time), e.getPoint(time));
@@ -157,22 +157,22 @@ package howtodo {
 			return tangent;
 		}
 		
-		private function getCubicPoint (time:Number, start:Point, controlS:Point, controlE:Point, end:Point):Point {
-			var cx:Number = 3 * (controlS.x - start.x);
-			var bx:Number = 3 * (controlE.x - controlS.x) - cx;
-			var ax:Number = end.x - start.x - cx - bx;
+		private function getCubicPoint (time:Number, startPoint:Point, controlSPoint:Point, controlEPoint:Point, endPoint:Point):Point {
+			var cx:Number = 3*(controlSPoint.x - startPoint.x);
+			var bx:Number = 3*(controlEPoint.x - controlSPoint.x) - cx;
+			var ax:Number = endPoint.x - startPoint.x - cx - bx;
 	
-			var cy:Number = 3 * (controlS.y - start.y);
-			var by:Number = 3 * (controlE.y - controlS.y) - cy;
-			var ay:Number = end.y - start.y - cy - by;
+			var cy:Number = 3*(controlSPoint.y - startPoint.y);
+			var by:Number = 3*(controlEPoint.y - controlSPoint.y) - cy;
+			var ay:Number = endPoint.y - startPoint.y - cy - by;
 	
 			var tSquared:Number = time * time;
 			var tCubed:Number = tSquared * time;
 	
 			var point:Point = new Point();
 	
-			point.x = (ax * tCubed) + (bx * tSquared) + (cx * time) + start.x;
-			point.y = (ay * tCubed) + (by * tSquared) + (cy * time) + start.y;
+			point.x = (ax * tCubed) + (bx * tSquared) + (cx * time) + startPoint.x;
+			point.y = (ay * tCubed) + (by * tSquared) + (cy * time) + startPoint.y;
 	 
 			return point;
 		}

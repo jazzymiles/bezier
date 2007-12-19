@@ -1,9 +1,8 @@
 package howtodo {
 	import flash.display.Graphics;
 	import flash.geom.Bezier;
-	import flash.geom.Point;
-	
-	
+	import flash.geom.Point;	
+
 	public class SmoothCurve {
 		
 		private const beziers:Array = new Array();
@@ -14,9 +13,9 @@ package howtodo {
 		private var __length:Number;
 		private var __length_dirty:Boolean = true;
 		
-		public function SmoothCurve (start:Point=null, end:Point=null) {
-			this.start		= (start	as Point) || new Point();
-			this.end		= (end		as Point) || new Point();
+		public function SmoothCurve (startPoint:Point=null, endPoint:Point=null) {
+			this.start		= (startPoint	as Point) || new Point();
+			this.end		= (endPoint		as Point) || new Point();
 		}
 		
 		public function pushControl(control:Point):void {
@@ -77,7 +76,7 @@ package howtodo {
 				}
 				distanceFromStart+=bezierLength;
 			}
-			throw new Error("**ERROR** usage.SmoothCurve.getPointByDistance("+distance+")") 
+			throw new Error("**ERROR** usage.SmoothCurve.getPointByDistance("+distance+")");
 			return null;
 		}
 		
@@ -111,7 +110,7 @@ package howtodo {
 				return;
 			}
 			var bezier:Bezier = beziers[0] as Bezier;
-			drawBezier(target, bezier, true)
+			drawBezier(target, bezier, true);
 			for (var i:uint=1; i<len; i++) {
 				bezier = beziers[i] as Bezier;
 				drawBezier(target, bezier);

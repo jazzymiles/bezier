@@ -4,7 +4,7 @@ package howtodo {
 	
 	public class Step06PointOnBezier extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "uniform motion"
+		private static const DESCRIPTION:String = "uniform motion";
 		
 		private const point:PointView = new PointView();
 		private var distance:Number = 0;
@@ -65,7 +65,7 @@ package howtodo {
 		}
 		
 		private function redraw ():void {
-			graphics.clear()
+			graphics.clear();
 			graphics.lineStyle(0, 0xFF0000, 1);
 			drawBezier(bezier);
 		}
