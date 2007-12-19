@@ -5,8 +5,6 @@ package howtodo {
 	import flash.geom.Line;
 	import flash.geom.Point;
 	
-	import howtodo.assets.PointView;
-	
 	public class IntersectionsTest extends BezierUsage {
 		
 		private static const DESCRIPTION:String = "intersections"

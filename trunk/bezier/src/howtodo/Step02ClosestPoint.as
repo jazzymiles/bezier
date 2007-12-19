@@ -4,8 +4,6 @@ package howtodo {
 	import flash.geom.Line;
 	import flash.geom.Point;
 	
-	import howtodo.assets.PointView;
-	
 	/**
 	 * @example
 	 * Синим цветом обозначена кривая Безье, ограниченная точками start, end, а также линия до ближайшей точки на ней. Свойство <code>isSegment=true;</code> <BR/>

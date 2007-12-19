@@ -6,8 +6,6 @@ package howtodo {
 	import flash.geom.Line;
 	import flash.geom.Point;
 	
-	import howtodo.assets.PointView;
-	
 	/**
 	 * @example
 	 * Демонстрация интерполяционного построения линии и кривой Безье второго порядка.<BR/>
