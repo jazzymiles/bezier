@@ -6,8 +6,6 @@ package howtodo {
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	import howtodo.assets.PointView;
-
 	public class Step05SmoothCurve extends Sprite {
 		
 		private const mouse:Point = new Point();

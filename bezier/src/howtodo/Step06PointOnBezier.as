@@ -2,8 +2,6 @@ package howtodo {
 	
 	import flash.events.Event;
 	
-	import howtodo.assets.PointView;
-	
 	public class Step06PointOnBezier extends BezierUsage {
 		
 		private static const DESCRIPTION:String = "uniform motion"

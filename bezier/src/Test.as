@@ -24,7 +24,7 @@ package {
 			stage.frameRate = 31;
 			
 			var interval:uint = setInterval(function ():void {
-//				addChild(new Step01Building());
+				addChild(new Step01Building());
 //				addChild(new Step02ClosestPoint());
 //				addChild(new Step03EditDrag());
 //				addChild(new Step04EmulationCubic());
@@ -32,7 +32,7 @@ package {
 //				addChild(new Step06PointOnBezier());
 //				addChild(new Step07PointOnCurve());
 //				addChild(new Step08Bounce());
-				addChild(new Step09DashedLine());
+//				addChild(new Step09DashedLine());
 //				addChild(new IntersectionsTest());
 				clearInterval(interval);
 			},100)

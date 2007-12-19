@@ -5,8 +5,6 @@ package howtodo {
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import howtodo.assets.PointView;
-
 	import flash.geom.Bezier;	
 	
 	public class Step08Bounce extends BezierUsage {

@@ -1,8 +1,6 @@
 package howtodo {
 	import flash.events.Event;
 	
-	import howtodo.assets.PointView;
-	
 	
 	public class Step07PointOnCurve extends Step05SmoothCurve {
 		
