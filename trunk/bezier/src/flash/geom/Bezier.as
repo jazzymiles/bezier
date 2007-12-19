@@ -129,7 +129,7 @@ package flash.geom {
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
-		 **/  
+		 **/
 		
 		public function Bezier(start:Point=undefined, control:Point=undefined, end:Point=undefined, isSegment:Boolean=true) {
 			__start		= (start	as Point) || new Point();
