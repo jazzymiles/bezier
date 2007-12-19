@@ -10,8 +10,6 @@ package howtodo {
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	
-	import howtodo.assets.PointView;
-
 	public class BezierUsage extends Sprite {
 		
 		protected var start:PointView = new PointView();
