@@ -7,7 +7,7 @@ package howtodo {
 	
 	public class Step03EditDrag extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "drag curve"
+		private static const DESCRIPTION:String = "drag curve";
 		
 		private const mouse:Point = new Point();
 		private var dragTime:Number;
@@ -87,9 +87,9 @@ package howtodo {
 		
 		private function redraw ():void {
 			graphics.clear();
-			graphics.lineStyle(5, 0x0000FF, 0)
+			graphics.lineStyle(5, 0x0000FF, 0);
 			drawBezier(bezier);
-			graphics.lineStyle(0, 0x0000FF, 1)
+			graphics.lineStyle(0, 0x0000FF, 1);
 			drawBezier(bezier);
 			
 		}

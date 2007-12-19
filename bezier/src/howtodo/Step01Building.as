@@ -37,7 +37,7 @@ package howtodo {
 	
 	public class Step01Building extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "Use Rigt and Left keys"
+		private static const DESCRIPTION:String = "Use Rigt and Left keys";
 		private static const MIN:uint=0;
 		private static const MAX:uint=20;
 		private var showNum:Number = 0;
@@ -84,8 +84,8 @@ package howtodo {
 			time1Point.pointName = "T1";
 			time2Point.pointName = "T2";
 			
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp)
-			redraw()
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			redraw();
 		}
 		
 		override protected function onPointMoved(event:Event=undefined):void {
@@ -102,14 +102,14 @@ package howtodo {
 			switch (event.keyCode) {
 				case 37:
 					if (showNum>MIN) {
-						showNum--
-						redraw()
+						showNum--;
+						redraw();
 					}
 				break;
 				case 39:
 					if (showNum<MAX) {
-						showNum++
-						redraw()
+						showNum++;
+						redraw();
 					}
 				break;
 			}
@@ -124,7 +124,7 @@ package howtodo {
 			
 			time1Point.visible =
 			time2Point.visible =
-			timePoint.visible = showNum != MIN && showNum != MAX 
+			timePoint.visible = showNum != MIN && showNum != MAX; 
 			
 			for (var i:uint=MIN; i<=showNum; i++) {
 				var time:Number = i/MAX;
@@ -145,7 +145,7 @@ package howtodo {
 			var maxTime:Number = showNum/MAX;
 			var segment:Bezier = bezier.getSegment(0, maxTime); 
 			
-			timePoint.pointName = "P("+maxTime+")"
+			timePoint.pointName = "P("+maxTime+")";
 			timePoint.position = bezierPoint;
 			
 			var t1:Point = Point.interpolate(control.point, start.point, maxTime);

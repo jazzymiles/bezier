@@ -1,15 +1,14 @@
 package howtodo {
 	import flash.events.Event;
+	import flash.geom.Bezier;
 	import flash.geom.Intersection;
 	import flash.geom.Line;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;
-	
-	import flash.geom.Bezier;	
-	
+	import flash.geom.Rectangle;	
+
 	public class Step08Bounce extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "drag control points"
+		private static const DESCRIPTION:String = "drag control points";
 		
 		private const ball:PointView = new PointView();
 		private const stageRectangle:Rectangle = new Rectangle();
@@ -60,14 +59,14 @@ package howtodo {
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			addEventListener(Event.RESIZE, onResize);
 			
-			start.x = 100
-			start.y = 100
+			start.x = 100;
+			start.y = 100;
 			
-			control.x = 500
-			control.y = 300
+			control.x = 500;
+			control.y = 300;
 			
-			end.x = 700
-			end.y = 700
+			end.x = 700;
+			end.y = 700;
 			
 			onResize();
 			redraw();

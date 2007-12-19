@@ -1,26 +1,21 @@
 package {
-	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
 	import flash.events.FocusEvent;
-	import flash.geom.Intersection;
 	import flash.text.TextField;
 	import flash.text.TextFieldType;
 	import flash.utils.clearInterval;
 	import flash.utils.setInterval;
 	
-	import howtodo.*;
-
+	import howtodo.*;	
+	
 	[SWF(backgroundColor="0xFFFFFF")]
 
 	public class Test extends Sprite {
 	
 		
 		public function Test() {
-			
-			// 
-			
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.frameRate = 31;
@@ -37,19 +32,21 @@ package {
 //				addChild(new Step09DashedLine());
 //				addChild(new IntersectionsTest());
 				clearInterval(interval);
-			},100)
+			},100);
 			
-			var ii:Intersection;
 			
+			initGrid();
+		}
+		
+		private function initGrid():void {
 			var gridTxt:TextField = new TextField();
 			addChild(gridTxt);
 			gridTxt.text = PointView.GRID+" - grid step";
 			gridTxt.type = TextFieldType.INPUT;
 			gridTxt.addEventListener(FocusEvent.FOCUS_OUT, onFocusOut);
 			gridTxt.restrict = "0-9";
-			
 		}
-		
+
 		private function onFocusOut(event:FocusEvent):void {
 			var gridTxt:TextField = event.target as TextField;
 			PointView.GRID = Number(parseInt(gridTxt.text)) || 10;
