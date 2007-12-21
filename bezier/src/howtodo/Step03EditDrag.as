@@ -7,7 +7,7 @@ package howtodo {
 	
 	public class Step03EditDrag extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "drag curve";
+		private static const DESCRIPTION:String = "<B>Edit drag</B><BR/><BR/>drag curve to change";
 		
 		private const mouse:Point = new Point();
 		private var dragTime:Number;

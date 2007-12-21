@@ -4,6 +4,8 @@ package howtodo {
 	
 	public class Step07PointOnCurve extends Step05SmoothCurve {
 		
+		private static const DESCRIPTION:String = "<B>Distance by curve</B><BR/><BR/>uniform motion by curve";
+		
 		private const point:PointView = new PointView();
 		private var distance:Number = 0;
 		
@@ -39,7 +41,9 @@ package howtodo {
 		override protected function init():void {
 			super.init();
 			addChild(point);
+			initDescription(DESCRIPTION);
 		}
+		
 		
 		override protected function enterFrameHandler(event:Event):void {
 			super.enterFrameHandler(event);

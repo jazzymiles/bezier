@@ -39,7 +39,7 @@ package howtodo {
 	
 	public class Step02ClosestPoint extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "Red line - isSegment=false <BR/>Blue line - isSegment=true";
+		private static const DESCRIPTION:String = "<B>Closest point</B><BR/><BR/>Red line - isSegment=false <BR/>Blue line - isSegment=true";
 		
 		private const closestUnlimited:PointView = new PointView();
 		private const closestLimited:PointView = new PointView();

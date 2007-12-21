@@ -37,7 +37,7 @@ package howtodo {
 	
 	public class Step01Building extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "Use Rigt and Left keys";
+		private static const DESCRIPTION:String = "<B>Bezier curve building</B><BR/><BR/>Use Rigt and Left arrow keys";
 		private static const MIN:uint=0;
 		private static const MAX:uint=20;
 		private var showNum:Number = 0;

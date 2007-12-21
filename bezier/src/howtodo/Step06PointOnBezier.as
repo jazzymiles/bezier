@@ -4,7 +4,7 @@ package howtodo {
 	
 	public class Step06PointOnBezier extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "uniform motion";
+		private static const DESCRIPTION:String = "<B>Distance by curve</B><BR/><BR/>uniform motion";
 		
 		private const point:PointView = new PointView();
 		private var distance:Number = 0;

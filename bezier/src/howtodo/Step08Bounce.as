@@ -8,7 +8,7 @@ package howtodo {
 
 	public class Step08Bounce extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "drag control points";
+		private static const DESCRIPTION:String = "<B>Bounse: detect intersection (not finished methods)</B><BR/><BR/>drag control points";
 		
 		private const ball:PointView = new PointView();
 		private const stageRectangle:Rectangle = new Rectangle();
