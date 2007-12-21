@@ -8,7 +8,7 @@ package howtodo {
 	
 	public class Step04EmulationCubic extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "Press Space button for enable/disable Cubic Bezier";
+		private static const DESCRIPTION:String = "<B>Smooth connection</B><BR/><BR/>Press Space button for enable/disable Cubic Bezier";
 		
 		private var controlS:PointView = new PointView();
 		private var controlE:PointView = new PointView();

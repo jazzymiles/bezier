@@ -12,6 +12,8 @@ package howtodo {
 
 	public class BezierUsage extends Sprite {
 
+		private var descriptionTxt:TextField;
+		
 		protected var start:PointView = new PointView();
 		protected var control:PointView = new PointView();
 		protected var end:PointView = new PointView();
@@ -32,16 +34,19 @@ package howtodo {
 		}
 
 		protected function initDescription(description:String):void {
-			var txt:TextField = new TextField();
-			txt.selectable = false;
-			txt.wordWrap = false;
-			txt.multiline = true;
-			txt.autoSize = TextFieldAutoSize.LEFT;
-			txt.mouseEnabled = false;
-			txt.mouseWheelEnabled = false;
-			txt.htmlText = description;
-			txt.x = 200;
-			addChild(txt);
+			if (!descriptionTxt) {
+				var txt:TextField = new TextField();
+				txt.selectable = false;
+				txt.wordWrap = false;
+				txt.multiline = true;
+				txt.autoSize = TextFieldAutoSize.LEFT;
+				txt.mouseEnabled = false;
+				txt.mouseWheelEnabled = false;
+				txt.x = 200;
+				addChild(txt);
+				descriptionTxt = txt;
+			}
+			descriptionTxt.htmlText = description;
 		}
 
 		protected function onPointMoved(event:Event = undefined):void {

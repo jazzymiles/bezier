@@ -1,18 +1,15 @@
 package howtodo {
 	
 	import flash.display.DisplayObject;
-	import flash.display.Sprite;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	public class Step05SmoothCurve extends Sprite {
-		
+	public class Step05SmoothCurve extends BezierUsage {
+
+		private static const DESCRIPTION:String = "<B>Multiple Bezier smooth connection</B><BR/><BR/>Drag points";	
 		private const mouse:Point = new Point();
-		
-		private const start:PointView = new PointView();
-		private const end:PointView = new PointView();
-		protected const roupe:SmoothCurve = new SmoothCurve(start.point, end.point);
+		protected var roupe:SmoothCurve;
 		
 		private const controls:Array = new Array();
 		
@@ -50,9 +47,12 @@ package howtodo {
 			init();
 		}
 		
-		protected function init():void {
+		override protected function init():void {
+			if (!stage) return; 
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
 			stage.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
+			initDescription(DESCRIPTION);
+			roupe = new SmoothCurve(start.point, end.point)
 			initControl(start);
 			initControl(end);
 			start.pointName = "S";
@@ -98,13 +98,8 @@ package howtodo {
 			roupePoint.nextPoint = end.point;
 		}
 		
-		protected function randomizePosition(obj:DisplayObject):void {
-			obj.x = Math.round(Math.random()*stage.stageWidth);
-			obj.y = Math.round(Math.random()*stage.stageHeight);
-		}
-		
-		protected function initControl(pt:PointView, color:uint=0xFFFFFF):void {
-			color;
+		override protected function initControl(pt:PointView, color:uint = 0, pointName:String = ""):void {
+			color, pointName;
 			randomizePosition(pt);
 			pt.dragable = true;
 			addChild(pt);
