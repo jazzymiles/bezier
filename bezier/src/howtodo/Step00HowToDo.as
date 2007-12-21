@@ -10,7 +10,6 @@ package howtodo {
 		}
 		
 		override protected function init():void {
-		//	super.init();
 			initDescription(DESCRIPTION);
 		}	
 	}
