@@ -1,4 +1,4 @@
-/**
+ /* *
  * 		I. ВС ТУПЛЕНИЕ
  * 
  * Для программного рисования во Flash используется два метода: lineTo() и curveTo(),
@@ -193,7 +193,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang rus
+		 * lang rus
 		 **/
 		 
 		/** 
@@ -227,8 +227,8 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang eng
-		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 * lang eng
+		 * translatorIlya Segeda http://www.digitaldesign.com.ua
 		 **/
 
 		public function Bezier(start:Point = undefined, control:Point = undefined, end:Point = undefined, isSegment:Boolean = true) {
@@ -249,7 +249,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang rus
+		 * lang rus
 		 * 
 		 **/
 		 
@@ -265,8 +265,8 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang eng
-		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 * lang eng
+		 * translatorIlya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
 		 
@@ -285,7 +285,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang rus
+		 * lang rus
 		 **/
 		 
 		/**
@@ -294,8 +294,8 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang eng
-		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 * lang eng
+		 * translatorIlya Segeda http://www.digitaldesign.com.ua
 		 **/
 		 
 		 
@@ -320,8 +320,8 @@ package flash.geom {
 		  * @langversion 3.0
 		  * @playerversion Flash 9.0
 		  * 
-		  * @lang eng
-		  * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		  * lang eng
+		  * translatorIlya Segeda http://www.digitaldesign.com.ua
 		  **/
 		 
 		 
@@ -336,7 +336,7 @@ package flash.geom {
 		
 		/**
 		 * Определяет является ли кривая Безье бесконечной в обе стороны
-		 * или ограничена в пределах итераторов от 0 до 1.<BR/>
+		 * или ограничена в пределах значения итераторов от 0 до 1.<BR/>
 		 * <BR/>
 		 * Безье строится с использованием итератора в пределах от 0 до 1, однако, 
 		 * может быть построена в произвольных пределах.<BR/> 
@@ -357,7 +357,39 @@ package flash.geom {
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
+		 * lang rus
 		 **/
+		 
+		 /**
+		 * Defines is the Bezier curve is infinite in both directions or is limited within
+		 * the bounds of value of iterators from 0 up to 1.<BR/>
+		 * <BR/>
+		 * The Bezier curve is constructed with using iterator within the bounds from 0 up to 1,
+		 * however, it can be constructed in any bounds.<BR/>
+		 * The Bezier curve constructed from a minus of infinity up to plus of infinity is a parabola.<BR/>
+		 * <BR/>
+		 * Current value isSegment influence on the results of methods:<BR/>
+		 * <a href="#intersectionBezier">intersectionBezier</a><BR/>
+		 * <a href="#intersectionLine">intersectionLine</a><BR/>
+		 * <a href="#getClosest">getClosest</a><BR/>
+		 * <a href="Line.html#intersectionBezier">Line.intersectionBezier</a><BR/>
+		 *
+		 * @see #intersectionBezier
+		 * @see #intersectionLine
+		 * @see #getClosest
+		 *
+		 * @default true
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * lang eng
+		 * translatorIlya Segeda http://www.digitaldesign.com.ua
+		 **/
+		 
+		 
+		 
 		public function get isSegment():Boolean {
 			return __isSegment;
 		}
@@ -367,7 +399,7 @@ package flash.geom {
 		}
 
 		
-		/**
+		/* *
 		 * Создает и возвращает копию текущего объекта Bezier.
 		 * 
 		 * @return Bezier.
@@ -394,7 +426,39 @@ package flash.geom {
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
+		 * lang rus
 		 **/
+		 
+		/**
+		 * Creates and returns a copy of current object Bezier.
+		 *
+		 * @return Bezier.
+		 *
+		 * @example In this example creates random Bezier curve and its copy.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *
+		 * function randomPoint():Point {
+		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
+		 *
+		 * var bezier:Bezier = randomBezier();
+		 * var clone:Bezier = bezier.clone();
+		 * trace("bezier: "+bezier);
+		 * trace("clone: "+clone);
+		 * trace(bezier == clone);
+		 *
+		 * </listing>
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 **/
+		 
 
 		public function clone():Bezier {
 			return new Bezier(__start.clone(), __control.clone(), __end.clone(), isSegment);
@@ -404,7 +468,7 @@ package flash.geom {
 		//				GEOM PROPERTIES 
 		//**************************************************
 		
-		/**
+		/* *
 		 * Вычисляет длину киривой Безье
 		 * 
 		 * @return Number длина кривой Безье.
@@ -428,16 +492,57 @@ package flash.geom {
 		 * 
 		 * </listing> 
 		 * 
+		 * 
+		 * @see #getSegmentLength
+		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @see #getSegmentLength
+		 * lang rus
+		 * 
 		 **/
+		 
+		 /**
+		 * Calculates length of the Bezier curve
+		 *
+		 * @return Number length of the Bezier curve.
+		 *
+		 * @example In this example creates random Bezier curve and traces its length.
+		 * <listing version="3.0">
+		 *
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *
+		 * function randomPoint():Point {
+		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
+		 *
+		 * var bezier:Bezier = randomBezier();
+		 *
+		 * trace("bezier length: "+bezier.length);
+		 *
+		 * </listing>
+		 *
+		 *
+		 * @see #getSegmentLength
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * lang eng
+		 * translatorIlya Segeda http://www.digitaldesign.com.ua
+		 * 
+		 **/
+		 
+		 
 		public function get length():Number {
 			return getSegmentLength(1);
 		}
 
-		/**
+		/* *
 		 * Вычисляет длину сегмента кривой Безье от стартовой точки до
 		 * точки на кривой, заданной параметром time. 
 		 * 
@@ -475,6 +580,8 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 * @see #length
+		 * 
+		 * lang rus
 		 **/
 		public function getSegmentLength(time:Number):Number {
 			var csX:Number = __control.x - __start.x;
@@ -522,7 +629,7 @@ package flash.geom {
 		}
 
 		
-		/** 
+		/* * 
 		 * Вычисляет и возвращает площадь фигуры, ограниченой кривой Безье
 		 * и отрезком <code>SE</code>.
 		 * Площадь этой фигуры составляет 2/3 площади треугольника ∆SCE, 
@@ -552,7 +659,9 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @see #triangleArea	
+		 * @see #triangleArea
+		 * 
+		 * lang rus	
 		 **/
 		public function get area():Number {
 			return triangleArea*(2/3);
@@ -566,6 +675,8 @@ package flash.geom {
 		 * @return Number
 		 * 
 		 * @see #area
+		 * 
+		 * lang rus
 		 **/
 		public function get triangleArea():Number {
 			// heron's formula
@@ -579,6 +690,8 @@ package flash.geom {
 		}
 
 		/**
+		 * Вычисляет и возвращает габаритный прямоугольник сегмента кривой Безье
+		 * Установка зачения true свойству isSegment не 
 		 * 
 		 * @return Rectangle габаритный прямоугольник.
 		 */
