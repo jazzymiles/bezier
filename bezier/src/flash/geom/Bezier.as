@@ -1686,19 +1686,19 @@ package flash.geom {
 		//**************************************************
 
 		/**
-		 * Пересечение кривой Безье с линией может дать следующие результаты:  <BR/>
+		 * Результат вычисления пересечения кривой Безье с линией может дать следующие результаты:  <BR/>
 		 * - если пересечение отсутствует, возвращается null;<BR/>
 		 * - если пересечение произошло в одной или двух точках, будет возвращен объект Intersection,
 		 *   и time-итераторы точек пересечения на кривой Безье будут находиться в массиве currentTimes.
-		 *   time-итераторы точек пересечения на линии будут находиться в массиве oppositeTimes;<BR/>
+		 *   time-итераторы точек пересечения <code>target</code> будут находиться в массиве targetTimes;<BR/>
 		 * - если кривая Безье вырождена, то может произойти совпадение. 
-		 * В этом случае результатом будет являться отрезок - объект Line (isSegment=true), 
-		 * который будет доступен как свойство coincidenceLine в возвращаемом объекте Intersection;<BR/>
+		 * В этом случае результатом будет являться отрезок - объект Line (<code>isSegment=true</code>), 
+		 * который будет доступен как свойство <code>coincidenceLine</code> в возвращаемом объекте Intersection;<BR/>
 		 * <BR/>  
-		 * На результаты вычисления пересечений оказывает влияние свойство isSegment как текущего объекта,
-		 * так и значение isSegment объекта line.
+		 * На результаты вычисления пересечений оказывает влияние свойство <code>isSegment<code> как текущего объекта,
+		 * так и значение <code>isSegment</code> объекта target.
 		 * 
-		 * @param line:Line
+		 * @param target:Line
 		 * @return Intersection
 		 *  
 		 * @example <listing version="3.0">
@@ -1722,8 +1722,8 @@ package flash.geom {
 		 * 
 		 */
 
-		
-		public function intersectionLine(line:Line):Intersection {
+		// TODO: not finished
+		public function intersectionLine(target:Line):Intersection {
 			var intersection:Intersection = new Intersection();
 			
 			var sX:Number = __start.x;
@@ -1732,9 +1732,9 @@ package flash.geom {
 			var cY:Number = __control.y;
 			var eX:Number = __end.x;
 			var eY:Number = __end.y;
-			var oX:Number = line.start.x;
-			var oY:Number = line.start.y;
-			var lineAngle:Number = line.angle;
+			var oX:Number = target.start.x;
+			var oY:Number = target.start.y;
+			var lineAngle:Number = target.angle;
 			var cosa:Number = Math.cos(lineAngle);
 			var sina:Number = Math.sin(lineAngle);
 			//
@@ -1744,8 +1744,8 @@ package flash.geom {
 			var lineTime1:Number;
 			var intersectionPoint0:Point;
 			var intersectionPoint1:Point;
-			var distanceX:Number = line.end.x - line.start.x;
-			var distanceY:Number = line.end.y - line.start.y;
+			var distanceX:Number = target.end.x - target.start.x;
+			var distanceY:Number = target.end.y - target.start.y;
 			var checkByX:Boolean = Math.abs(distanceX) > Math.abs(distanceY);
 
 			
@@ -1775,11 +1775,11 @@ package flash.geom {
 					intersectionPoint1 = getPoint(1);
 					
 					if (checkByX) {
-						lineTime0 = (intersectionPoint0.x - line.start.x)/distanceX;
-						lineTime1 = (intersectionPoint1.x - line.start.x)/distanceX;
+						lineTime0 = (intersectionPoint0.x - target.start.x)/distanceX;
+						lineTime1 = (intersectionPoint1.x - target.start.x)/distanceX;
 					} else {
-						lineTime0 = (intersectionPoint0.y - line.start.y)/distanceY;
-						lineTime1 = (intersectionPoint1.y - line.start.y)/distanceY;
+						lineTime0 = (intersectionPoint0.y - target.start.y)/distanceY;
+						lineTime1 = (intersectionPoint1.y - target.start.y)/distanceY;
 					}
 				} else {
 					time0 = -((sX - oX)*sina - (sY - oY)*cosa)/divider2;
@@ -1817,19 +1817,19 @@ package flash.geom {
 				intersectionPoint0 = getPoint(time0);
 				
 				if (checkByX) {
-					lineTime0 = (intersectionPoint0.x - line.start.x)/distanceX;
+					lineTime0 = (intersectionPoint0.x - target.start.x)/distanceX;
 				} else {
-					lineTime0 = (intersectionPoint0.y - line.start.y)/distanceX;
+					lineTime0 = (intersectionPoint0.y - target.start.y)/distanceX;
 				}
 				
 				outsideLine0 = lineTime0 < 0 || lineTime0 > 1;
 				
-				if (line.isSegment && outsideLine0) {
+				if (target.isSegment && outsideLine0) {
 					return null;
 				}
 				
 				intersection.currentTimes[0] = time0;
-				intersection.oppositeTimes[0] = lineTime0;
+				intersection.targetTimes[0] = lineTime0;
 				
 				return intersection;
 			}
@@ -1852,38 +1852,38 @@ package flash.geom {
 			
 			
 			if (distanceX) {
-				lineTime0 = (intersectionPoint0.x - line.start.x)/distanceX;
-				lineTime1 = (intersectionPoint1.x - line.start.x)/distanceX;
+				lineTime0 = (intersectionPoint0.x - target.start.x)/distanceX;
+				lineTime1 = (intersectionPoint1.x - target.start.x)/distanceX;
 			} else {
-				lineTime0 = (intersectionPoint0.y - line.start.y)/distanceY;
-				lineTime1 = (intersectionPoint1.y - line.start.y)/distanceY;
+				lineTime0 = (intersectionPoint0.y - target.start.y)/distanceY;
+				lineTime1 = (intersectionPoint1.y - target.start.y)/distanceY;
 			}
 			
 			outsideLine0 = lineTime0 < 0 || lineTime0 > 1;
 			outsideLine1 = lineTime1 < 0 || lineTime1 > 1;
 
-			if (line.isSegment && outsideLine0 && outsideLine1) {
+			if (target.isSegment && outsideLine0 && outsideLine1) {
 				return null;
 			}
 			
 			if (isSegment) {
-				if (line.isSegment) {
+				if (target.isSegment) {
 					if (!outsideBezier0 && !outsideLine0) {
 						intersection.currentTimes.push(time0);
-						intersection.oppositeTimes.push(lineTime0);
+						intersection.targetTimes.push(lineTime0);
 					}
 					if (!outsideBezier1 && !outsideLine1) {
 						intersection.currentTimes.push(time1);
-						intersection.oppositeTimes.push(lineTime1);
+						intersection.targetTimes.push(lineTime1);
 					}
 				} else {
 					if (!outsideBezier0) {
 						intersection.currentTimes.push(time0);
-						intersection.oppositeTimes.push(lineTime0);
+						intersection.targetTimes.push(lineTime0);
 					}
 					if (!outsideBezier1) {
 						intersection.currentTimes.push(time1);
-						intersection.oppositeTimes.push(lineTime1);
+						intersection.targetTimes.push(lineTime1);
 					}
 				}
 				if (!intersection.currentTimes.length) {
@@ -1894,14 +1894,14 @@ package flash.geom {
 			
 			// if !this.isSegment
 
-			if (line.isSegment) {
+			if (target.isSegment) {
 				if (!outsideLine0) {
 					intersection.currentTimes.push(time0);
-					intersection.oppositeTimes.push(lineTime0);
+					intersection.targetTimes.push(lineTime0);
 				}
 				if (!outsideLine1) {
 					intersection.currentTimes.push(time1);
-					intersection.oppositeTimes.push(lineTime1);
+					intersection.targetTimes.push(lineTime1);
 				}
 				if (!intersection.currentTimes.length) {
 					return null;
@@ -1909,16 +1909,26 @@ package flash.geom {
 				return intersection;
 			}
 			
-			// if !this.isSegment && !line.isSegment
+			// if !this.isSegment && !target.isSegment
 			intersection.currentTimes.push(time0);
-			intersection.oppositeTimes.push(lineTime0);
+			intersection.targetTimes.push(lineTime0);
 			intersection.currentTimes.push(time1);
-			intersection.oppositeTimes.push(lineTime1);
+			intersection.targetTimes.push(lineTime1);
 			return intersection;
 		}
 
 		
 		/**
+		 * Результат вычисления пересечения кривой Безье с другой кривой Безье может дать следующие результаты:<BR/>
+		 * - если пересечение отсутствует, возвращается null;<BR/>
+		 * - если пересечение произошло в точках (от одной до четырех точек), будет возвращен объект Intersection,
+		 *   и time-итераторы точек пересечения на данной кривой Безье будут находиться в массиве currentTimes.
+		 *   time-итераторы точек пересечения <code>target</code> будут находиться в массиве <code>targetTimes</code>;<BR/>
+		 * - также может произойти совпадение кривых. В этом случае результатом будет являться кривая - объект Bezier (<code>isSegment=true</code>), 
+		 * которая будет доступна как свойство <code>coincidenceBezier</code> в возвращаемом объекте Intersection;<BR/>
+		 * <BR/>
+		 * На результаты вычисления пересечений оказывает влияние свойство <code>isSegment<code> как текущего объекта,
+		 * так и значение <code>isSegment</code> объекта <code>target</code>.
 		 * 
 		 * @param target:Bezier
 		 * @return Intersection
