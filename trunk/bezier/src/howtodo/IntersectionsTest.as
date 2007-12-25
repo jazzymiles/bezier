@@ -92,7 +92,7 @@ package howtodo {
 				for (var i:uint = 0;i < isect.currentTimes.length; i++) {
 					time = isect.currentTimes[i];
 					showIntersection(curve1.getPoint(time), false, time);
-					time = isect.oppositeTimes[i];
+					time = isect.targetTimes[i];
 					showIntersection(curve2.getPoint(time), true, time);
 				}
 			}
@@ -104,13 +104,13 @@ package howtodo {
 				if (isect.currentTimes.length) {
 					var time:Number = isect.currentTimes[0];
 					showIntersection(curve.getPoint(time), false, time);
-					time = isect.oppositeTimes[0];
+					time = isect.targetTimes[0];
 					showIntersection(line.getPoint(time), true, time);
 					
 					if (isect.currentTimes.length > 1) {
 						time = isect.currentTimes[1];
 						showIntersection(curve.getPoint(time), false, time);
-						time = isect.oppositeTimes[1];
+						time = isect.targetTimes[1];
 						showIntersection(line.getPoint(time), true, time);
 					}
 				}
@@ -123,10 +123,10 @@ package howtodo {
 				if (isect.currentTimes.length) {
 					var time:Number = isect.currentTimes[0];
 					showIntersection(line1.getPoint(time), false, time);
-					time = isect.oppositeTimes[0];
+					time = isect.targetTimes[0];
 					showIntersection(line2.getPoint(time), true, time);
 				}
-				var line:Line = Line(isect.coincidence);
+				var line:Line = Line(isect.coincidenceLine);
 				if (line) {
 					graphics.lineStyle(3, 0x0000FF, 1);
 					drawLine(line); 
