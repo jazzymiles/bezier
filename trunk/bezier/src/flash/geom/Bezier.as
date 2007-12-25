@@ -923,10 +923,14 @@ package flash.geom {
 		 /**
 		 * @return Point - focus of a parental parabola;
 		 *
+		 * @see #parabolaVertex
+		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
-		 *
-		 * @see #parabolaVertex
+		 * 
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 * 
 		 **/
 		 
 		 
@@ -1052,7 +1056,10 @@ package flash.geom {
 		 *
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
-		 *
+		 * 
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 * 
 		 **/
 
 		public function getPoint(time:Number):Point {
