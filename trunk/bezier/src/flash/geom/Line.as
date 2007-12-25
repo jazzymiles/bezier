@@ -347,7 +347,7 @@ package flash.geom {
 					var endOrdered:OrderedPoint = order_array[2];
 					
 					intersection = new Intersection();
-					intersection.coincidence = new Line(startOrdered.point, endOrdered.point);
+					intersection.coincidenceLine = new Line(startOrdered.point, endOrdered.point);
 					return intersection;
 				} else { 
 					// parallel
@@ -374,7 +374,7 @@ package flash.geom {
 
 			intersection = new Intersection();
 			intersection.currentTimes[0] = currentTime;
-			intersection.oppositeTimes[0] = oppositeTime;
+			intersection.targetTimes[0] = oppositeTime;
 			return intersection;
 		}
 
