@@ -237,10 +237,8 @@ package flash.geom {
 			__isSegment = Boolean(isSegment);
 		}
 
-		/*
-		 * Поскольку публичные переменные нельзя нельзя переопределять в дочерних классах, 
-		 * start, control, end и isSegment реализованы как get-set методы, а не как публичные переменные.
-		 */
+		 // Поскольку публичные переменные нельзя нельзя переопределять в дочерних классах, 
+		 // start, control, end и isSegment реализованы как get-set методы, а не как публичные переменные.
 		
 		/* *
 		 * Начальная опорная (anchor) точка кривой Безье. Итератор <code>time</code> равен нулю.
@@ -259,7 +257,6 @@ package flash.geom {
 		
 		 /**
 		 * Initial anchor point of Bezier curve. Iterator <code>time</code> is equal to zero.
-		 *
 		 *
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
@@ -333,7 +330,7 @@ package flash.geom {
 		}
 
 		
-		/**
+		/* *
 		 * Определяет является ли кривая Безье бесконечной в обе стороны
 		 * или ограничена в пределах значения итераторов от 0 до 1.<BR/>
 		 * <BR/>
@@ -785,11 +782,16 @@ package flash.geom {
 			return area;
 		}
 
-		/**
+		/* *
 		 * Вычисляет и возвращает габаритный прямоугольник сегмента кривой Безье.<BR/> 
 		 * <I>Установка свойству isSegment=false не изменяет результат вычислений.</I> 
 		 * 
 		 * @return Rectangle габаритный прямоугольник.
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
 		 */
 
 		public function get bounds():Rectangle {
@@ -976,7 +978,7 @@ package flash.geom {
 		 * Реализация <a href="#formula1">формулы 1</a><BR/>
 		 * Вычисляет и возвращает объект Point представляющий точку на кривой Безье, заданную параметром <code>time</code>.
 		 * 
-		 * @param time:Number итератор точки на кривой
+		 * @param time:Number итератор точки кривой
 		 * 
 		 * @return Point точка на кривой Безье;<BR/>
 		 * <I>
@@ -1022,9 +1024,14 @@ package flash.geom {
 		/**
 		 * Поворачивает кривую относительно точки <code>fulcrum</code> на заданный угол.
 		 * Если точка <code>fulcrum</code> не задана, используется (0,0)
+		 * 
 		 * @param value:Number угол вращения
-		 * @param fulcrum:Point центр вращения. 
-		 * Если параметр не определен, центром вращения является точка <code>start</code>
+		 * 
+		 * @param fulcrum:Point центр вращения.
+		 * 
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 * 
 		 */
 
@@ -1046,16 +1053,17 @@ package flash.geom {
 		 * @param dy:Number величина смещения по оси Y
 		 * 
 		 */		
-		public function offset(dx:Number, dy:Number):void {
-			__start.offset(dx, dy);
-			__end.offset(dx, dy);
+		public function offset(dX:Number, dY:Number):void {
+			__start.offset(dX, dY);
+			__end.offset(dX, dY);
 		}
 
 		
 		/**
-		 * Вычисляет time-итератор точки, находящейся на заданной дистанции
+		 * Вычисляет time-итератор точки, находящейся на заданной дистанции 
 		 * по кривой от точки <code>start</code><BR/>
-		 * <BR/>
+		 * <I>Для вычисления равноуделенных последовательностей точек,
+		 * например для рисования пунктиром, используйте метод getTimesSequence</I>
 		 * 
 		 * @param distance:Number дистанция по кривой до искомой точки.
 		 * 
