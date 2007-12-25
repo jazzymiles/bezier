@@ -1112,7 +1112,7 @@ package flash.geom {
 			endLine.angle += value;
 		}
 
-		/**
+		/* *
 		 * Смещает кривую на заданное расстояние по осям X и Y.  
 		 * 
 		 * @param dx:Number величина смещения по оси X
@@ -1121,14 +1121,30 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 */		
+		 * @lang rus
+		 */
+		 
+		 /**
+		 * Moves a curve on the prescribed distance on axes X and Y.
+		 *
+		 * @param dx:Number offset by X
+		 * @param dy:Number offset by Y
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 *
+		 */
+		 		
 		public function offset(dX:Number, dY:Number):void {
 			__start.offset(dX, dY);
 			__end.offset(dX, dY);
 		}
 
 		
-		/* *
+		/**
 		 * Вычисляет time-итератор точки, находящейся на заданной дистанции 
 		 * по кривой от точки <code>start</code><BR/>
 		 * <I>Для вычисления равноуделенных последовательностей точек,
@@ -1395,8 +1411,6 @@ package flash.geom {
 		 * @param x:Number новое значение позиции точки по оси X.
 		 * @param y:Number новое значение позиции точки по оси Y.
 		 * 
-		 * @return void;
-		 * 
 		 * @example 
 		 * <listing version="3.0">
 		 * 
@@ -1477,34 +1491,6 @@ package flash.geom {
 		 * @return Number time-итератор точки на кривой.
 		 * 
 		 * @example
-		 * Синим цветом обозначена кривая Безье, ограниченная точками __start, end, а также линия до ближайшей точки на ней. Свойство <code>isSegment=true;</code> <BR/>
-		 * Красным цветом обозначена неограниченная кривая, а также линия до ближайшей точки на ней. Свойство <code>isSegment=false;</code>
-		 * <P>
-		 * <table width="100%" border=1><td>
-		 * <a name="closest_point_demo"></a>
-		 * 	<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-		 *			id="Step1Building" width="100%" height="500"
-		 *			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
-		 *			<param name="movie" value="../../images/Step02ClosestPoint.swf" />
-		 *			<param name="quality" value="high" />
-		 *			<param name="bgcolor" value="#FFFFFF" />
-		 *			<param name="allowScriptAccess" value="sameDomain" />
-		 *			<embed src="../../images/Step02ClosestPoint.swf" quality="high" bgcolor="#FFFFFF"
-		 *				width="100%" height="400" name="Step1Building"
-		 * 				align="middle"
-		 *				play="true"
-		 *				loop="false"
-		 *				quality="high"
-		 *				allowScriptAccess="sameDomain"
-		 *				type="application/x-shockwave-flash"
-		 *				pluginspage="http://www.adobe.com/go/getflashplayer">
-		 *			</embed>
-		 *	</object>
-		 * </td></table>
-		 * </P>
-		 * <P ALIGN="center"><B>Интерактивная демонстрация</B><BR>
-		 * <I>Перемещайте мышью контрольные точки кривой.</I></P>
-		 * <BR/>
 		 * <listing version="3.0">
 		 *	import flash.geom.Bezier;
 		 * 	import flash.geom.Point;
@@ -1517,6 +1503,9 @@ package flash.geom {
 		 *	}
 		 *	
 		 *	var bezier:Bezier = randomBezier();
+		 *	
+		 *	TODO:
+		 *	
 		 * </listing>
 		 * 
 		 * @see #isSegment
@@ -1674,6 +1663,7 @@ package flash.geom {
 		 *	
 		 *	var bezier:Bezier = randomBezier();
 		 * </listing>
+		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
@@ -1695,6 +1685,11 @@ package flash.geom {
 		//**************************************************
 
 		/**
+		 * Пересечение кривой Безье с линией может дать следующие результаты:  <BR/>
+		 * - если пересечение отсутствует, возвращается null
+		 * - если пересечение произошло в одной или двух точках, будет возвращен объект Intersection,
+		 *   и time-итераторы точек пересечения будут  currentTimes 
+		 * 
 		 * @param line:Line
 		 * @return Intersection
 		 *  
