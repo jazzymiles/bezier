@@ -15,13 +15,15 @@ package flash.geom {
 		 * в качестве аргумента при вызове метода получения пересечений. 
 		 **/
 		 
-		public const oppositeTimes:Array = new Array();
+		public const targetTimes:Array = new Array();
 
 		/**
 		 * Если два объекта частично или полностью совпали, будет возвращен объект, 
 		 * представляющий совпавшую часть.
 		 **/
 		 
-		public var coincidence:Object;
+		public var coincidenceLine:Line;
+		public var coincidenceBezier:Bezier;
+		
 	}
 }
