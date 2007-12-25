@@ -228,7 +228,7 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang eng
-		 * @translator Ilya Segeda 
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 **/
 		 
 		 
