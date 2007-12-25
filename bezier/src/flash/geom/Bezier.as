@@ -307,12 +307,24 @@ package flash.geom {
 			__control = value;
 		}
 
-		/**
+		/* *
 		 * Конечная опорная (anchor) точка кривой Безье. Итератор <code>time</code> равен единице.
 		 *  
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 **/
+		 
+		 /**
+		  * End anchor point of Bezier curve. Iterator <code>time</code> is equal to one
+		  *
+		  * @langversion 3.0
+		  * @playerversion Flash 9.0
+		  * 
+		  * @lang eng
+		  * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		  **/
+		 
+		 
 		public function get end():Point {
 			return __end;
 		}
