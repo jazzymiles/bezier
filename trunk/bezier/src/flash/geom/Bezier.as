@@ -161,7 +161,7 @@ package flash.geom {
 		//				CONSTRUCTOR 
 		//**************************************************
 		
-		/**
+		/* *
 		 * Создает новый объект Bezier. 
 		 * Если параметры не переданы, то все опорные точки создаются в координатах 0,0  
 		 * 
@@ -192,6 +192,40 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 **/
+		 
+		/**
+		* Create new Bezier object.
+		* If parameters are not passed, all control points are created in coordinates 0,0
+		*
+		* @param start:Point initial point of Bezier curve
+		*
+		* @param control:Point control point of Bezier curve
+		*
+		* @param end:Point end point of Bezier curve
+		*
+		* @param isSegment:Boolean operating mode
+		*
+		* @example In this example created Bezier curve with random coordinates.
+		* <listing version="3.0">
+		* import flash.geom.Bezier;
+		* import flash.geom.Point;
+		*
+		* function randomPoint():Point {
+		* return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		* }
+		* function randomBezier():Bezier {
+		* return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		* }
+		*
+		* var bezier:Bezier = randomBezier();
+		* trace("random bezier: "+bezier);
+		* </listing>
+		*
+		* @langversion 3.0
+		* @playerversion Flash 9.0
+		**/
+		 
+		 
 
 		public function Bezier(start:Point = undefined, control:Point = undefined, end:Point = undefined, isSegment:Boolean = true) {
 			__start = (start as Point) || new Point();
