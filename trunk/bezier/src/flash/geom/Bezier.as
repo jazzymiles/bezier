@@ -194,7 +194,9 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 **/
 		 
-		/** @lang eng
+		/** 
+		 * @lang eng
+		 * @translator Ilya Segeda 
 		 * 
 		 * Create new Bezier object.
 		 * If parameters are not passed, all control points are created in coordinates 0,0
