@@ -793,6 +793,13 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */
+		 
+		/**
+		 * Calculates and returns a bounds rectangular of a segment of Bezier curve.<BR/>
+		 * <I>Property isSegment=false does not change result of calculations.</I>
+		 *
+		 * @return Rectangle bounds rectangular.
+		 */
 
 		public function get bounds():Rectangle {
 			var xMin:Number;
@@ -891,7 +898,6 @@ package flash.geom {
 		 * 
 		 **/
 
-
 		public function get parabolaVertex():Number {
 			var x:Number = __start.x - 2*__control.x + __end.x;
 			var y:Number = __start.y - 2*__control.y + __end.y;
@@ -974,7 +980,7 @@ package flash.geom {
 		//		CURVE POINTS
 		//**************************************************
 
-		/**
+		/* *
 		 * Реализация <a href="#formula1">формулы 1</a><BR/>
 		 * Вычисляет и возвращает объект Point представляющий точку на кривой Безье, заданную параметром <code>time</code>.
 		 * 
@@ -1010,6 +1016,44 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 */
+
+		/**
+		 * Realization of <a href="#formula1">formula 1</a><BR/>
+		 * Calculates and returns object Point which representing a point on a Bezier curve,
+		 * specified by the parameter <code>time</code>.
+		 *
+		 * @param time:Number iterator of the point on curve
+		 *
+		 * @return Point point on the Bezier curve;<BR/>
+		 * <I>
+		 * If passed the parameter time equal to 1 or 0, object Point equivalent to <code>start</code>
+		 * or <code>end</code> will be returned, but not objects exact <code>start</code> or <code>end</code>.
+		 * </I>
+		 *
+		 * @example <listing version="3.0">
+		 *
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *
+		 * function randomPoint():Point {
+		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
+		 *
+		 * var bezier:Bezier = randomBezier();
+		 *
+		 * var time:Number = Math.random();
+		 * var point:Point = bezier.getPoint(time);
+		 *
+		 * trace(point);
+		 * </listing>
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 *
+		 **/
 
 		public function getPoint(time:Number):Point {
 			if (isNaN(time)) {
@@ -1400,10 +1444,11 @@ package flash.geom {
 		 * <P>Вычисляет и возвращает time-итератор точки на кривой, 
 		 * ближайшей к точке <code>fromPoint</code>.<BR/>
 		 * В зависимости от значения свойства <a href="#isSegment">isSegment</a>
-		 * возвращает либо значение в пределах от 0 до 1 или от минус 
+		 * возвращает либо значение в пределах от 0 до 1, либо от минус 
 		 * бесконечности до плюс бесконечности.</P>
 		 * 
 		 * @param fromPoint:Point произвольная точка на плоскости.
+		 * 
 		 * @return Number time-итератор точки на кривой.
 		 * 
 		 * @example
@@ -1493,8 +1538,8 @@ package flash.geom {
 			var extremumPoint:Point;
 			var extremumDistance:Number;
 			
-			var nearestTime:Number;
-			var nearestDistance:Number;
+			var closestPointTime:Number;
+			var closestDistance:Number;
 			
 			var isInside:Boolean;
 			
@@ -1503,29 +1548,30 @@ package flash.geom {
 				extremumTime = extremumTimes[i];
 				extremumPoint = getPoint(extremumTime);
 				
+				// TODO: 
 				// PROBLEM!!!!!
 				// trace("extremumDistance: "+extremumTime);
 				extremumDistance = Point.distance(fromPoint, extremumPoint);
 				
 				isInside = (extremumTime >= 0) && (extremumTime <= 1);
 				
-				if (isNaN(nearestTime)) {
+				if (isNaN(closestPointTime)) {
 					if (!isSegment || isInside) {
-						nearestTime = extremumTime;
-						nearestDistance = extremumDistance;
+						closestPointTime = extremumTime;
+						closestDistance = extremumDistance;
 					}
 					continue;
 				}
 				
-				if (extremumDistance < nearestDistance) {
+				if (extremumDistance < closestDistance) {
 					if (!isSegment || isInside) {
-						nearestTime = extremumTime;
-						nearestDistance = extremumDistance;
+						closestPointTime = extremumTime;
+						closestDistance = extremumDistance;
 					}
 				}
 			}
 			
-			return nearestTime;
+			return closestPointTime;
 		}
 
 		
