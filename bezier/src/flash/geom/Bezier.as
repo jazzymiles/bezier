@@ -1172,10 +1172,11 @@ package flash.geom {
 		 *	trace(bezier.getTimeByDistance(bezier.length/2); // value between 0 and 1
 		 * </listing>
 		 * 
+		 * @see #getPoint
+		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @see #getPoint
 		 */
 
 		public function getTimeByDistance(distance:Number):Number {
@@ -1686,9 +1687,16 @@ package flash.geom {
 
 		/**
 		 * Пересечение кривой Безье с линией может дать следующие результаты:  <BR/>
-		 * - если пересечение отсутствует, возвращается null
+		 * - если пересечение отсутствует, возвращается null;<BR/>
 		 * - если пересечение произошло в одной или двух точках, будет возвращен объект Intersection,
-		 *   и time-итераторы точек пересечения будут  currentTimes 
+		 *   и time-итераторы точек пересечения на кривой Безье будут находиться в массиве currentTimes.
+		 *   time-итераторы точек пересечения на линии будут находиться в массиве oppositeTimes;<BR/>
+		 * - если кривая Безье вырождена, то может произойти совпадение. 
+		 * В этом случае результатом будет являться отрезок - объект Line (isSegment=true), 
+		 * который будет доступен как свойство coincidenceLine в возвращаемом объекте Intersection;<BR/>
+		 * <BR/>  
+		 * На результаты вычисления пересечений оказывает влияние свойство isSegment как текущего объекта,
+		 * так и значение isSegment объекта line.
 		 * 
 		 * @param line:Line
 		 * @return Intersection
