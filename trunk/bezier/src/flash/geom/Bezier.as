@@ -68,7 +68,7 @@
 package flash.geom {
 	import flash.math.Equations;
 
-	/** 
+	/* * 
 	 * <P>
 	 * Класс Bezier представляет кривую Безье второго порядка в параметрическом представлении, 
 	 * задаваемую точками на плоскости <code>start</code>, <code>control</code> и <code>end</code>
@@ -161,7 +161,7 @@ package flash.geom {
 		//				CONSTRUCTOR 
 		//**************************************************
 		
-		/* 
+		/* *
 		 * 
 		 * Создает новый объект Bezier. 
 		 * Если параметры не переданы, то все опорные точки создаются в координатах 0,0  
@@ -193,7 +193,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * lang rus
+		 * @lang rus
 		 **/
 		 
 		/** 
@@ -227,10 +227,9 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * lang eng
-		 * translatorIlya Segeda http://www.digitaldesign.com.ua
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 **/
-
 		public function Bezier(start:Point = undefined, control:Point = undefined, end:Point = undefined, isSegment:Boolean = true) {
 			__start = (start as Point) || new Point();
 			__control = (control as Point) || new Point();
@@ -249,7 +248,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * lang rus
+		 * @lang rus
 		 * 
 		 **/
 		 
@@ -265,8 +264,8 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * lang eng
-		 * translatorIlya Segeda http://www.digitaldesign.com.ua
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
 		 
@@ -285,7 +284,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * lang rus
+		 * @lang rus
 		 **/
 		 
 		/**
@@ -294,8 +293,8 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * lang eng
-		 * translatorIlya Segeda http://www.digitaldesign.com.ua
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 **/
 		 
 		 
@@ -320,8 +319,8 @@ package flash.geom {
 		  * @langversion 3.0
 		  * @playerversion Flash 9.0
 		  * 
-		  * lang eng
-		  * translatorIlya Segeda http://www.digitaldesign.com.ua
+		  * @lang eng
+		  * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		  **/
 		 
 		 
@@ -358,7 +357,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * lang rus
+		 * @lang rus
 		 **/
 		 
 		 /**
@@ -384,8 +383,8 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * lang eng
-		 * translatorIlya Segeda http://www.digitaldesign.com.ua
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 **/
 		 
 		 
@@ -427,7 +426,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * lang rus
+		 * @lang rus
 		 **/
 		 
 		/**
@@ -498,7 +497,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * lang rus
+		 * @lang rus
 		 * 
 		 **/
 		 
@@ -532,8 +531,8 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * lang eng
-		 * translatorIlya Segeda http://www.digitaldesign.com.ua
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
 		 
@@ -581,8 +580,53 @@ package flash.geom {
 		 * 
 		 * @see #length
 		 * 
-		 * lang rus
+		 * @lang rus
 		 **/
+		 
+		 /**
+		 * Calculates length of a segment of Bezier curve from a starting point
+		 * up to a point on a curve which passed in parameter time.
+		 *
+		 * @param time:Number parameter time of the end point of a segment.
+		 * @return Number length of arc.
+		 *
+		 * @example In this example creates random Bezier curve, calculates time-iterator
+		 * of the middle of a curve, and then traces values of half of length of a curve
+		 * and length of a segment of a curve up to an middle point - they should be equal.
+		 * <listing version="3.0">
+		 *
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *
+		 * function randomPoint():Point {
+		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
+		 *
+		 * var bezier:Bezier = randomBezier();
+		 *
+		 * var middleDistance:Number = bezier.length/2;
+		 * var middleTime:Number = bezier.getTimeByDistance(middleDistance);
+		 * var segmentLength:Number = bezier.getSegmentLength(middleTime);
+		 *
+		 * trace(middleDistance);
+		 * trace(segmentLength);
+		 *
+		 *</listing>
+		 *
+		 *
+		 * @see #length
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 * 
+		 **/
+		 
 		public function getSegmentLength(time:Number):Number {
 			var csX:Number = __control.x - __start.x;
 			var csY:Number = __control.y - __start.y;
@@ -661,14 +705,53 @@ package flash.geom {
 		 * 
 		 * @see #triangleArea
 		 * 
-		 * lang rus	
+		 * @lang rus	
 		 **/
+
+		/**
+		 * Calculates and returns the area of the figure limited by Bezier curve and
+		 * a segment <code> SE </code>.
+		 * The area of this figure makes 2/3 areas of a triangle ∆SCE, which is formed of
+		 * control points <code>start, control, end</code>.<BR/>
+		 * Accordingly, the rest of a triangle makes 1/3 its areas.
+		 *
+		 * @return Number
+		 *
+		 * @example <listing version="3.0">
+		 *
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *
+		 * function randomPoint():Point {
+		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
+		 *
+		 * var randomBezier:Bezier = randomBezier();
+		 *
+		 * trace("bezier area: "+randomBezier.area);
+		 *
+		 * </listing>
+		 *
+		 * @see #triangleArea
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 *
+		 **/
+		 
+		 
 		public function get area():Number {
 			return triangleArea*(2/3);
 		}
 
 		
-		/**
+		/* *
 		 * Вычисляет и возвращает площадь треугольника ∆SCE, 
 		 * образуемого контрольными точками <code>start, control, end</code>.  
 		 * 
@@ -676,8 +759,21 @@ package flash.geom {
 		 * 
 		 * @see #area
 		 * 
-		 * lang rus
+		 * @lang rus
 		 **/
+		 
+		 /**
+		 * Calculates and returns the area of a triangle ∆SCE, which is formed of
+		 * control points <code>start, control, end</code>.
+		 *
+		 * @return Number
+		 *
+		 * @see #area
+		 *
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 **/
+		 
 		public function get triangleArea():Number {
 			// heron's formula
 			var distanceStartControl:Number = Point.distance(__start, __control);
@@ -735,7 +831,7 @@ package flash.geom {
 		//		PARENT PARABOLA
 		//**************************************************
 
-		/**
+		/* *
 		 * Вычисляет и возвращает time-итератор вершины параболы.
 		 * 
 		 * @return Number;
@@ -757,11 +853,42 @@ package flash.geom {
 		 *	
 		 * </listing>
 		 * 
+		 * @see #parabolaFocus
+		 * 
+		 */	
+
+		/**
+		 * Calculates and returns time-iterator of top of the parabola.
+		 *
+		 * @return Number;
+		 *
+		 * @example <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *
+		 * function randomPoint():Point {
+		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
+		 *
+		 * var randomBezier:Bezier = randomBezier();
+		 *
+		 * trace("parabola vertex time: "+randomBezier.parabolaVertex);
+		 *
+		 * </listing>
+		 *
+		 * @see #parabolaFocus
+		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 *
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
-		 * @see #parabolaFocus
-		 */	
+		 **/
+
 
 		public function get parabolaVertex():Number {
 			var x:Number = __start.x - 2*__control.x + __end.x;
@@ -776,7 +903,7 @@ package flash.geom {
 			return vertexTime;
 		}
 
-		/**
+		/* *
 		 * @return Point - фокус родительской параболы;
 		 * 
 		 * @langversion 3.0
@@ -784,6 +911,17 @@ package flash.geom {
 		 * 
 		 * @see #parabolaVertex
 		 */
+		 
+		 /**
+		 * @return Point - focus of a parental parabola;
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 *
+		 * @see #parabolaVertex
+		 **/
+		 
+		 
 		// TODO:
 		public function get parabolaFocusPoint():Point {
 			var startX:Number = __start.x;
@@ -1874,3 +2012,5 @@ package flash.geom {
 		};
 	}
 }
+
+
