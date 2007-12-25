@@ -88,7 +88,8 @@ package flash.geom {
 		 * @return Number
 		 **/
 		function getClosest(fromPoint:Point):Number;
-
+		
+		
 		//		function getSegment (fromTime:Number=0, toTime:Number=1):IParametric;
 		
 		/**
