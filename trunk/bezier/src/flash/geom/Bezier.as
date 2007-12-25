@@ -230,8 +230,6 @@ package flash.geom {
 		 * @lang eng
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 **/
-		 
-		 
 
 		public function Bezier(start:Point = undefined, control:Point = undefined, end:Point = undefined, isSegment:Boolean = true) {
 			__start = (start as Point) || new Point();
@@ -245,12 +243,34 @@ package flash.geom {
 		 * start, control, end и isSegment реализованы как get-set методы, а не как публичные переменные.
 		 */
 		
-		/**
+		/* *
 		 * Начальная опорная (anchor) точка кривой Безье. Итератор <code>time</code> равен нулю.
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
+		 * 
 		 **/
+		 
+		/* 
+		 * As public variables cannot be redefined in affiliated classes, start, control, end and isSegment
+		 * are realized as get-set methods, instead of as public variables.
+		 */
+		
+		 /**
+		 * Initial anchor point of Bezier curve. Iterator <code>time</code> is equal to zero.
+		 *
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 * 
+		 **/
+		 
+		 
 		public function get start():Point {
 			return __start;
 		}
@@ -259,12 +279,26 @@ package flash.geom {
 			__start = value;
 		}
 
-		/**
+		/* *
 		 * Управляющая (direction) точка кривой Безье.
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
 		 **/
+		 
+		/**
+		 * Direction point of Bezier curve.
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 **/
+		 
+		 
 		public function get control():Point {
 			return __control;
 		}
