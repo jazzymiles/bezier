@@ -1072,7 +1072,7 @@ package flash.geom {
 			return new Point(x, y);
 		}
 
-		/**
+		/* *
 		 * Поворачивает кривую относительно точки <code>fulcrum</code> на заданный угол.
 		 * Если точка <code>fulcrum</code> не задана, используется (0,0)
 		 * 
@@ -1086,6 +1086,21 @@ package flash.geom {
 		 * 
 		 */
 
+		/**
+		 * Rotate a curve concerning to a point <code>fulcrum</code> on the <code>value</code> angle
+		 * If point <code>fulcrum</code> is not set, used (0,0)
+		 * 
+		 * @param value:Number rotation angle
+		 * 
+		 * @param fulcrum:Point center of rotation.
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 *
+		 **/
 		public function angleOffset(value:Number, fulcrum:Point = null):void {
 			fulcrum = fulcrum || new Point();
 			
@@ -1102,6 +1117,9 @@ package flash.geom {
 		 * 
 		 * @param dx:Number величина смещения по оси X
 		 * @param dy:Number величина смещения по оси Y
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 * 
 		 */		
 		public function offset(dX:Number, dY:Number):void {
