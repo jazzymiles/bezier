@@ -161,7 +161,7 @@ package flash.geom {
 		//				CONSTRUCTOR 
 		//**************************************************
 		
-		/* @lang rus
+		/* 
 		 * 
 		 * Создает новый объект Bezier. 
 		 * Если параметры не переданы, то все опорные точки создаются в координатах 0,0  
@@ -192,12 +192,11 @@ package flash.geom {
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
 		 **/
 		 
 		/** 
-		 * @lang eng
-		 * @translator Ilya Segeda 
-		 * 
 		 * Create new Bezier object.
 		 * If parameters are not passed, all control points are created in coordinates 0,0
 		 *
@@ -227,6 +226,9 @@ package flash.geom {
 		 *
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
+		 * @lang eng
+		 * @translator Ilya Segeda 
 		 **/
 		 
 		 
