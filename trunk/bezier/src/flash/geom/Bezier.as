@@ -1,3 +1,70 @@
+/**
+ *              I. INTRODUCTION
+ *
+ * There are two methods, that are used in ActionScript drawing: lineTo() and curveTo()
+ * and realize sengment and Bezier second-order curve drawing correspondingly.
+ * There are tools in Flash IDE to draw curves with Bezier third-order curves,
+ * but during the compilation process they are approximated with second-order curves.
+ * As the result, all shapes in compiled SWF-file become segments or Bezier second-order curves.
+ * That's why we encounter a group of tasks, that need mathematical engine
+ * to work with segments and Bezier second-order curves.
+ *
+ *
+ *              II. BASE TASKS
+ *
+ * 1. Controlling:
+ *   - using control points;
+ *   - placing the particular point in particular coondinates;
+ *   - rotating around any point;
+ *   - offseting.
+ * 2. Geometric properties:
+ *   - finding actual point on curve or line by time-iterator;
+ *   - parents (line for the segment and parabola for the Bezier curve)
+ *   - length of the given segment
+ *   - bounding rectangle
+ *   - square (for the Bezier curve)
+ *   - tangants
+ * 3. Getting points on curve:
+ *   - by distance from the beginning;
+ *   - nearest to the given point;
+ *   - inretsections with other segments and curves.
+ *
+ * Most of other practical tasks can be solved based on these solutions.
+ *
+ * Actually, these tasks are realizaed in this class package.
+ * Samples for other practical tasks are located in <code>howtodo</code> package.
+ *
+ *
+ *              III. CONCEPTIONS
+ *
+ * 1. <code>Bezier</code> and <code>Line</code> classes are realized in a similar way and most of
+ * their methods have similar or the same syntax, defined by <code>IParametric</code> interface.
+ * Of course, there are differencies: for example, <code>Line</code> doesn't have
+ * <code>area</code> and <code>control</code> properties. <code>Bezier</code>
+ * in it's turn doesn't have <code>angle</code>, that is presented in <code>Line.
+ *
+ * 2. Geometric figures (lines), defined in <code>Line</code> and <code>Bezier</code> classes,
+ * are controlled in parametric form, every point of the figure is defined by it's time-iterator.
+ * In the beginning it can seem inconvenient that computation of the point on curve returns
+ * a time-iterator that is <code>Number</code> instead of <point>Point</point> class instance.
+ * However, this realization helps us to avoid redundant convertations in future calculations.
+ * To convert point on figure to the <class>Point</class>, use the <code>getPoint()</code> method.
+ * To find time-iterator for the two-dimensional point, use the <code>getClosest()</code> method.
+ *
+ * 3. <class>Bezier</code> and <code>Line</code> instances can be infinite or limited with <code>start</code>
+ * and <code>end</code> points. Limited nature can be set using <code>isSegment</code> property (default value
+ * is <code>true</code>).
+ * If you use <code>isSegment</code> <code>false</code>, then class methods results will include points that lie
+ * outside of start-end segment. In other case, methods results will contain only points, that belong to
+ * the segment, defined by <code>start</code> and <code>end</code> properties.
+ *
+ * [TODO]
+ *
+ * @lang eng
+ * @translator Maxim Kachurovskiy http://www.riapriority.com
+ *
+ **/
+
  /* *
  * 		I. ВС ТУПЛЕНИЕ
  * 
@@ -64,74 +131,12 @@
  * [TODO]
  **/
  
-/**
- *              I. INTRODUCTION
- *
- * There are two methods, that are used in ActionScript drawing: lineTo() and curveTo()
- * and realize sengment and Bezier second-order curve drawing correspondingly.
- * There are tools in Flash IDE to draw curves with Bezier third-order curves,
- * but during the compilation process they are approximated with second-order curves.
- * As the result, all shapes in compiled SWF-file become segments or Bezier second-order curves.
- * That's why we encounter a group of tasks, that need mathematical engine
- * to work with segments and Bezier second-order curves.
- *
- *
- *              II. BASE TASKS
- *
- * 1. Controlling:
- *   - using control points;
- *   - placing the particular point in particular coondinates;
- *   - rotating around any point;
- *   - offseting.
- * 2. Geometric properties:
- *   - finding actual point on curve or line by time-iterator;
- *   - parents (line for the segment and parabola for the Bezier curve)
- *   - length of the given segment
- *   - bounding rectangle
- *   - square (for the Bezier curve)
- *   - tangants
- * 3. Getting points on curve:
- *   - by distance from the beginning;
- *   - nearest to the given point;
- *   - inretsections with other segments and curves.
- *
- * Most of other practical tasks can be solved based on these solutions.
- *
- * Actually, these tasks are realizaed in this class package.
- * Samples for other practical tasks are located in <code>howtodo</code> package.
- *
- *
- *              III. CONCEPTIONS
- *
- * 1. <code>Bezier</code> and <code>Line</code> classes are realized in a similar way and most of
- * their methods have similar or the same syntax, defined by <code>IParametric</code> interface.
- * Of course, there are differencies: for example, <code>Line</code> doesn't have
- * <code>area</code> and <code>control</code> properties. <code>Bezier</code>
- * in it's turn doesn't have <code>angle</code>, that is presented in <code>Line.
- *
- * 2. Geometric figures (lines), defined in <code>Line</code> and <code>Bezier</code> classes,
- * are controlled in parametric form, every point of the figure is defined by it's time-iterator.
- * In the beginning it can seem inconvenient that computation of the point on curve returns
- * a time-iterator that is <code>Number</code> instead of <point>Point</point> class instance.
- * However, this realization helps us to avoid redundant convertations in future calculations.
- * To convert point on figure to the <class>Point</class>, use the <code>getPoint()</code> method.
- * To find time-iterator for the two-dimensional point, use the <code>getClosest()</code> method.
- *
- * 3. <class>Bezier</code> and <code>Line</code> instances can be infinite or limited with <code>start</code>
- * and <code>end</code> points. Limited nature can be set using <code>isSegment</code> property (default value
- * is <code>true</code>).
- * If you use <code>isSegment</code> <code>false</code>, then class methods results will include points that lie
- * outside of start-end segment. In other case, methods results will contain only points, that belong to
- * the segment, defined by <code>start</code> and <code>end</code> properties.
- *
- * [TODO]
- **/
 
  
  
 
 package flash.geom {
-	import flash.math.Equations;
+	import flash.math.Equations;	
 
 	/* * 
 	 * <P>
@@ -211,6 +216,103 @@ package flash.geom {
 	 * @see Line
 	 * @see Intersection
 	 *  
+	 **/
+		 
+ 	/**
+	 * <p>
+	 * Class <code>Bezier</code> represents a Bezier second-order curve in parametric view,
+	 * and is given by <code>start</code>, <code>control</code> and <code>end</code> points on the plane.
+	 * It exists to support the <code>curveTo()</code> method. Methods and properties of this class
+	 * give access to the geometric properties of the curve.
+	 * </p>
+	 * <br/>
+	 * <h2>Brief information about the Bezier second-order curve.</h2>
+	 * Any point <code>P<sub>t</sub></code> on the Bezier second-order curve is computed using formula:<br/>
+	 * <a name="formula1"></a><h2><code>P<sub>t</sub>&nbsp;=&nbsp;S&#42;(1-t)<sup>2</sup>
+	 * &nbsp;+&nbsp;2&#42;C&#42;(1-t)&#42;t&nbsp;+&nbsp;E&#42;t<sup>2</sup></code>&nbsp;
+	 * &nbsp;&nbsp;&nbsp;(1)</h2><br/>
+	 * where: <br/>
+	 * <code><strong>t</strong></code>(<code><strong>t</strong>ime</code>) — time-iterator of the point<br/>
+	 * <code><strong>S</strong></code>(<code><strong>s</strong>tart</code>) — initial control (anchor) point (<code>t=0</code>)<br/>
+	 * <code><strong>С</strong></code>(<code><strong>c</strong>ontrol</code>) — direction point<br/>
+	 * <code><strong>E</strong></code>(<code><strong>e</strong>nd</code>) — final control (anchor) point (<code>t=1</code>)<br/>
+	 * <br/>
+	 * The curve is built by iterative computing of the curve points
+	 * with time-iterator modification from 0 to 1<br/>
+	 * Bezier curve point is characterized by it's time-iterator.
+	 * Two curve points with the same time-iterator coincide.
+	 * Generally, two curve points with different time-iterator do not coincide.<br/>
+	 * <a name="bezier_building_demo"></a>
+	 * <table width="100%" border=1><td>
+	 * <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+	 *				      id="Step1Building" width="100%" height="500"
+	 *				      codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+	 *				      <param name="movie" value="../../images/Step01Building.swf" />
+	 *				      <param name="quality" value="high" />
+	 *				      <param name="bgcolor" value="#FFFFFF" />
+	 *				      <param name="allowScriptAccess" value="sameDomain" />
+	 *				      <embed src="../../images/Step1Building.swf" quality="high" bgcolor="#FFFFFF"
+	 *						      width="100%" height="400" name="Step01Building"
+	 *						      align="middle"
+	 *						      play="true"
+	 *						      loop="false"
+	 *						      quality="high"
+	 *						      allowScriptAccess="sameDomain"
+	 *						      type="application/x-shockwave-flash"
+	 *						      pluginspage="http://www.adobe.com/go/getflashplayer">
+	 *				      </embed>
+	 *      </object>
+	 * </td></table>
+	 * <br/>
+	 * <p align="center"><strong>Interactive demo</strong><br/>
+	 * <em>You can use "Left" and "Right" keys to control the iterator.<br/>
+	 * Curve control points are dragable.</em></p><br/>
+	 * <br/>
+	 * <h3>Bezier second-order curve properties</h3>
+	 * <ul>
+	 *      <li>curve is continuous</li>
+	 *      <li>curve is affine-invariant</li>
+	 *      <li>all curve points lie inside the ∆SCE triangle</li>
+	 *      <li>points <code>S</code> and <code>E</code> always
+	 *      lie on the Bezier curve and limit it</li>
+	 *      <li>points with uniformly changing iterator are closely
+	 *      distributed on the segments with the bigger winding</li>
+	 *      <li>Bezier curve summit - point with iterator <code>t = 0.5</code> -
+	 *      lies in the middle of the segment, that connects <code>С</code> and the
+	 *      middle of the <code>SE</code> segment</li>
+	 *      <li>point <code>C</code> generally does not belongs to the curve
+	 *      and lies on the intersection of the tangents to the curve from points
+	 *      <code>S</code> and <code>E</code></li>
+	 *      <li>if point <code>С</code> belongs to <code>SE</code> then the curve is singular</li>
+	 *      <li>Square of the figure, composed of Bezier curve and segment
+	 *      <code>SE</code> equals 2/3 of the ∆SCE triangle square</li>
+	 * </ul>
+	 * <h3>Bezier curve and parabola</h3>
+	 * Bezier second-order curve is a parabola segment.
+	 * Curve built from <a href="#formula1">formula <strong>1</strong></a> with iterator
+	 * <code><strong>t</strong></code> changing in infinite limits is a parabola.
+	 * If Bezier curve lies on parabola then this parabola is considered to be the parent for it.<br/>
+	 * <em>
+	 * This property also applies to the Bezier curves with other orders.
+	 * For example, segment can be considered as Bezier first-order curve
+	 * and it's parent will be the line that contains it.
+	 * Class <code>Line</code> interprets segment this way to simplify
+	 * it's usage together with <code>Bezier</code> class.<br/>
+	 * Bezier third-order curve on the plane is a segment of projection of
+	 * cubic parabola in a three-dimensional space on the plane.
+	 * General case: Bezier N-order curve is a segment of projection
+	 * of the N-order curve built in N-dimensional space.
+	 * </em>
+	 *
+	 * @see Line
+	 * @see Intersection
+	 *
+	 * @langversion 3.0
+	 * @playerversion Flash 9.0
+	 * 
+	 * @lang eng
+	 * @translator Maxim Kachurovskiy http://www.riapriority.com
+	 *
 	 **/
 
 	public class Bezier extends Object implements IParametric {
@@ -315,10 +417,8 @@ package flash.geom {
 		 * 
 		 **/
 		 
-		/* 
-		 * As public variables cannot be redefined in affiliated classes, start, control, end and isSegment
-		 * are realized as get-set methods, instead of as public variables.
-		 */
+		 // As public variables cannot be redefined in affiliated classes, start, control, end and isSegment
+		 // are realized as get-set methods, instead of as public variables.
 		
 		 /**
 		 * Initial anchor point of Bezier curve. Iterator <code>time</code> is equal to zero.
