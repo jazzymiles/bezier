@@ -1,3 +1,4 @@
+// UTF-8
 package flash.geom {
 
 	public interface IParametric {
