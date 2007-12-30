@@ -52,7 +52,7 @@ package howtodo {
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, mouseMoveHandler);
 			stage.addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			initDescription(DESCRIPTION);
-			roupe = new SmoothCurve(start.point, end.point)
+			roupe = new SmoothCurve(start.point, end.point);
 			initControl(start);
 			initControl(end);
 			start.pointName = "S";

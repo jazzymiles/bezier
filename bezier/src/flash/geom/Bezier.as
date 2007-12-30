@@ -1957,9 +1957,6 @@ package flash.geom {
 					var intersection_is_in_segment:Number = (intersectionPoint0.x-target.start.x)* (intersectionPoint0.x-target.end.x);
 					if (intersection_is_in_segment>0)
 						intersection = null;
-					
-											
-					
 				}
 				
 				return intersection;
