@@ -70,11 +70,11 @@ package howtodo {
 			addChild(closestUnlimited);
 			addChild(closestLimited);
 			
-			stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+			stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMoveHandler);
 			redraw();
 		}
 		
-		private function onMouseMove(event:MouseEvent=undefined):void {
+		private function onMouseMoveHandler(event:MouseEvent=undefined):void {
 			mouse.x = event.stageX;
 			mouse.y = event.stageY;
 			

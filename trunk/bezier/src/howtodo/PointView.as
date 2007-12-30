@@ -28,7 +28,7 @@ package howtodo {
 		
 		
 		public function PointView ():void {
-			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDownHandler);
 			dragable = false;
 			initNameTxt();
 			redraw();
@@ -41,10 +41,10 @@ package howtodo {
 			nameTxt.selectable = false;
 			nameTxt.mouseEnabled = false;
 		}
-		public function onMouseDown(event:MouseEvent):void {
+		public function onMouseDownHandler(event:MouseEvent):void {
 			if (__dragable) {
-				stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-				stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+				stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUpHandler);
+				stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMoveHandler);
 				if (__last_selected) {
 					__last_selected.onDeselect();
 				}
@@ -52,12 +52,12 @@ package howtodo {
 				__last_selected.onSelect();
 			}
 		}
-		public function onMouseUp(event:MouseEvent):void {
-			stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
-			stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+		public function onMouseUpHandler(event:MouseEvent):void {
+			stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUpHandler);
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMoveHandler);
 		}
 		
-		public function onMouseMove(event:MouseEvent):void {
+		public function onMouseMoveHandler(event:MouseEvent):void {
 			var tmpX:Number = point.x;
 			var tmpY:Number = point.y;
 			var newX:Number = Math.round(event.stageX/GRID)*GRID;
