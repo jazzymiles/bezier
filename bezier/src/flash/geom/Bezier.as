@@ -1954,7 +1954,7 @@ package flash.geom {
 					intersection.currentTimes[0] = time0;
 					intersectionPoint0 = getPoint(time0);
 					
-					var intersection_is_in_segment = (intersectionPoint0.x-target.start.x)* (intersectionPoint0.x-target.end.x);
+					var intersection_is_in_segment:Number = (intersectionPoint0.x-target.start.x)* (intersectionPoint0.x-target.end.x);
 					if (intersection_is_in_segment>0)
 						intersection = null;
 					
