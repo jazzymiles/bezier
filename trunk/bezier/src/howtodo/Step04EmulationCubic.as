@@ -58,7 +58,7 @@ package howtodo {
 			
 			initDescription(DESCRIPTION);
 			
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUpHandler);
 			
 			cubicEnabled = false;
 			
@@ -72,7 +72,7 @@ package howtodo {
 		
 		
 		
-		protected function onKeyUp(event:KeyboardEvent):void {
+		protected function onKeyUpHandler(event:KeyboardEvent):void {
 			if (event.keyCode == 32) {
 				cubicEnabled = !cubicEnabled;
 				onPointMoved();

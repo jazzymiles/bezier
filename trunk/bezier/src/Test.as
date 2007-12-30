@@ -29,18 +29,18 @@ package {
 			Step07PointOnCurve,
 			Step08Bounce,
 			Step09DashedLine
-		]
+		];
 		
 		public function Test() {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.frameRate = 31;
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUpHandler);
 			
 			initGrid();
 			
 			var interval:uint = setInterval(function ():void {
-				onKeyUp();
+				onKeyUpHandler();
 				clearInterval(interval);
 			},100);
 		}
@@ -55,7 +55,7 @@ package {
 				addChild(step);
 			}
 		}
-		private function onKeyUp(event:KeyboardEvent=null):void {
+		private function onKeyUpHandler(event:KeyboardEvent=null):void {
 			var k:uint;
 			if (event is KeyboardEvent) {
 				k = event.keyCode;

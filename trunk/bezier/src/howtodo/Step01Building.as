@@ -84,7 +84,7 @@ package howtodo {
 			time1Point.pointName = "T1";
 			time2Point.pointName = "T2";
 			
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUp);
+			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUpHandler);
 			redraw();
 		}
 		
@@ -98,7 +98,7 @@ package howtodo {
 		 * 
 		 */
 		
-		public function onKeyUp (event:KeyboardEvent):void {
+		public function onKeyUpHandler (event:KeyboardEvent):void {
 			switch (event.keyCode) {
 				case 37:
 					if (showNum>MIN) {
