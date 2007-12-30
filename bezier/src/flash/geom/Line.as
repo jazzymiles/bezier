@@ -348,7 +348,9 @@ package flash.geom {
 					var endOrdered:OrderedPoint = order_array[2];
 					
 					intersection = new Intersection();
-					intersection.coincidenceLine = new Line(startOrdered.point, endOrdered.point);
+					intersection.isCoincidence = true;
+					// TODO: 
+					// intersection.coincidenceLine = new Line(startOrdered.point, endOrdered.point);
 					return intersection;
 				} else { 
 					// parallel
