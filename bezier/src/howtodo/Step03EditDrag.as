@@ -52,11 +52,11 @@ package howtodo {
 			buttonMode = true;
 			useHandCursor = true;
 			
-			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDownHandler);
 			redraw();
 		}
 		
-		private function onMouseDown(event:MouseEvent=undefined):void {
+		private function onMouseDownHandler(event:MouseEvent=undefined):void {
 			mouse.x = event.stageX;
 			mouse.y = event.stageY;
 			dragTime = bezier.getClosest(mouse);
@@ -68,16 +68,16 @@ package howtodo {
 			var closest:Point = bezier.getPoint(dragTime);
 			var distance:Number = Point.distance(closest, mouse);
 			if (distance < 5) {
-				stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-				stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+				stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMoveHandler);
+				stage.addEventListener(MouseEvent.MOUSE_UP, onMouseUpHandler);
 			}
 			
 		}
-		private function onMouseUp(event:MouseEvent=undefined):void {
-			stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
-			stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
+		private function onMouseUpHandler(event:MouseEvent=undefined):void {
+			stage.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMoveHandler);
+			stage.removeEventListener(MouseEvent.MOUSE_UP, onMouseUpHandler);
 		}
-		private function onMouseMove(event:MouseEvent=undefined):void {
+		private function onMouseMoveHandler(event:MouseEvent=undefined):void {
 			mouse.x = event.stageX;
 			mouse.y = event.stageY;
 			bezier.setPoint(dragTime, mouse.x, mouse.y);
