@@ -1,4 +1,4 @@
-// UTF-8
+﻿// UTF-8
 /**
  *              I. INTRODUCTION
  *
@@ -1948,9 +1948,18 @@ package flash.geom {
 						lineTime1 = (intersectionPoint1.y - target.start.y)/distanceY;
 					}
 				} else {
+					
 					time0 = -((sX - oX)*sina - (sY - oY)*cosa)/divider2;
+					
 					intersection.currentTimes[0] = time0;
 					intersectionPoint0 = getPoint(time0);
+					
+					var intersection_is_in_segment = (intersectionPoint0.x-target.start.x)* (intersectionPoint0.x-target.end.x);
+					if (intersection_is_in_segment>0)
+						intersection = null;
+					
+											
+					
 				}
 				
 				return intersection;
