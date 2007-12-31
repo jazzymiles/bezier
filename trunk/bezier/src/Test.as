@@ -1,4 +1,6 @@
 package {
+	import flash.geom.Intersection;	
+	import flash.geom.Rectangle;	
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
@@ -28,7 +30,8 @@ package {
 			Step06PointOnBezier,
 			Step07PointOnCurve,
 			Step08Bounce,
-			Step09DashedLine
+			Step09DashedLine,
+			IntersectionsTest
 		];
 		
 		public function Test() {
@@ -43,8 +46,23 @@ package {
 				onKeyUpHandler();
 				clearInterval(interval);
 			},100);
+			
+			testBoundsIntersection();
 		}
 		
+		private function testBoundsIntersection():void {
+			var current:Rectangle = new Rectangle(100, 100, -20, -10);
+			var target:Rectangle = new Rectangle(100, 100, -20, -10);
+			Intersection.isIntersectionPossible(current, target);
+			target.x+=20;
+			Intersection.isIntersectionPossible(current, target);
+			
+			current = new Rectangle(100, 100, 100, 100);
+			target = new Rectangle(110, 110, 80, 80);
+			Intersection.isIntersectionPossible(current, target);
+			Intersection.isIntersectionPossible(target, current);
+		}
+
 		private function showStep(k:uint):void {
 			var StepConstructor:Class = constructors[k];
 			if (!isNaN(k)) {
@@ -63,7 +81,11 @@ package {
 				k = 48;
 			}
 			if (k>47 && k<58) {
-				showStep(k-48);
+				if (event && event.shiftKey) {
+					showStep(k-38);
+				} else {
+					showStep(k-48);
+				}
 			}
 		}
 		
