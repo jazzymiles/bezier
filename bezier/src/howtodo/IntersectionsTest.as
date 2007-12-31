@@ -126,11 +126,13 @@ package howtodo {
 					time = isect.targetTimes[0];
 					showIntersection(line2.getPoint(time), true, time);
 				}
+				/*
 				var line:Line = Line(isect.coincidenceLine);
 				if (line) {
 					graphics.lineStyle(3, 0x0000FF, 1);
 					drawLine(line); 
 				}
+				 */
 			}
 		}
 
