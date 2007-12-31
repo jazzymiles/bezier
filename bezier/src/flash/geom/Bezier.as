@@ -59,8 +59,6 @@
  * outside of start-end segment. In other case, methods results will contain only points, that belong to
  * the segment, defined by <code>start</code> and <code>end</code> properties.
  *
- * [TODO]
- *
  * @lang eng
  * @translator Maxim Kachurovskiy http://www.riapriority.com
  *
@@ -129,7 +127,7 @@
  * лежащие за пределами сегмента start-end. В противном случае, возвращаемые методами значения 
  * будут содержать только точки, принадлежащие сегменту лежащему между start и end.
  * 
- * [TODO]
+ * TODO: [Dembicki] Дописать
  **/
  
 
@@ -1457,7 +1455,7 @@ package flash.geom {
 		 *	
 		 *	var bezier:Bezier = randomBezier();
 		 *	
-		 *	// TODO
+		 *	// TODO: [Dembicki] example 
 		 * 
 		 * </listing>
 		 * 
@@ -1671,7 +1669,7 @@ package flash.geom {
 		 *	
 		 *	var bezier:Bezier = randomBezier();
 		 *	
-		 *	TODO:
+		 *	TODO: [Dembicki] example
 		 *	
 		 * </listing>
 		 * 
@@ -1729,7 +1727,7 @@ package flash.geom {
 				extremumTime = extremumTimes[i];
 				extremumPoint = getPoint(extremumTime);
 				
-				// TODO: 
+				// TODO: [Dembicki] протестировать, вспомнить, что тут за проблема, пофиксить.
 				// PROBLEM!!!!!
 				// trace("extremumDistance: "+extremumTime);
 				extremumDistance = Point.distance(fromPoint, extremumPoint);
@@ -1888,7 +1886,16 @@ package flash.geom {
 		 * 
 		 */
 
-		// TODO: not finished
+		// TODO: [Sergeev] метод не закончен.
+		// 1. нигде не реализован расчет targetTimes. 
+		//    Т.е. везде, где заполняем currentTimes должно быть заполнение targetTimes. 
+		// 2. нет расчета совпадений
+		// 3. нужно прокомментировать блоки кода, указать какой случай рассматривается. 
+		// 4. оптимизация: поскольку на практике в 90 и более процентах случаев
+		//    пересечения не будет, очень важно продумать стратегию простых проверок
+		//    в самом начале метода. Таких как Intersection.isIntersectionPossible();
+		//    Нужны быстрые, элементарные проверки.
+		
 		public function intersectionLine(target:Line):Intersection {
 			var intersection:Intersection = new Intersection();
 			
@@ -2124,6 +2131,18 @@ package flash.geom {
 		 * 
 		 */		
 
+		// TODO: [Sergeev] метод не закончен.
+		// 1. Убрать рекурсию - в первую очередь.
+		// 2. Метод иногда дает пересечение в случаях, когда его нет. (iv:сделаю тест)  
+		// 3. нигде не реализован расчет targetTimes. 
+		//    Т.е. везде, где заполняем currentTimes должно быть заполнение targetTimes. 
+		// 4. Требуется расчета совпадений
+		// 5. Нужно прокомментировать блоки кода, указать какой случай рассматривается. 
+		// 6. оптимизация: поскольку на практике в 90 и более процентах случаев
+		//    пересечения не будет, очень важно продумать стратегию простых проверок
+		//    в самом начале метода. Таких как Intersection.isIntersectionPossible();
+		//    Нужны быстрые, элементарные проверки.
+
 		public function intersectionBezier(target:Bezier):Intersection {
 			var vertexTime:Number = target.parabolaVertex;
 			var targetParabolaVertex:Point = target.getPoint(vertexTime);
@@ -2144,6 +2163,7 @@ package flash.geom {
 			var e1_x:Number = teX*angleCos - teY*angleSin;
 			var e1_y:Number = teX*angleSin + teY*angleCos;
 			
+			// TODO: [Sergeev] убрать это к чертовой бабушке: иногда дает бесконечную рекурсию. 
 			if (e1_y < 0) {
 				return intersectionBezier(new Bezier(target.__end, target.__control, target.__start, isSegment));
 			}
