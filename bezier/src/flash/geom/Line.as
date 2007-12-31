@@ -295,18 +295,18 @@ package flash.geom {
 		 * @see #isSegment
 		 */
 
-		public function intersectionLine(line:Line):Intersection {
+		public function intersectionLine(targetLine:Line):Intersection {
 			// checkBounds
-			if (isSegment && line.isSegment) {
+			if (isSegment && targetLine.isSegment) {
 				var fxMax:Number = Math.max(start.x, end.x);
 				var fyMax:Number = Math.max(start.y, end.y);
 				var fxMin:Number = Math.min(start.x, end.x);
 				var fyMin:Number = Math.min(start.y, end.y);
 				
-				var sxMax:Number = Math.max(line.start.x, line.end.x);
-				var syMax:Number = Math.max(line.start.y, line.end.y);
-				var sxMin:Number = Math.min(line.start.x, line.end.x);
-				var syMin:Number = Math.min(line.start.y, line.end.y);
+				var sxMax:Number = Math.max(targetLine.start.x, targetLine.end.x);
+				var syMax:Number = Math.max(targetLine.start.y, targetLine.end.y);
+				var sxMin:Number = Math.min(targetLine.start.x, targetLine.end.x);
+				var syMin:Number = Math.min(targetLine.start.y, targetLine.end.y);
 		
 				if (fxMax < sxMin || sxMax < fxMin || fyMax < syMin || syMax < fyMin) { 
 					// no intersection
@@ -320,11 +320,11 @@ package flash.geom {
 			var fseX:Number = end.x - start.x;
 			var fseY:Number = end.y - start.y;
 			
-			var sseX:Number = line.end.x - line.start.x;
-			var sseY:Number = line.end.y - line.start.y;
+			var sseX:Number = targetLine.end.x - targetLine.start.x;
+			var sseY:Number = targetLine.end.y - targetLine.start.y;
 			
-			var sfsX:Number = start.x - line.start.x;
-			var sfsY:Number = start.y - line.start.y;
+			var sfsX:Number = start.x - targetLine.start.x;
+			var sfsY:Number = start.y - targetLine.start.y;
 			
 			
 			var denominator:Number = fseX*sseY - fseY*sseX;
@@ -332,24 +332,24 @@ package flash.geom {
 			
 			if (denominator == 0) { 
 				if (a == 0) { 
+					// TODO: new coincident type
 					// coincident
-					var sfeX:Number = start.x - line.end.x;
-					var sfeY:Number = start.y - line.end.y;
-					var startTime:Number = -(sfsX/fseX || sfsY/fseY) || 0;
-					var endTime:Number = -(sfeX/fseX || sfeY/fseY) || 0;
-					
-					var order_array:Array = [new OrderedPoint(0, start),
-						new OrderedPoint(1, end),
-						new OrderedPoint(startTime, line.start),
-						new OrderedPoint(endTime, line.end)];
-					order_array.sortOn(OrderedPoint.TIME, Array.NUMERIC);
-					
-					var startOrdered:OrderedPoint = order_array[1];
-					var endOrdered:OrderedPoint = order_array[2];
+//					var sfeX:Number = start.x - targetLine.end.x;
+//					var sfeY:Number = start.y - targetLine.end.y;
+//					var startTime:Number = -(sfsX/fseX || sfsY/fseY) || 0;
+//					var endTime:Number = -(sfeX/fseX || sfeY/fseY) || 0;
+//					
+//					var order_array:Array = [new OrderedPoint(0, start),
+//						new OrderedPoint(1, end),
+//						new OrderedPoint(startTime, targetLine.start),
+//						new OrderedPoint(endTime, targetLine.end)];
+//					order_array.sortOn(OrderedPoint.TIME, Array.NUMERIC);
+//					
+//					var startOrdered:OrderedPoint = order_array[1];
+//					var endOrdered:OrderedPoint = order_array[2];
 					
 					intersection = new Intersection();
 					intersection.isCoincidence = true;
-					// TODO: 
 					// intersection.coincidenceLine = new Line(startOrdered.point, endOrdered.point);
 					return intersection;
 				} else { 
@@ -368,7 +368,7 @@ package flash.geom {
 			
 			var b:Number = fseX*sfsY - sfsX*fseY;
 			var oppositeTime:Number = b/denominator;
-			if (line.isSegment) {
+			if (targetLine.isSegment) {
 				if (oppositeTime < 0 || oppositeTime > 1) { 
 					// no intersection
 					return null;
