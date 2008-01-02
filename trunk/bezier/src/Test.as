@@ -73,6 +73,7 @@ package {
 				addChild(step);
 			}
 		}
+		
 		private function onKeyUpHandler(event:KeyboardEvent=null):void {
 			var k:uint;
 			if (event is KeyboardEvent) {
