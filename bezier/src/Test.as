@@ -47,7 +47,7 @@ package {
 				clearInterval(interval);
 			},100);
 			
-			testBoundsIntersection();
+			// testBoundsIntersection();
 		}
 		
 		private function testBoundsIntersection():void {
