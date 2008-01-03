@@ -1,4 +1,6 @@
 package howtodo {
+	import flash.ui.Keyboard;	
+	import flash.events.KeyboardEvent;	
 	import flash.events.Event;
 	import flash.geom.Bezier;
 	import flash.geom.Intersection;
@@ -37,6 +39,8 @@ package howtodo {
 
 		override protected function init():void {
 			
+			addEventListener(KeyboardEvent.KEY_UP, onKeyUpHandler);
+			
 			initDescription(DESCRIPTION);
 			
 			bezierBlue = bezier;
@@ -56,22 +60,66 @@ package howtodo {
 			initControl(control, BLUE, "C");
 			initControl(end, BLUE, "E");
 			
-			start.x = 200;
-			start.y = 200;
-			control.x = 300;
-			control.y = 400;
-			end.x = 400;
-			end.y = 200;
-
-			startGray.x = 200;
-			startGray.y = 300;
-			controlGray.x = 300;
-			controlGray.y = 100;
-			endGray.x = 400;
-			endGray.y = 300;
+//			start.x = 200;
+//			start.y = 200;
+//			control.x = 300;
+//			control.y = 400;
+//			end.x = 400;
+//			end.y = 200;
+//
+//			startGray.x = 200;
+//			startGray.y = 300;
+//			controlGray.x = 300;
+//			controlGray.y = 100;
+//			endGray.x = 400;
+//			endGray.y = 300;
+			
+//			setTestPosition(200, 200, 300, 400, 400, 200,  200, 300, 300, 100, 400, 300);
+			setTestPosition(200,200,400,200,400,400,200,300,501,100,300,400);
 
 			
 			onPointMoved();
+		}
+		
+		private function onKeyUpHandler(event:KeyboardEvent):void {
+			if (event.keyCode == Keyboard.SPACE) {
+				trace(getTestPosition());
+			}
+		}
+
+		private function setTestPosition (s0x:Number, s0y:Number, c0x:Number, c0y:Number, e0x:Number, e0y:Number,
+				s1x:Number, s1y:Number, c1x:Number, c1y:Number, e1x:Number, e1y:Number):void {
+
+			start.x = s0x;
+			start.y = s0y;
+			control.x = c0x;
+			control.y = c0y;
+			end.x = e0x;
+			end.y = e0y;
+
+			startGray.x = s1x;
+			startGray.y = s1y;
+			controlGray.x = c1x;
+			controlGray.y = c1y;
+			endGray.x = e1x;
+			endGray.y = e1y;
+		}
+		private function getTestPosition ():String {
+			return ""+[
+			start.x,
+			start.y,
+			control.x,
+			control.y,
+			end.x,
+			end.y,
+
+			startGray.x,
+			startGray.y,
+			controlGray.x,
+			controlGray.y,
+			endGray.x,
+			endGray.y
+			];
 		}
 
 		
