@@ -1,4 +1,4 @@
-package flash.math {
+﻿package flash.math {
 
 	//=============================================================================================================
 	//
@@ -190,9 +190,24 @@ package flash.math {
 		 **/
 		 
 		public static function solveQuarticEquation(_a:Number, _b:Number, _c:Number, _d:Number, _e:Number):Array {
+			
+			var range_min:Number = Math.abs(_a)+Math.abs(_b)+Math.abs(_c)+Math.abs(_d)+Math.abs(_e);
+			if (Math.abs(_a) < eps*eps*range_min)
+				_a = 0;
+			if (Math.abs(_b) < eps*eps*range_min)
+				_b = 0;
+			if (Math.abs(_c) < eps*eps*range_min)
+				_c = 0;
+			if (Math.abs(_d) < eps*eps*range_min)
+				_d = 0;
+			if (Math.abs(_e) < eps*eps*range_min)
+				_e = 0;
+								
+			
 			if (_a == 0) {
 				return solveCubicEquation(_b, _c, _d, _e);
 			}
+			
 			var b:Number = _b/_a;
 			var c:Number = _c/_a;
 			var d:Number = _d/_a;
