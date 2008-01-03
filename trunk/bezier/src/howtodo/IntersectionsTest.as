@@ -56,6 +56,21 @@ package howtodo {
 			initControl(control, BLUE, "C");
 			initControl(end, BLUE, "E");
 			
+			start.x = 200;
+			start.y = 200;
+			control.x = 300;
+			control.y = 400;
+			end.x = 400;
+			end.y = 200;
+
+			startGray.x = 200;
+			startGray.y = 300;
+			controlGray.x = 300;
+			controlGray.y = 100;
+			endGray.x = 400;
+			endGray.y = 300;
+
+			
 			onPointMoved();
 		}
 
