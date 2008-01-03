@@ -1,4 +1,5 @@
 // UTF-8
+// translator: Flastar http://flastar.110mb.com
 package flash.geom {
 
 	/* *
