@@ -40,12 +40,14 @@ package {
 			stage.frameRate = 31;
 			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUpHandler);
 			
+			PointView.GRID = 100;
 			initGrid();
 			
 			var interval:uint = setInterval(function ():void {
 				onKeyUpHandler();
 				clearInterval(interval);
 			},100);
+			
 			
 			// testBoundsIntersection();
 		}
