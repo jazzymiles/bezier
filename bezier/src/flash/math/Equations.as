@@ -84,9 +84,9 @@
 
 		public static function solveLinearEquation(_a:Number, _b:Number):Array {
 			var range_min:Number = Math.abs(_a)+Math.abs(_b);
-			if (Math.abs(_a) < eps*eps*range_min)
+			if (Math.abs(_a) < eps*eps*eps*range_min)
 				_a = 0;
-			if (Math.abs(_b) < eps*eps*range_min)
+			if (Math.abs(_b) < eps*eps*eps*range_min)
 				_b = 0;
 				
 			if (_a != 0) {
@@ -116,11 +116,11 @@
 		 
 		public static function solveQuadraticEquation(_a:Number, _b:Number, _c:Number):Array {
 			var range_min:Number = Math.abs(_a)+Math.abs(_b)+Math.abs(_c);
-			if (Math.abs(_a) < eps*eps*range_min)
+			if (Math.abs(_a) < eps*eps*eps*range_min)
 				_a = 0;
-			if (Math.abs(_b) < eps*eps*range_min)
+			if (Math.abs(_b) < eps*eps*eps*range_min)
 				_b = 0;
-			if (Math.abs(_c) < eps*eps*range_min)
+			if (Math.abs(_c) < eps*eps*eps*range_min)
 				_c = 0;
 
 				
@@ -161,13 +161,13 @@
 		public static function solveCubicEquation(_a:Number, _b:Number, _c:Number, _d:Number):Array {
 			
 			var range_min:Number = Math.abs(_a)+Math.abs(_b)+Math.abs(_c)+Math.abs(_d);
-			if (Math.abs(_a) < eps*eps*range_min)
+			if (Math.abs(_a) < eps*eps*eps*range_min)
 				_a = 0;
-			if (Math.abs(_b) < eps*eps*range_min)
+			if (Math.abs(_b) < eps*eps*eps*range_min)
 				_b = 0;
-			if (Math.abs(_c) < eps*eps*range_min)
+			if (Math.abs(_c) < eps*eps*eps*range_min)
 				_c = 0;
-			if (Math.abs(_d) < eps*eps*range_min)
+			if (Math.abs(_d) < eps*eps*eps*range_min)
 				_d = 0;
 				
 
@@ -219,15 +219,15 @@
 		public static function solveQuarticEquation(_a:Number, _b:Number, _c:Number, _d:Number, _e:Number):Array {
 			
 			var range_min:Number = Math.abs(_a)+Math.abs(_b)+Math.abs(_c)+Math.abs(_d)+Math.abs(_e);
-			if (Math.abs(_a) < eps*eps*range_min)
+			if (Math.abs(_a) < eps*eps*eps*range_min)
 				_a = 0;
-			if (Math.abs(_b) < eps*eps*range_min)
+			if (Math.abs(_b) < eps*eps*eps*range_min)
 				_b = 0;
-			if (Math.abs(_c) < eps*eps*range_min)
+			if (Math.abs(_c) < eps*eps*eps*range_min)
 				_c = 0;
-			if (Math.abs(_d) < eps*eps*range_min)
+			if (Math.abs(_d) < eps*eps*eps*range_min)
 				_d = 0;
-			if (Math.abs(_e) < eps*eps*range_min)
+			if (Math.abs(_e) < eps*eps*eps*range_min)
 				_e = 0;
 								
 			
@@ -251,16 +251,16 @@
 			K = cubic_solve[0]*cubic_solve[0]/4 - e;
 			
 			var range_min2:Number = Math.abs(M)+Math.abs(N)+Math.abs(K);
-			if (Math.abs(M) < eps*eps*range_min2)
+			if (Math.abs(M) < eps*eps*eps*range_min2)
 				M = 0;
-			if (Math.abs(N) < eps*eps*range_min2)
+			if (Math.abs(N) < eps*eps*eps*range_min2)
 				N = 0;
-			if (Math.abs(K) < eps*eps*range_min2)
+			if (Math.abs(K) < eps*eps*eps*range_min2)
 				K = 0;						
 
-			
+			var ttttt:Number = N*N - 4*M*K;
 			//if ((M >= -eps) && (Math.abs(N*N - 4*M*K) < eps*Math.abs(N*N))) {
-			if ((M >= 0) && (K >= 0) &&(Math.abs(N*N - 4*M*K) <= eps*Math.abs(N*N))) {
+			if ((M >= 0) && (K >= 0)/* && (Math.abs(N*N - 4*M*K) <= eps*N*N)*/) {
 				c1 = b/2 - Math.sqrt(M);
 				if (N > 0) {
 					c2 = cubic_solve[0]/2 - Math.sqrt(K);
