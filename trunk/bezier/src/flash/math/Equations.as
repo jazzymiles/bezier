@@ -161,8 +161,8 @@
 		public static function solveCubicEquation(_a:Number, _b:Number, _c:Number, _d:Number):Array {
 			
 			var range_min:Number = Math.abs(_a)+Math.abs(_b)+Math.abs(_c)+Math.abs(_d);
-			if (Math.abs(_a) < eps*eps*eps*range_min)
-				_a = 0;
+			/*if (Math.abs(_a) < eps*eps*eps*range_min)
+				_a = 0;*/
 			if (Math.abs(_b) < eps*eps*eps*range_min)
 				_b = 0;
 			if (Math.abs(_c) < eps*eps*eps*range_min)
@@ -241,9 +241,17 @@
 			var e:Number = _e/_a;
 			var i:uint;
 			var p:Number, q:Number, r:Number, M:Number, N:Number, K:Number, c1:Number, c2:Number;
+			//var one:Number = 1;
 			p = -c;
 			q = b*d - 4*e;
 			r = -b*b*e + 4*c*e - d*d;
+			/*var range_min3:Number = Math.abs(p)+Math.abs(q)+Math.abs(r);
+			range_min3 = Math.sqrt(range_min3);
+			if (range_min3!=0)
+			{
+				one /= 
+				
+			}*/
 			var cubic_solve:Array = solveCubicEquation(1, p, q, r);
 			var quartic_solve:Array = new Array();
 			M = b*b/4 - c + cubic_solve[0];
