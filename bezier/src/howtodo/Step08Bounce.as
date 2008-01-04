@@ -1,4 +1,4 @@
-package howtodo {
+﻿package howtodo {
 	import flash.events.Event;
 	import flash.geom.Bezier;
 	import flash.geom.Intersection;
