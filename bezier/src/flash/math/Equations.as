@@ -83,12 +83,10 @@
 		 **/
 
 		public static function solveLinearEquation(_a:Number, _b:Number):Array {
-			var range_min:Number = Math.abs(_a)+Math.abs(_b);
-			if (Math.abs(_a) < eps*eps*eps*range_min)
+			
+			if (Math.abs(_a) < eps*eps)
 				_a = 0;
-			if (Math.abs(_b) < eps*eps*eps*range_min)
-				_b = 0;
-				
+			
 			if (_a != 0) {
 				return [-_b/_a];
 			}
@@ -115,21 +113,26 @@
 		 **/
 		 
 		public static function solveQuadraticEquation(_a:Number, _b:Number, _c:Number):Array {
-			var range_min:Number = Math.abs(_a)+Math.abs(_b)+Math.abs(_c);
-			if (Math.abs(_a) < eps*eps*eps*range_min)
+			
+			if (Math.abs(_a) < eps*eps)
 				_a = 0;
-			if (Math.abs(_b) < eps*eps*eps*range_min)
-				_b = 0;
-			if (Math.abs(_c) < eps*eps*eps*range_min)
-				_c = 0;
-
-				
+							
 			if (_a == 0) {
 				return solveLinearEquation(_b, _c);
 			}
 			var b:Number = _b/_a;
 			var c:Number = _c/_a;
+			
+			if (Math.abs(b) < eps*eps)
+				b = 0;
+			if (Math.abs(c) < eps*eps)
+				c = 0;
+
 			var d:Number = b*b - 4*c;
+			
+			if (Math.abs(d) < eps*eps)
+				d = 0;
+				
 			if (d > 0) {
 				d = Math.sqrt(d);
 				return [(-b - d)/2, (-b + d)/2];
@@ -159,24 +162,25 @@
 		 **/
 		 
 		public static function solveCubicEquation(_a:Number, _b:Number, _c:Number, _d:Number):Array {
+						
+			if (Math.abs(_a) < eps*eps)
+				_a = 0;
 			
-			var range_min:Number = Math.abs(_a)+Math.abs(_b)+Math.abs(_c)+Math.abs(_d);
-			/*if (Math.abs(_a) < eps*eps*eps*range_min)
-				_a = 0;*/
-			if (Math.abs(_b) < eps*eps*eps*range_min)
-				_b = 0;
-			if (Math.abs(_c) < eps*eps*eps*range_min)
-				_c = 0;
-			if (Math.abs(_d) < eps*eps*eps*range_min)
-				_d = 0;
-				
-
 			if (_a == 0) {
 				return solveQuadraticEquation(_b, _c, _d);
 			}
 			var b:Number = _b/_a;
 			var c:Number = _c/_a;
 			var d:Number = _d/_a;
+			
+			if (Math.abs(b) < eps*eps)
+				b = 0;
+			if (Math.abs(c) < eps*eps)
+				c = 0;
+			if (Math.abs(d) < eps*eps)
+				d = 0;
+			
+			
 			var p:Number, q:Number, u:Number, v:Number, d1:Number, X:Number;
 			p = -b*b/3 + c;
 			q = 2*b*b*b/27 - b*c/3 + d;
@@ -218,19 +222,9 @@
 		 
 		public static function solveQuarticEquation(_a:Number, _b:Number, _c:Number, _d:Number, _e:Number):Array {
 			
-			var range_min:Number = Math.abs(_a)+Math.abs(_b)+Math.abs(_c)+Math.abs(_d)+Math.abs(_e);
-			if (Math.abs(_a) < eps*eps*eps*range_min)
+			if (Math.abs(_a) < eps*eps)
 				_a = 0;
-			if (Math.abs(_b) < eps*eps*eps*range_min)
-				_b = 0;
-			if (Math.abs(_c) < eps*eps*eps*range_min)
-				_c = 0;
-			if (Math.abs(_d) < eps*eps*eps*range_min)
-				_d = 0;
-			if (Math.abs(_e) < eps*eps*eps*range_min)
-				_e = 0;
-								
-			
+														
 			if (_a == 0) {
 				return solveCubicEquation(_b, _c, _d, _e);
 			}
@@ -239,19 +233,23 @@
 			var c:Number = _c/_a;
 			var d:Number = _d/_a;
 			var e:Number = _e/_a;
+			
+			if (Math.abs(b) < eps*eps)
+				b = 0;
+			if (Math.abs(c) < eps*eps)
+				c = 0;
+			if (Math.abs(d) < eps*eps)
+				d = 0;
+			if (Math.abs(e) < eps*eps)
+				e = 0;	
+			
 			var i:uint;
 			var p:Number, q:Number, r:Number, M:Number, N:Number, K:Number, c1:Number, c2:Number;
-			//var one:Number = 1;
+			
 			p = -c;
 			q = b*d - 4*e;
 			r = -b*b*e + 4*c*e - d*d;
-			/*var range_min3:Number = Math.abs(p)+Math.abs(q)+Math.abs(r);
-			range_min3 = Math.sqrt(range_min3);
-			if (range_min3!=0)
-			{
-				one /= 
-				
-			}*/
+			
 			var cubic_solve:Array = solveCubicEquation(1, p, q, r);
 			var quartic_solve:Array = new Array();
 			M = b*b/4 - c + cubic_solve[0];
@@ -259,11 +257,11 @@
 			K = cubic_solve[0]*cubic_solve[0]/4 - e;
 			
 			var range_min2:Number = Math.abs(M)+Math.abs(N)+Math.abs(K);
-			if (Math.abs(M) < eps*eps*eps*range_min2)
+			if (Math.abs(M) < eps*eps)
 				M = 0;
-			if (Math.abs(N) < eps*eps*eps*range_min2)
+			if (Math.abs(N) < eps*eps)
 				N = 0;
-			if (Math.abs(K) < eps*eps*eps*range_min2)
+			if (Math.abs(K) < eps*eps)
 				K = 0;						
 
 			var ttttt:Number = N*N - 4*M*K;
