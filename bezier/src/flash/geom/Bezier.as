@@ -1706,7 +1706,7 @@ package flash.geom {
 			var B:Number = ((npx*npx + npy*npy) + 2*(lpx*kpx + lpy*kpy))/delimiter;
 			var C:Number = (npx*lpx + npy*lpy)/delimiter;
 			
-			var extremumTimes:Array = solveQubicEquation(A, B, C);
+			var extremumTimes:Array = Equations.solveCubicEquation(1, A, B, C);
 			
 			if (isSegment) {
 				extremumTimes.push(0);
@@ -2152,28 +2152,55 @@ package flash.geom {
 			var nX:Number = 2*vertexTime*(target.__start.x - 2*target.__control.x + target.__end.x) + 2*(target.__control.x - target.__start.x);
 			var nY:Number = 2*vertexTime*(target.__start.y - 2*target.__control.y + target.__end.y) + 2*(target.__control.y - target.__start.y);
 
+			var nnX:Number = 2*(target.__start.x - 2*target.__control.x + target.__end.x);
+			var nnY:Number = 2*(target.__start.y - 2*target.__control.y + target.__end.y);
+
+						
 			var angle:Number = -Math.atan2(nY, nX);
+			if ((nX==0)&&(nY==0))
+			{
+				angle = -Math.atan2(nnY, nnX);
+			}
+			
 			var angleSin:Number = Math.sin(angle);
 			var angleCos:Number = Math.cos(angle);
+			
 			
 			// target
 			var teX:Number = tpvX - target.__end.x;
 			var teY:Number = tpvY - target.__end.y;
+			var tsX:Number = tpvX - target.__start.x;
+			var tsY:Number = tpvY - target.__start.y;
 			
 			var e1_x:Number = teX*angleCos - teY*angleSin;
 			var e1_y:Number = teX*angleSin + teY*angleCos;
 			
-			// TODO: [Sergeev] убрать это к чертовой бабушке: иногда дает бесконечную рекурсию. 
-			if (e1_y < 0) {
-				return intersectionBezier(new Bezier(target.__end, target.__control, target.__start, isSegment));
-			}
+			var s1_x:Number = tsX*angleCos - tsY*angleSin;
+			var s1_y:Number = tsX*angleSin + tsY*angleCos;		
+				
+			if (Math.abs(e1_x)<0.000000001)
+				e1_x = 0;
+			if (Math.abs(e1_y)<0.000000001)
+				e1_y = 0;
+			if (Math.abs(s1_x)<0.000000001)
+				s1_x = 0;
+			if (Math.abs(s1_y)<0.000000001)
+				s1_y = 0;
+							
+				
+				
+			var nnX2:Number = nnX*angleCos - nnY*angleSin;
+			var nnY2:Number = nnX*angleSin + nnY*angleCos;
 			
+						
 //			var tsX:Number = tpvX-target.__start.x;
 //			var tsY:Number = tpvY-target.__start.y;
 //			var tcX:Number = tpvX-target.__control.x;
 //			var tcY:Number = tpvY-target.__control.y;
 			
 			// current
+			
+			
 			var csX:Number = tpvX - __start.x;
 			var csY:Number = tpvY - __start.y;
 			var sX:Number = csX*angleCos - csY*angleSin;
@@ -2188,23 +2215,39 @@ package flash.geom {
 			var ceY:Number = tpvY - __end.y;
 			var eX:Number = ceX*angleCos - ceY*angleSin;
 			var eY:Number = ceX*angleSin + ceY*angleCos;
+									
+									
 			
 //			var sf2_x:Number = tsX*angleCos-tsY*angleSin;
 //			var sf2_y:Number = tsX*angleSin+tsY*angleCos;
-//			var sf2:Point = new Point(tsX*angleCos-tsY*angleSin, tsX*angleSin+tsY*angleCos);
+//			var sf2:Point = new Point(tsX*angleCos)-tsY*angleSin, tsX*angleSin+tsY*angleCos);
 //			var cf2:Point = new Point(tcX*angleCos-tcY*angleSin, tcX*angleSin+tcY*angleCos);
 //			var ef2:Point = new Point(teX*angleCos-teY*angleSin, teX*angleSin+teY*angleCos);
 
-			var k:Number = Math.sqrt(e1_y)/e1_x;
-			sX *= k;
-			cX *= k;
-			eX *= k;
+			var k:Number;
 			
-			var A:Number = (sX - 2*cX + eX)*(sX - 2*cX + eX);
-			var B:Number = 4*(sX - 2*cX + eX)*(cX - sX);
-			var C:Number = 4*(cX - sX)*(cX - sX) + 2*sX*(sX - 2*cX + eX) - (sY - 2*cY + eY);
-			var D:Number = 4*sX*(cX - sX) - 2*(cY - sY);
-			var E:Number = sX*sX - sY;
+			if (e1_x!=0)
+				k = e1_y/e1_x/e1_x;
+			else
+			{
+				k = s1_y/s1_x/s1_x;			
+			}
+			
+					
+			var A:Number = k*(sX - 2*cX + eX)*(sX - 2*cX + eX);
+			var B:Number = k*4*(sX - 2*cX + eX)*(cX - sX);
+			var C:Number = k*(4*(cX - sX)*(cX - sX) + 2*sX*(sX - 2*cX + eX)) - (sY - 2*cY + eY);
+			var D:Number = k*4*sX*(cX - sX) - 2*(cY - sY);
+			var E:Number = k*sX*sX - sY;
+			
+			if (Math.abs(A)>0.000000000001)
+			{
+				B /= A;
+				C /= A;
+				D /= A;
+				E /= A;
+				A = 1;				
+			}
 			
 			var solves:Array = Equations.solveEquation(A, B, C, D, E);
 			var intersection:Intersection = new Intersection();
@@ -2256,44 +2299,7 @@ package flash.geom {
 		//				PRIVATE 
 		//**************************************************
 
-		protected function solveQubicEquation(a:Number, b:Number, c:Number):Array {
-			var a_3:Number = -a/3;
-			var aa:Number = a*a;
-			var aaa:Number = aa*a;
-	 
-			var q:Number = (aa - 3*b)/9;
-			var qqq:Number = q*q*q;
-			
-			var r:Number = (2*aaa - 9*a*b + 27*c)/54;
-			var rr:Number = r*r;
-			
-			var x1:Number;
-			var x2:Number;
-			
-			if (rr < qqq) {
-				var t:Number = Math.acos(r/Math.sqrt(qqq))/3;
-				var sqrt_q:Number = -2*Math.sqrt(q);
-				x1 = sqrt_q*Math.cos(t) + a_3;
-				x2 = sqrt_q*Math.cos(t + (2/3*Math.PI)) + a_3;
-				var x3:Number = sqrt_q*Math.cos(t - (2/3*Math.PI)) + a_3;
-				return [x1, x2, x3];
-			} else {
-				var abs_r:Number = Math.abs(r); 
-				var a2:Number = -r/abs_r*Math.pow(abs_r + Math.sqrt(rr - qqq), 1/3);
-				var b2:Number;
-				if (a2 != 0) {
-					b2 = q/a2;
-				} else {
-					b2 = 0;
-				}
-				x1 = (a2 + b2) + a_3;
-				if (a2 == b2) {
-					x2 = a_3 - a2;
-					return [x1, x2];
-				}
-				return [x1];
-			}
-		};
+		
 	}
 }
 
