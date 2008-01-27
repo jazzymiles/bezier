@@ -24,17 +24,18 @@
 	 */
 
 	public class Equations {
-		private static var eps:Number = 0.00001;
+		
+		protected static const PRECISION:Number = 1e-10;
 
 		/** Универсальная функция для решения уравнений c одним неизвестным. <BR/>
 		 * Осуществляет перевызов на соответствующий метод, в зависимости от количества параметров. <BR/>
 		 * Параметры означают коэффициенты при степенях переменной, начиная от старшей степени и заканчивая свободным членом.<BR/>
 		 * 
-		 * @param _a:Number —  коэффициент при старшей степени.
-		 * @param _b:Number — коэффициент при следующей степени.
-		 * @param _c:Number — коэффициент при следующей степени.
-		 * @param _d:Number — коэффициент при следующей степени.
-		 * @param _e:Number — коэффициент при следующей степени.
+		 * @param A:Number —  коэффициент при старшей степени.
+		 * @param B:Number — коэффициент при следующей степени.
+		 * @param C:Number — коэффициент при следующей степени.
+		 * @param D:Number — коэффициент при следующей степени.
+		 * @param E:Number — коэффициент при следующей степени.
 		 *
 		 * @return Array — Массив с корнями уравнения.
 		 * Если действительных корней нет, либо их бесконечно много, возвращает пустой массив.
@@ -48,18 +49,17 @@
 		 * </pre>
 		 **/
 		 
-
-		public static function solveEquation(_a:Number, _b:Number, _c:Number, _d:Number, _e:Number):Array {
+		public static function solveEquation(A:Number, B:Number, C:Number, D:Number, E:Number):Array {
 			var argsLength:uint = arguments["length"]; 
 			switch (argsLength) {
 				case 2 :
-					return solveLinearEquation(_a, _b);
+					return solveLinearEquation(A, B);
 				case 3 :
-					return solveQuadraticEquation(_a, _b, _c);
+					return solveQuadraticEquation(A, B, C);
 				case 4 :
-					return solveCubicEquation(_a, _b, _c, _d);
+					return solveCubicEquation(A, B, C, D);
 				case 5 :
-					return solveQuarticEquation(_a, _b, _c, _d, _e);
+					return solveQuarticEquation(A, B, C, D, E);
 				default :
 					return [];
 			}
@@ -67,8 +67,8 @@
 
 		/** Функция для решения линейного уравнения, записанного в форме ax + b = 0
 		 *
-		 * @param _a:Number — коэффициент при x
-		 * @param _b:Number — свободный член
+		 * @param A:Number — коэффициент при x
+		 * @param B:Number — свободный член
 		 * 
 		 * @return Array — Массив с корнями уравнения.
 		 * Если действительных корней нет, либо бесконечно много, возвращает пустой массив.
@@ -82,23 +82,19 @@
 		 * @see solveEquation
 		 **/
 
-		public static function solveLinearEquation(_a:Number, _b:Number):Array {
-			
-			if (Math.abs(_a) < eps*eps)
-				_a = 0;
-			
-			if (_a != 0) {
-				return [-_b/_a];
+		public static function solveLinearEquation(A:Number, B:Number):Array {
+			if (Math.abs(A) < PRECISION) {
+				return [];
 			}
-			return [];
+			return [-B/A];
 		}
 
 		
 		/** Функция для решения квадратичного уравнения, записанного в форме ax^2 + bx + c = 0 
 		 *	
-		 * @param _a:Number — коэффициент при x^2
-		 * @param _b:Number — коэффициент при x
-		 * @param _c:Number — свободный член
+		 * @param A:Number — коэффициент при x^2
+		 * @param B:Number — коэффициент при x
+		 * @param C:Number — свободный член
 		 *
 		 * @return Array — Возвращает массив с корнями уравнения. 
 		 * Если действительных корней нет, либо бесконечно много, возвращает пустой массив. 
@@ -112,31 +108,31 @@
 		 * @see solveEquation
 		 **/
 		 
-		public static function solveQuadraticEquation(_a:Number, _b:Number, _c:Number):Array {
+		public static function solveQuadraticEquation(A:Number, B:Number, C:Number):Array {
 			
-			if (Math.abs(_a) < eps*eps)
-				_a = 0;
-							
-			if (_a == 0) {
-				return solveLinearEquation(_b, _c);
-			}
-			var b:Number = _b/_a;
-			var c:Number = _c/_a;
+			if (Math.abs(A) < PRECISION) {
+				return solveLinearEquation(B, C);
+			}				
+			var b:Number = B/A;
+			var c:Number = C/A;
 			
-			if (Math.abs(b) < eps*eps)
+			if (Math.abs(b) < PRECISION) {
 				b = 0;
-			if (Math.abs(c) < eps*eps)
+			}
+			if (Math.abs(c) < PRECISION) {
 				c = 0;
+			}
 
 			var d:Number = b*b - 4*c;
 			
-			if (Math.abs(d) < eps*eps)
+			if (Math.abs(d) < PRECISION) {
 				d = 0;
-				
+			}
 			if (d > 0) {
 				d = Math.sqrt(d);
 				return [(-b - d)/2, (-b + d)/2];
-			} else if (d == 0) {
+			} 
+			if (d == 0) {
 				return [-b/2];
 			}
 			return [];
@@ -144,10 +140,10 @@
 
 		/** Функция для решения кубического уравнения, записанного в форме ax^3 + bx^2 + cx + d = 0
 		 * 
-		 * @param _a:Number — коэффициент при x^3
-		 * @param _b:Number — коэффициент при x^2
-		 * @param _c:Number — коэффициент при x
-		 * @param _d:Number — свободный член
+		 * @param A:Number — коэффициент при x^3
+		 * @param B:Number — коэффициент при x^2
+		 * @param C:Number — коэффициент при x
+		 * @param D:Number — свободный член
 		 *
 		 * @return Array — массив с корнями уравнения. 
 		 * Если действительных корней нет, либо бесконечно много, возвращает пустой массив. 
@@ -161,52 +157,55 @@
 		 * @see solveEquation
 		 **/
 		 
-		public static function solveCubicEquation(_a:Number, _b:Number, _c:Number, _d:Number):Array {
-						
-			if (Math.abs(_a) < eps*eps)
-				_a = 0;
-			
-			if (_a == 0) {
-				return solveQuadraticEquation(_b, _c, _d);
+		public static function solveCubicEquation(A:Number, B:Number, C:Number, D:Number):Array {
+			if (Math.abs(A) < PRECISION) {
+				return solveQuadraticEquation(B, C, D);
 			}
-			var b:Number = _b/_a;
-			var c:Number = _c/_a;
-			var d:Number = _d/_a;
 			
-			if (Math.abs(b) < eps*eps)
+			var b:Number = B/A;
+			var c:Number = C/A;
+			var d:Number = D/A;
+			
+			var u:Number;
+			var v:Number; 
+			var x:Number;
+			
+			if (Math.abs(b) < PRECISION) {
 				b = 0;
-			if (Math.abs(c) < eps*eps)
+			}
+			if (Math.abs(c) < PRECISION) {
 				c = 0;
-			if (Math.abs(d) < eps*eps)
+			}
+			if (Math.abs(d) < PRECISION) {
 				d = 0;
+			}
 			
-			
-			var p:Number, q:Number, u:Number, v:Number, d1:Number, X:Number;
-			p = -b*b/3 + c;
-			q = 2*b*b*b/27 - b*c/3 + d;
-			d1 = q*q/4 + p*p*p/27;
+			const p:Number = -b*b/3 + c;
+			const q:Number = 2*b*b*b/27 - b*c/3 + d;
+
+			var d1:Number = q*q/4 + p*p*p/27;
 			if (d1 >= 0) {
 				d1 = Math.sqrt(d1);
-				u = Power(-q/2 + d1, 1/3);
-				v = Power(-q/2 - d1, 1/3);
-				X = u + v - b/3;
+				u = mathPower(-q/2 + d1, 1/3);
+				v = mathPower(-q/2 - d1, 1/3);
+				x = u + v - b/3;
 			} else {
-				X = 2*Math.sqrt(-p/3)*Math.cos(Arg(-q/2, Math.sqrt(Math.abs(d1)))/3) - b/3;
+				x = 2*Math.sqrt(-p/3)*Math.cos(mathAtan2(-q/2, Math.sqrt(Math.abs(d1)))/3) - b/3;
 			}
-			var quadratic_solve:Array = solveQuadraticEquation(1, X + b, X*X + b*X + c);
-			if ((quadratic_solve[0] != X) && (quadratic_solve[1] != X)) {
-				quadratic_solve.push(X);
+			const quadratic_solve:Array = solveQuadraticEquation(1, x + b, x*x + b*x + c);
+			if ((quadratic_solve[0] != x) && (quadratic_solve[1] != x)) {
+				quadratic_solve.push(x);
 			}
 			return quadratic_solve;
 		}
 
 		/** Функция для решения уравнения четвертой степени, записанного в форме ax^4 + bx^3 + cx^2 + dx + e = 0
 		 * 
-		 * @param _a:Number — коэффициент при x^4
-		 * @param _b:Number — коэффициент при x^3
-		 * @param _c:Number — коэффициент при x^2
-		 * @param _d:Number — коэффициент при x
-		 * @param _e:Number — свободный член
+		 * @param A:Number — коэффициент при x^4
+		 * @param B:Number — коэффициент при x^3
+		 * @param C:Number — коэффициент при x^2
+		 * @param D:Number — коэффициент при x
+		 * @param E:Number — свободный член
 		 *
 		 * @return Array — массив с корнями уравнения. 
 		 * Если действительных корней нет, либо бесконечно много, возвращает пустой массив. 
@@ -220,72 +219,74 @@
 		 * @see solveEquation
 		 **/
 		 
-		public static function solveQuarticEquation(_a:Number, _b:Number, _c:Number, _d:Number, _e:Number):Array {
+		public static function solveQuarticEquation(A:Number, B:Number, C:Number, D:Number, E:Number):Array {
 			
-			if (Math.abs(_a) < eps*eps)
-				_a = 0;
-														
-			if (_a == 0) {
-				return solveCubicEquation(_b, _c, _d, _e);
+			if (Math.abs(A) < PRECISION) {
+				return solveCubicEquation(B, C, D, E);
 			}
 			
-			var b:Number = _b/_a;
-			var c:Number = _c/_a;
-			var d:Number = _d/_a;
-			var e:Number = _e/_a;
+			var b:Number = B/A;
+			var c:Number = C/A;
+			var d:Number = D/A;
+			var e:Number = E/A;
 			
-			if (Math.abs(b) < eps*eps)
+			if (Math.abs(b) < PRECISION) {
 				b = 0;
-			if (Math.abs(c) < eps*eps)
-				c = 0;
-			if (Math.abs(d) < eps*eps)
-				d = 0;
-			if (Math.abs(e) < eps*eps)
-				e = 0;	
-			
-			var i:uint;
-			var p:Number, q:Number, r:Number, M:Number, N:Number, K:Number, c1:Number, c2:Number;
-			
-			p = -c;
-			q = b*d - 4*e;
-			r = -b*b*e + 4*c*e - d*d;
-			
-			var cubic_solve:Array = solveCubicEquation(1, p, q, r);
-			var quartic_solve:Array = new Array();
-			M = b*b/4 - c + cubic_solve[0];
-			N = b/2*cubic_solve[0] - d;
-			K = cubic_solve[0]*cubic_solve[0]/4 - e;
-			
-//			var range_min2:Number = Math.abs(M)+Math.abs(N)+Math.abs(K);
-			if (Math.abs(M) < eps*eps)
-				M = 0;
-			if (Math.abs(N) < eps*eps)
-				N = 0;
-			if (Math.abs(K) < eps*eps)
-				K = 0;						
-
-//			var ttttt:Number = N*N - 4*M*K;
-			//if ((M >= -eps) && (Math.abs(N*N - 4*M*K) < eps*Math.abs(N*N))) {
-			if ((M >= 0) && (K >= 0)/* && (Math.abs(N*N - 4*M*K) <= eps*N*N)*/) {
-				c1 = b/2 - Math.sqrt(M);
-				if (N > 0) {
-					c2 = cubic_solve[0]/2 - Math.sqrt(K);
-				} else {
-					c2 = cubic_solve[0]/2 + Math.sqrt(K);
-				}
-				quartic_solve = solveQuadraticEquation(1, c1, c2);
-				c1 = b/2 + Math.sqrt(M);
-				if (N > 0) {
-					c2 = cubic_solve[0]/2 + Math.sqrt(K);
-				} else {
-					c2 = cubic_solve[0]/2 - Math.sqrt(K);
-				}
-				var quadratic_solve:Array = solveQuadraticEquation(1, c1, c2);
-				for (i = 0;i < quadratic_solve.length; i++) {
-					quartic_solve.push(quadratic_solve[i]);
-				}
 			}
-			return quartic_solve;
+			if (Math.abs(c) < PRECISION) {
+				c = 0;
+			}
+			if (Math.abs(d) < PRECISION) {
+				d = 0;
+			}
+			if (Math.abs(e) < PRECISION) {
+				e = 0;
+			}
+			
+			var c1:Number;
+			var c2:Number;
+			
+			const cubic_solve:Number = solveCubicEquation(1, -c, b*d - 4*e, -b*b*e + 4*c*e - d*d)[0];
+			const cubic_solve2:Number = cubic_solve/2;
+			
+			
+			var m:Number = b*b/4 - c + cubic_solve;
+			var n:Number = b*cubic_solve2 - d;
+			var k:Number = cubic_solve2*cubic_solve2 - e;
+			
+			if (Math.abs(m) < PRECISION) {
+				m = 0;
+			}
+			if (Math.abs(n) < PRECISION) {
+				n = 0;
+			}
+			if (Math.abs(k) < PRECISION) {
+				k = 0;
+			}
+			
+
+			if ((m >= 0) && (k >= 0)) {
+				const sqrtK:Number = Math.sqrt(k);
+				const sqrtM:Number = Math.sqrt(m);
+				
+				c1 = b/2 - sqrtM;
+				if (n > 0) {
+					c2 = cubic_solve2 - sqrtK;
+				} else {
+					c2 = cubic_solve2 + sqrtK;
+				}
+				
+				const quartic_solve:Array = solveQuadraticEquation(1, c1, c2);
+				c1 = b/2 + sqrtM;
+				if (n > 0) {
+					c2 = cubic_solve2 + sqrtK;
+				} else {
+					c2 = cubic_solve2 - sqrtK;
+				}
+				
+				return quartic_solve.concat(solveQuadraticEquation(1, c1, c2));
+			}
+			return [];
 		}
 
 		//-----------------------------------------------------------------------------------------------------------
@@ -294,7 +295,7 @@
 		
 		// Функция для возведения в степень. Работает лучше, чем Math.pow, но все равно не идеально.
 		// Идеальная функция возведения в произвольную действительную степень будет иметь комплексный результат.
-		private static function Power(x:Number, p:Number):Number {
+		private static function mathPower(x:Number, p:Number):Number {
 			if (x > 0) {
 				return Math.exp(Math.log(x)*p);
 			} else if (x < 0) {
@@ -305,7 +306,7 @@
 		}
 
 		// Функция, аналогичная Math.atan2, только работает для произвольных параметров.
-		private static function Arg(dx:Number, dy:Number):Number {
+		private static function mathAtan2(dx:Number, dy:Number):Number {
 			var a:Number;
 			if (dx == 0) {
 				a = Math.PI/2;
