@@ -352,7 +352,7 @@ package flash.geom {
 		 * 	return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 * }
 		 *	
-		 * var bezier:Bezier = randomBezier();
+		 * const bezier:Bezier = randomBezier();
 		 * trace("random bezier: "+bezier);
 		 * </listing>
 		 * 
@@ -386,7 +386,7 @@ package flash.geom {
 		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 * }
 		 *
-		 * var bezier:Bezier = randomBezier();
+		 * const bezier:Bezier = randomBezier();
 		 * trace("random bezier: "+bezier);
 		 * </listing>
 		 *
@@ -576,8 +576,8 @@ package flash.geom {
 		 * 	return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 * }
 		 *	
-		 * var bezier:Bezier = randomBezier();
-		 * var clone:Bezier = bezier.clone();
+		 * const bezier:Bezier = randomBezier();
+		 * const clone:Bezier = bezier.clone();
 		 * trace("bezier: "+bezier);
 		 * trace("clone: "+clone);
 		 * trace(bezier == clone);
@@ -607,8 +607,8 @@ package flash.geom {
 		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 * }
 		 *
-		 * var bezier:Bezier = randomBezier();
-		 * var clone:Bezier = bezier.clone();
+		 * const bezier:Bezier = randomBezier();
+		 * const clone:Bezier = bezier.clone();
 		 * trace("bezier: "+bezier);
 		 * trace("clone: "+clone);
 		 * trace(bezier == clone);
@@ -646,7 +646,7 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 *	var bezier:Bezier = randomBezier();
+		 *	const bezier:Bezier = randomBezier();
 		 *	
 		 *	trace("bezier length: "+bezier.length);
 		 * 
@@ -680,7 +680,7 @@ package flash.geom {
 		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 * }
 		 *
-		 * var bezier:Bezier = randomBezier();
+		 * const bezier:Bezier = randomBezier();
 		 *
 		 * trace("bezier length: "+bezier.length);
 		 *
@@ -725,11 +725,11 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 *	var bezier:Bezier = randomBezier();
+		 *	const bezier:Bezier = randomBezier();
 		 *	
-		 *	var middleDistance:Number = bezier.length/2;
-		 *	var middleTime:Number = bezier.getTimeByDistance(middleDistance);
-		 *	var segmentLength:Number = bezier.getSegmentLength(middleTime);
+		 *	const middleDistance:Number = bezier.length/2;
+		 *	const middleTime:Number = bezier.getTimeByDistance(middleDistance);
+		 *	const segmentLength:Number = bezier.getSegmentLength(middleTime);
 		 *	
 		 *	trace(middleDistance);
 		 *	trace(segmentLength);
@@ -766,11 +766,11 @@ package flash.geom {
 		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 * }
 		 *
-		 * var bezier:Bezier = randomBezier();
+		 * const bezier:Bezier = randomBezier();
 		 *
-		 * var middleDistance:Number = bezier.length/2;
-		 * var middleTime:Number = bezier.getTimeByDistance(middleDistance);
-		 * var segmentLength:Number = bezier.getSegmentLength(middleTime);
+		 * const middleDistance:Number = bezier.length/2;
+		 * const middleTime:Number = bezier.getTimeByDistance(middleDistance);
+		 * const segmentLength:Number = bezier.getSegmentLength(middleTime);
 		 *
 		 * trace(middleDistance);
 		 * trace(segmentLength);
@@ -789,15 +789,15 @@ package flash.geom {
 		 **/
 		 
 		public function getSegmentLength(time:Number):Number {
-			var csX:Number = __control.x - __start.x;
-			var csY:Number = __control.y - __start.y;
-			var nvX:Number = __end.x - __control.x - csX;
-			var nvY:Number = __end.y - __control.y - csY;
+			const csX:Number = __control.x - __start.x;
+			const csY:Number = __control.y - __start.y;
+			const nvX:Number = __end.x - __control.x - csX;
+			const nvY:Number = __end.y - __control.y - csY;
 			
 			// vectors: c0 = 4*(cs,cs), с1 = 8*(cs, ec-cs), c2 = 4*(ec-cs,ec-cs)
-			var c0:Number = 4*(csX*csX + csY*csY);
-			var c1:Number = 8*(csX*nvX + csY*nvY);
-			var c2:Number = 4*(nvX*nvX + nvY*nvY);
+			const c0:Number = 4*(csX*csX + csY*csY);
+			const c1:Number = 8*(csX*nvX + csY*nvY);
+			const c2:Number = 4*(nvX*nvX + nvY*nvY);
 			
 			var ft:Number;
 			var f0:Number;
@@ -812,10 +812,10 @@ package flash.geom {
 					return (ft - f0);
 				}
 			} else {
-				var sqrt_0:Number = Math.sqrt(c2*time*time + c1*time + c0);
-				var sqrt_c0:Number = Math.sqrt(c0);
-				var sqrt_c2:Number = Math.sqrt(c2);
-				var exp1:Number = (0.5*c1 + c2*time)/sqrt_c2 + sqrt_0;
+				const sqrt_0:Number = Math.sqrt(c2*time*time + c1*time + c0);
+				const sqrt_c0:Number = Math.sqrt(c0);
+				const sqrt_c2:Number = Math.sqrt(c2);
+				const exp1:Number = (0.5*c1 + c2*time)/sqrt_c2 + sqrt_0;
 						
 				if (exp1 < PRECISION) {
 					ft = 0.25*(2*c2*time + c1)*sqrt_0/c2;
@@ -823,7 +823,7 @@ package flash.geom {
 					ft = 0.25*(2*c2*time + c1)*sqrt_0/c2 + 0.5*Math.log((0.5*c1 + c2*time)/sqrt_c2 + sqrt_0)/sqrt_c2*(c0 - 0.25*c1*c1/c2);
 				}
 				
-				var exp2:Number = (0.5*c1)/sqrt_c2 + sqrt_c0;
+				const exp2:Number = (0.5*c1)/sqrt_c2 + sqrt_c0;
 				if (exp2 < PRECISION) {
 					f0 = 0.25*(c1)*sqrt_c0/c2;
 				} else {
@@ -855,7 +855,7 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 *	var randomBezier:Bezier = randomBezier();
+		 *	const randomBezier:Bezier = randomBezier();
 		 *	
 		 * trace("bezier area: "+randomBezier.area);
 		 *	
@@ -890,7 +890,7 @@ package flash.geom {
 		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 * }
 		 *
-		 * var randomBezier:Bezier = randomBezier();
+		 * const randomBezier:Bezier = randomBezier();
 		 *
 		 * trace("bezier area: "+randomBezier.area);
 		 *
@@ -937,12 +937,12 @@ package flash.geom {
 		 
 		public function get triangleArea():Number {
 			// heron's formula
-			var distanceStartControl:Number = Point.distance(__start, __control);
-			var distanceEndControl:Number = Point.distance(__end, __control);
-			var distanceStartEnd:Number = Point.distance(__start, __end);
+			const distanceStartControl:Number = Point.distance(__start, __control);
+			const distanceEndControl:Number = Point.distance(__end, __control);
+			const distanceStartEnd:Number = Point.distance(__start, __end);
 			
-			var halfPerimeter:Number = (distanceStartControl + distanceEndControl + distanceStartEnd)/2;
-			var area:Number = Math.sqrt(halfPerimeter*(halfPerimeter - distanceStartControl)*(halfPerimeter - distanceEndControl)*(halfPerimeter - distanceStartEnd)); 
+			const halfPerimeter:Number = (distanceStartControl + distanceEndControl + distanceStartEnd)/2;
+			const area:Number = Math.sqrt(halfPerimeter*(halfPerimeter - distanceStartControl)*(halfPerimeter - distanceEndControl)*(halfPerimeter - distanceStartEnd)); 
 			return area;
 		}
 
@@ -968,9 +968,12 @@ package flash.geom {
 		public function get bounds():Rectangle {
 			var xMin:Number;
 			var xMax:Number;
-			var x:Number = __start.x - 2*__control.x + __end.x;
-			var extremumTimeX:Number = ((__start.x - __control.x)/x) || 0;
-			var extemumPointX:Point = getPoint(extremumTimeX);
+			var yMin:Number;
+			var yMax:Number;
+			
+			const x:Number = __start.x - 2*__control.x + __end.x;
+			const extremumTimeX:Number = ((__start.x - __control.x)/x) || 0;
+			const extemumPointX:Point = getPoint(extremumTimeX);
 			
 			if (isNaN(extemumPointX.x) || extremumTimeX <= 0 || extremumTimeX >= 1) {
 				xMin = Math.min(__start.x, __end.x);
@@ -980,11 +983,9 @@ package flash.geom {
 				xMax = Math.max(extemumPointX.x, Math.max(__start.x, __end.x));
 			}
 			
-			var yMin:Number;
-			var yMax:Number;
-			var y:Number = __start.y - 2*__control.y + __end.y;
-			var extremumTimeY:Number = ((__start.y - __control.y)/y) || 0;
-			var extemumPointY:Point = getPoint(extremumTimeY);
+			const y:Number = __start.y - 2*__control.y + __end.y;
+			const extremumTimeY:Number = ((__start.y - __control.y)/y) || 0;
+			const extemumPointY:Point = getPoint(extremumTimeY);
 			
 			if (isNaN(extemumPointY.y) || extremumTimeY <= 0 || extremumTimeY >= 1) {
 				yMin = Math.min(__start.y, __end.y);
@@ -994,8 +995,8 @@ package flash.geom {
 				yMax = Math.max(extemumPointY.y, Math.max(__start.y, __end.y));
 			}
 
-			var width:Number = xMax - xMin;
-			var height:Number = yMax - yMin;
+			const width:Number = xMax - xMin;
+			const height:Number = yMax - yMin;
 			return new Rectangle(xMin, yMin, width, height);
 		}
 
@@ -1020,7 +1021,7 @@ package flash.geom {
 		 * 	return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 * }
 		 *	
-		 * var randomBezier:Bezier = randomBezier();
+		 * const randomBezier:Bezier = randomBezier();
 		 *	
 		 * trace("parabola vertex time: "+randomBezier.parabolaVertex);
 		 *	
@@ -1046,7 +1047,7 @@ package flash.geom {
 		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 * }
 		 *
-		 * var randomBezier:Bezier = randomBezier();
+		 * const randomBezier:Bezier = randomBezier();
 		 *
 		 * trace("parabola vertex time: "+randomBezier.parabolaVertex);
 		 *
@@ -1063,12 +1064,12 @@ package flash.geom {
 		 **/
 
 		public function get parabolaVertex():Number {
-			var x:Number = __start.x - 2*__control.x + __end.x;
-			var y:Number = __start.y - 2*__control.y + __end.y;
-			var summ:Number = x*x + y*y;
-			var dx:Number = __start.x - __control.x;
-			var dy:Number = __start.y - __control.y;
-			var vertexTime:Number = (x*dx + y*dy)/summ;
+			const x:Number = __start.x - 2*__control.x + __end.x;
+			const y:Number = __start.y - 2*__control.y + __end.y;
+			const summ:Number = x*x + y*y;
+			const dx:Number = __start.x - __control.x;
+			const dy:Number = __start.y - __control.y;
+			const vertexTime:Number = (x*dx + y*dy)/summ;
 			if (isNaN(vertexTime)) {
 				return 1/2;
 			} 
@@ -1100,41 +1101,41 @@ package flash.geom {
 		 
 		// TODO:
 		public function get parabolaFocusPoint():Point {
-			var startX:Number = __start.x;
-			var startY:Number = __start.y;
-			var controlX:Number = __control.x;
-			var controlY:Number = __control.y;
-			var endX:Number = __end.x;
-			var endY:Number = __end.y;
+			const startX:Number = __start.x;
+			const startY:Number = __start.y;
+			const controlX:Number = __control.x;
+			const controlY:Number = __control.y;
+			const endX:Number = __end.x;
+			const endY:Number = __end.y;
 
-			var x:Number = startX - 2*controlX + endX;
-			var y:Number = startY - 2*controlY + endY;
-			var summ:Number = x*x + y*y;
+			const x:Number = startX - 2*controlX + endX;
+			const y:Number = startY - 2*controlY + endY;
+			const summ:Number = x*x + y*y;
 			
 			if (summ == 0) {
 				return __control.clone();
 			}
 			
-			var dx:Number = controlX - startX;
-			var dy:Number = controlY - startY;
+			const dx:Number = controlX - startX;
+			const dy:Number = controlY - startY;
 			
-			var minT:Number = -(x*dx + y*dy)/summ;
+			const minT:Number = -(x*dx + y*dy)/summ;
 			
-			var minF:Number = 1 - minT;
+			const minF:Number = 1 - minT;
 			
-			var minT2:Number = minT*minT;
-			var minF2:Number = minF*minF;
+			const minT2:Number = minT*minT;
+			const minF2:Number = minF*minF;
 		
-			var psx:Number = 2*dx + 2*minT*x;
-			var psy:Number = 2*dy + 2*minT*y;
+			const psx:Number = 2*dx + 2*minT*x;
+			const psy:Number = 2*dy + 2*minT*y;
 			
-			var vertexX:Number = startX*minF2 + 2*minT*minF*controlX + minT2*endX;
-			var vertexY:Number = startY*minF2 + 2*minT*minF*controlY + minT2*endY;
+			const vertexX:Number = startX*minF2 + 2*minT*minF*controlX + minT2*endX;
+			const vertexY:Number = startY*minF2 + 2*minT*minF*controlY + minT2*endY;
 		
 			var fx:Number = vertexX - psy/(4*Math.SQRT2);
 			var fy:Number = vertexY + psx/(4*Math.SQRT2);
 			
-			var side:Number = (psy*(startX - vertexX) - psx*(startY - vertexY))*(psy*(fx - vertexX) - psx*(fy - vertexY));
+			const side:Number = (psy*(startX - vertexX) - psx*(startY - vertexY))*(psy*(fx - vertexX) - psx*(fy - vertexY));
 
 			if (side < 0) {
 				fx = vertexX + psy/(4*Math.SQRT2);
@@ -1172,10 +1173,10 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 *	var bezier:Bezier = randomBezier();
+		 *	const bezier:Bezier = randomBezier();
 		 *	
-		 *	var time:Number = Math.random();
-		 *	var point:Point = bezier.getPoint(time);
+		 *	const time:Number = Math.random();
+		 *	const point:Point = bezier.getPoint(time);
 		 *	
 		 *	trace(point);
 		 * </listing>
@@ -1210,10 +1211,10 @@ package flash.geom {
 		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 * }
 		 *
-		 * var bezier:Bezier = randomBezier();
+		 * const bezier:Bezier = randomBezier();
 		 *
-		 * var time:Number = Math.random();
-		 * var point:Point = bezier.getPoint(time);
+		 * const time:Number = Math.random();
+		 * const point:Point = bezier.getPoint(time);
 		 *
 		 * trace(point);
 		 * </listing>
@@ -1230,9 +1231,9 @@ package flash.geom {
 			if (isNaN(time)) {
 				return undefined;
 			}
-			var f:Number = 1 - time;
-			var x:Number = __start.x*f*f + __control.x*2*time*f + __end.x*time*time;
-			var y:Number = __start.y*f*f + __control.y*2*time*f + __end.y*time*time;
+			const f:Number = 1 - time;
+			const x:Number = __start.x*f*f + __control.x*2*time*f + __end.x*time*time;
+			const y:Number = __start.y*f*f + __control.y*2*time*f + __end.y*time*time;
 			return new Point(x, y);
 		}
 
@@ -1268,11 +1269,11 @@ package flash.geom {
 		public function angleOffset(value:Number, fulcrum:Point = null):void {
 			fulcrum = fulcrum || new Point();
 			
-			var startLine:Line = new Line(fulcrum, __start);
+			const startLine:Line = new Line(fulcrum, __start);
 			startLine.angle += value;
-			var controlLine:Line = new Line(fulcrum, __control);
+			const controlLine:Line = new Line(fulcrum, __control);
 			controlLine.angle += value;
-			var endLine:Line = new Line(fulcrum, __end);
+			const endLine:Line = new Line(fulcrum, __end);
 			endLine.angle += value;
 		}
 
@@ -1330,7 +1331,7 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 *	var bezier:Bezier = randomBezier();
+		 *	const bezier:Bezier = randomBezier();
 		 * 
 		 *	trace(bezier.getTimeByDistance(-10); // negative value
 		 *	trace(bezier.getTimeByDistance(bezier.length/2); // value between 0 and 1
@@ -1349,7 +1350,7 @@ package flash.geom {
 			}
 			var arcLength:Number;
 			var diffArcLength:Number;
-			var curveLength:Number = length;
+			const curveLength:Number = length;
 			var time:Number = distance/curveLength;
 			
 			if (isSegment) {
@@ -1360,24 +1361,24 @@ package flash.geom {
 					return 1;
 				}
 			}
-			var csX:Number = __control.x - __start.x;
-			var csY:Number = __control.y - __start.y;
-			var ecX:Number = __end.x - __control.x;
-			var ecY:Number = __end.y - __control.y;
-			var nvX:Number = ecX - csX;
-			var nvY:Number = ecY - csY;
+			const csX:Number = __control.x - __start.x;
+			const csY:Number = __control.y - __start.y;
+			const ecX:Number = __end.x - __control.x;
+			const ecY:Number = __end.y - __control.y;
+			const nvX:Number = ecX - csX;
+			const nvY:Number = ecY - csY;
 	
 			// vectors: c0 = 4*(cs,cs), с1 = 8*(cs, ec-cs), c2 = 4*(ec-cs,ec-cs)
-			var c0:Number = 4*(csX*csX + csY*csY);
-			var c1:Number = 8*(csX*nvX + csY*nvY);
-			var c2:Number = 4*(nvX*nvX + nvY*nvY);
+			const c0:Number = 4*(csX*csX + csY*csY);
+			const c1:Number = 8*(csX*nvX + csY*nvY);
+			const c2:Number = 4*(nvX*nvX + nvY*nvY);
 			
-			var c025:Number = c0 - 0.25*c1*c1/c2;
-			var f0Base:Number = 0.25*c1*Math.sqrt(c0)/c2;
-			var exp2:Number = 0.5*c1/Math.sqrt(c2) + Math.sqrt(c0);
+			const c025:Number = c0 - 0.25*c1*c1/c2;
+			const f0Base:Number = 0.25*c1*Math.sqrt(c0)/c2;
+			const exp2:Number = 0.5*c1/Math.sqrt(c2) + Math.sqrt(c0);
 	
-			var c00sqrt:Number = Math.sqrt(c0);
-			var c20sqrt:Number = Math.sqrt(c2);
+			const c00sqrt:Number = Math.sqrt(c0);
+			const c20sqrt:Number = Math.sqrt(c2);
 			var c22sqrt:Number;
 			
 			var exp1:Number;
@@ -1385,7 +1386,7 @@ package flash.geom {
 			var ftBase:Number;
 			
 			var f0:Number;
-			var maxIterations:Number = 100;
+			const maxIterations:Number = 100;
 	
 			if (c2 == 0) {
 				if (c1 == 0) {
@@ -1453,7 +1454,7 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 *	var bezier:Bezier = randomBezier();
+		 *	const bezier:Bezier = randomBezier();
 		 *	
 		 *	// TODO: [Dembicki] example 
 		 * 
@@ -1469,8 +1470,8 @@ package flash.geom {
 			step = Math.abs(step);
 			var distance:Number = startShift;
 			
-			var times:Array = new Array();
-			var curveLength:Number = length;
+			const times:Array = new Array();
+			const curveLength:Number = length;
 			if (distance > curveLength) {
 				return times;
 			}
@@ -1481,30 +1482,30 @@ package flash.geom {
 				distance = distance%step;
 			}
 
-			var csX:Number = __control.x - __start.x;
-			var csY:Number = __control.y - __start.y;
-			var ecX:Number = __end.x - __control.x;
-			var ecY:Number = __end.y - __control.y;
-			var nvX:Number = ecX - csX;
-			var nvY:Number = ecY - csY;
+			const csX:Number = __control.x - __start.x;
+			const csY:Number = __control.y - __start.y;
+			const ecX:Number = __end.x - __control.x;
+			const ecY:Number = __end.y - __control.y;
+			const nvX:Number = ecX - csX;
+			const nvY:Number = ecY - csY;
 			
 			// vectors: c0 = 4*(cs,cs), с1 = 8*(cs, ec-cs), c2 = 4*(ec-cs,ec-cs)
-			var c0:Number = 4*(csX*csX + csY*csY);
-			var c1:Number = 8*(csX*nvX + csY*nvY);
-			var c2:Number = 4*(nvX*nvX + nvY*nvY);
+			const c0:Number = 4*(csX*csX + csY*csY);
+			const c1:Number = 8*(csX*nvX + csY*nvY);
+			const c2:Number = 4*(nvX*nvX + nvY*nvY);
 	
 			var arcLength:Number;
 			var diffArcLength:Number;
 			
 			var time:Number = distance/curveLength;
 			
-			var c025:Number = c0 - 0.25*c1*c1/c2;
-			var f0Base:Number = 0.25*c1*Math.sqrt(c0)/c2;
-			var exp2:Number = 0.5*c1/Math.sqrt(c2) + Math.sqrt(c0);
+			const c025:Number = c0 - 0.25*c1*c1/c2;
+			const f0Base:Number = 0.25*c1*Math.sqrt(c0)/c2;
+			const exp2:Number = 0.5*c1/Math.sqrt(c2) + Math.sqrt(c0);
 	
-			var c00sqrt:Number = Math.sqrt(c0);
-			var c20sqrt:Number = Math.sqrt(c2);
-			// var c21sqrt:Number = c20sqrt*(c025);
+			const c00sqrt:Number = Math.sqrt(c0);
+			const c20sqrt:Number = Math.sqrt(c2);
+			// const c21sqrt:Number = c20sqrt*(c025);
 			var c22sqrt:Number;
 			
 			var exp1:Number;
@@ -1514,7 +1515,7 @@ package flash.geom {
 			var f0:Number;
 			
 			while (distance <= curveLength) {
-				var limiter:Number = 20;
+				const limiter:Number = 20;
 		
 				if (c2 == 0) {
 					if (c1 == 0) {
@@ -1589,7 +1590,7 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 *	var bezier:Bezier = randomBezier();
+		 *	const bezier:Bezier = randomBezier();
 		 *	trace(bezier);
 		 *	
 		 *	bezier.setPoint(0, 0, 0);
@@ -1609,10 +1610,10 @@ package flash.geom {
 				return;
 			}
 			
-			var f:Number = 1 - time;
-			var tSquared:Number = time*time;
-			var fSquared:Number = f*f;
-			var tf:Number = 2*time*f;
+			const f:Number = 1 - time;
+			const tSquared:Number = time*time;
+			const fSquared:Number = f*f;
+			const tf:Number = 2*time*f;
 			
 			if (isNaN(x)) {
 				x = __start.x*fSquared + __control.x*2*tf + __end.x*tSquared;
@@ -1667,7 +1668,7 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 *	var bezier:Bezier = randomBezier();
+		 *	const bezier:Bezier = randomBezier();
 		 *	
 		 *	TODO: [Dembicki] example
 		 *	
@@ -1684,29 +1685,29 @@ package flash.geom {
 			if (!(fromPoint as Point)) {
 				return NaN;
 			}
-			var sx:Number = __start.x;
-			var sy:Number = __start.y;
-			var cx:Number = __control.x;
-			var cy:Number = __control.y;
-			var ex:Number = __end.x;
-			var ey:Number = __end.y;
+			const sx:Number = __start.x;
+			const sy:Number = __start.y;
+			const cx:Number = __control.x;
+			const cy:Number = __control.y;
+			const ex:Number = __end.x;
+			const ey:Number = __end.y;
 	
-			var lpx:Number = sx - fromPoint.x;
-			var lpy:Number = sy - fromPoint.y;
+			const lpx:Number = sx - fromPoint.x;
+			const lpy:Number = sy - fromPoint.y;
 			
-			var kpx:Number = sx - 2*cx + ex;
-			var kpy:Number = sy - 2*cy + ey;
+			const kpx:Number = sx - 2*cx + ex;
+			const kpy:Number = sy - 2*cy + ey;
 			
-			var npx:Number = -2*sx + 2*cx;
-			var npy:Number = -2*sy + 2*cy;
+			const npx:Number = -2*sx + 2*cx;
+			const npy:Number = -2*sy + 2*cy;
 			
-			var delimiter:Number = 2*(kpx*kpx + kpy*kpy);
+			const delimiter:Number = 2*(kpx*kpx + kpy*kpy);
 			
-			var A:Number = 3*(npx*kpx + npy*kpy)/delimiter;
-			var B:Number = ((npx*npx + npy*npy) + 2*(lpx*kpx + lpy*kpy))/delimiter;
-			var C:Number = (npx*lpx + npy*lpy)/delimiter;
+			const A:Number = 3*(npx*kpx + npy*kpy)/delimiter;
+			const B:Number = ((npx*npx + npy*npy) + 2*(lpx*kpx + lpy*kpy))/delimiter;
+			const C:Number = (npx*lpx + npy*lpy)/delimiter;
 			
-			var extremumTimes:Array = Equations.solveCubicEquation(1, A, B, C);
+			const extremumTimes:Array = Equations.solveCubicEquation(1, A, B, C);
 			
 			if (isSegment) {
 				extremumTimes.push(0);
@@ -1722,8 +1723,8 @@ package flash.geom {
 			
 			var isInside:Boolean;
 			
-			var len:uint = extremumTimes.length;
-			for (var i:uint = 0;i < len; i++) {
+			const len:uint = extremumTimes.length;
+			for (var i:uint = 0; i < len; i++) {
 				extremumTime = extremumTimes[i];
 				extremumPoint = getPoint(extremumTime);
 				
@@ -1781,9 +1782,9 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 * var bezier:Bezier = randomBezier();
-		 * var segment1:Bezier = bezier.getSegment(1/3, 2/3);
-		 * var segment2:Bezier = bezier.getSegment(-1, 2);
+		 * const bezier:Bezier = randomBezier();
+		 * const segment1:Bezier = bezier.getSegment(1/3, 2/3);
+		 * const segment2:Bezier = bezier.getSegment(-1, 2);
 		 * 
 		 * </listing>
 		 * 
@@ -1792,11 +1793,11 @@ package flash.geom {
 		 * 
 		 */
 		public function getSegment(fromTime:Number = 0, toTime:Number = 1):Bezier {
-			var segmentStart:Point = getPoint(fromTime);
-			var segmentEnd:Point = getPoint(toTime);
-			var segmentVertex:Point = getPoint((fromTime + toTime)/2);
-			var baseMiddle:Point = Point.interpolate(segmentStart, segmentEnd, 1/2);
-			var segmentControl:Point = Point.interpolate(segmentVertex, baseMiddle, 2);
+			const segmentStart:Point = getPoint(fromTime);
+			const segmentEnd:Point = getPoint(toTime);
+			const segmentVertex:Point = getPoint((fromTime + toTime)/2);
+			const baseMiddle:Point = Point.interpolate(segmentStart, segmentEnd, 1/2);
+			const segmentControl:Point = Point.interpolate(segmentVertex, baseMiddle, 2);
 			return new Bezier(segmentStart, segmentControl, segmentEnd, true);
 		}
 
@@ -1826,7 +1827,7 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 *	var bezier:Bezier = randomBezier();
+		 *	const bezier:Bezier = randomBezier();
 		 * </listing>
 		 * 
 		 * @langversion 3.0
@@ -1835,13 +1836,13 @@ package flash.geom {
 		 */
 
 		public function getTangentAngle(time:Number = 0):Number {
-			var t0X:Number = __start.x + (__control.x - __start.x)*time;
-			var t0Y:Number = __start.y + (__control.y - __start.y)*time;
-			var t1X:Number = __control.x + (__end.x - __control.x)*time;
-			var t1Y:Number = __control.y + (__end.y - __control.y)*time;
+			const t0X:Number = __start.x + (__control.x - __start.x)*time;
+			const t0Y:Number = __start.y + (__control.y - __start.y)*time;
+			const t1X:Number = __control.x + (__end.x - __control.x)*time;
+			const t1Y:Number = __control.y + (__end.y - __control.y)*time;
 			
-			var distanceX:Number = t1X - t0X;
-			var distanceY:Number = t1Y - t0Y;
+			const distanceX:Number = t1X - t0X;
+			const distanceY:Number = t1Y - t0Y;
 			return Math.atan2(distanceY, distanceX);
 		}
 
@@ -1876,7 +1877,7 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 *	var bezier:Bezier = randomBezier();
+		 *	const bezier:Bezier = randomBezier();
 		 * </listing>
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
@@ -1899,15 +1900,15 @@ package flash.geom {
 		public function intersectionLine(target:Line):Intersection {
 			var intersection:Intersection = new Intersection();
 			
-			var sX:Number = __start.x;
-			var sY:Number = __start.y;
-			var cX:Number = __control.x;
-			var cY:Number = __control.y;
-			var eX:Number = __end.x;
-			var eY:Number = __end.y;
-			var oX:Number = target.start.x;
-			var oY:Number = target.start.y;
-			var lineAngle:Number = target.angle;
+			const sX:Number = __start.x;
+			const sY:Number = __start.y;
+			const cX:Number = __control.x;
+			const cY:Number = __control.y;
+			const eX:Number = __end.x;
+			const eY:Number = __end.y;
+			const oX:Number = target.start.x;
+			const oY:Number = target.start.y;
+			const lineAngle:Number = target.angle;
 			var cosa:Number = Math.cos(lineAngle);
 			var sina:Number = Math.sin(lineAngle);
 			//
@@ -1917,9 +1918,9 @@ package flash.geom {
 			var lineTime1:Number;
 			var intersectionPoint0:Point;
 			var intersectionPoint1:Point;
-			var distanceX:Number = target.end.x - target.start.x;
-			var distanceY:Number = target.end.y - target.start.y;
-			var checkByX:Boolean = Math.abs(distanceX) > Math.abs(distanceY);
+			const distanceX:Number = target.end.x - target.start.x;
+			const distanceY:Number = target.end.y - target.start.y;
+			const checkByX:Boolean = Math.abs(distanceX) > Math.abs(distanceY);
 
 			
 			if (Math.abs(cosa) < 1e-6) {
@@ -1939,7 +1940,7 @@ package flash.geom {
 			
 			if (divider == 0) {
 				
-				var divider2:Number = (-2*sX + 2*cX)*sina - (-2*sY + 2*cY)*cosa;
+				const divider2:Number = (-2*sX + 2*cX)*sina - (-2*sY + 2*cY)*cosa;
 				if (divider2 == 0) {
 					intersection.currentTimes[0] = 0;
 					intersection.currentTimes[1] = 1;
@@ -1961,7 +1962,7 @@ package flash.geom {
 					intersection.currentTimes[0] = time0;
 					intersectionPoint0 = getPoint(time0);
 					
-					var intersection_is_in_segment:Number = (intersectionPoint0.x-target.start.x)* (intersectionPoint0.x-target.end.x);
+					const intersection_is_in_segment:Number = (intersectionPoint0.x-target.start.x)* (intersectionPoint0.x-target.end.x);
 					if (intersection_is_in_segment>0)
 						intersection = null;
 				}
@@ -1969,7 +1970,7 @@ package flash.geom {
 				return intersection;
 			} 
 			
-			var discriminant:Number = +cosa*cosa*(sY*oY + cY*cY - eY*sY - 2*cY*oY + eY*oY) + sina*cosa*(-sY*oX - eY*oX - 2*cY*cX + eX*sY - sX*oY + 2*cY*oX + 2*cX*oY + eY*sX - eX*oY) + sina*sina*(eX*oX + sX*oX - 2*cX*oX + cX*cX - eX*sX);
+			const discriminant:Number = +cosa*cosa*(sY*oY + cY*cY - eY*sY - 2*cY*oY + eY*oY) + sina*cosa*(-sY*oX - eY*oX - 2*cY*cX + eX*sY - sX*oY + 2*cY*oX + 2*cX*oY + eY*sX - eX*oY) + sina*sina*(eX*oX + sX*oX - 2*cX*oX + cX*cX - eX*sX);
 			
 			
 			
@@ -1977,8 +1978,8 @@ package flash.geom {
 				return null;
 			}
 			
-			var a:Number = -2*cosa*sY + 2*sina*sX + 2*cosa*cY - 2*sina*cX;
-			var c:Number = 2*divider;
+			const a:Number = -2*cosa*sY + 2*sina*sX + 2*cosa*cY - 2*sina*cX;
+			const c:Number = 2*divider;
 			
 			var outsideBezier0:Boolean;
 			var outsideLine0:Boolean;
@@ -2015,7 +2016,7 @@ package flash.geom {
 			
 			// if discriminant > 0
 
-			var b:Number = 2*Math.sqrt(discriminant);
+			const b:Number = 2*Math.sqrt(discriminant);
 			time0 = (a - b)/c;
 			time1 = (a + b)/c;
 			
@@ -2123,7 +2124,7 @@ package flash.geom {
 		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 *	}
 		 *	
-		 *	var bezier:Bezier = randomBezier();
+		 *	const bezier:Bezier = randomBezier();
 		 * </listing>
 		 * 
 		 * @langversion 3.0
@@ -2144,16 +2145,16 @@ package flash.geom {
 		//    Нужны быстрые, элементарные проверки.
 
 		public function intersectionBezier(target:Bezier):Intersection {
-			var vertexTime:Number = target.parabolaVertex;
-			var targetParabolaVertex:Point = target.getPoint(vertexTime);
-			var tpvX:Number = targetParabolaVertex.x;
-			var tpvY:Number = targetParabolaVertex.y;
+			const vertexTime:Number = target.parabolaVertex;
+			const targetParabolaVertex:Point = target.getPoint(vertexTime);
+			const tpvX:Number = targetParabolaVertex.x;
+			const tpvY:Number = targetParabolaVertex.y;
 			
-			var nX:Number = 2*vertexTime*(target.__start.x - 2*target.__control.x + target.__end.x) + 2*(target.__control.x - target.__start.x);
-			var nY:Number = 2*vertexTime*(target.__start.y - 2*target.__control.y + target.__end.y) + 2*(target.__control.y - target.__start.y);
+			const nX:Number = 2*vertexTime*(target.__start.x - 2*target.__control.x + target.__end.x) + 2*(target.__control.x - target.__start.x);
+			const nY:Number = 2*vertexTime*(target.__start.y - 2*target.__control.y + target.__end.y) + 2*(target.__control.y - target.__start.y);
 
-			var nnX:Number = 2*(target.__start.x - 2*target.__control.x + target.__end.x);
-			var nnY:Number = 2*(target.__start.y - 2*target.__control.y + target.__end.y);
+			const nnX:Number = 2*(target.__start.x - 2*target.__control.x + target.__end.x);
+			const nnY:Number = 2*(target.__start.y - 2*target.__control.y + target.__end.y);
 
 						
 			var angle:Number = -Math.atan2(nY, nX);
@@ -2162,15 +2163,15 @@ package flash.geom {
 				angle = -Math.atan2(nnY, nnX);
 			}
 			
-			var angleSin:Number = Math.sin(angle);
-			var angleCos:Number = Math.cos(angle);
+			const angleSin:Number = Math.sin(angle);
+			const angleCos:Number = Math.cos(angle);
 			
 			
 			// target
-			var teX:Number = tpvX - target.__end.x;
-			var teY:Number = tpvY - target.__end.y;
-			var tsX:Number = tpvX - target.__start.x;
-			var tsY:Number = tpvY - target.__start.y;
+			const teX:Number = tpvX - target.__end.x;
+			const teY:Number = tpvY - target.__end.y;
+			const tsX:Number = tpvX - target.__start.x;
+			const tsY:Number = tpvY - target.__start.y;
 			
 			var e1_x:Number = teX*angleCos - teY*angleSin;
 			var e1_y:Number = teX*angleSin + teY*angleCos;
@@ -2189,40 +2190,40 @@ package flash.geom {
 							
 				
 				
-			var nnX2:Number = nnX*angleCos - nnY*angleSin;
-			var nnY2:Number = nnX*angleSin + nnY*angleCos;
+			const nnX2:Number = nnX*angleCos - nnY*angleSin;
+			const nnY2:Number = nnX*angleSin + nnY*angleCos;
 			
 						
-//			var tsX:Number = tpvX-target.__start.x;
-//			var tsY:Number = tpvY-target.__start.y;
-//			var tcX:Number = tpvX-target.__control.x;
-//			var tcY:Number = tpvY-target.__control.y;
+//			const tsX:Number = tpvX-target.__start.x;
+//			const tsY:Number = tpvY-target.__start.y;
+//			const tcX:Number = tpvX-target.__control.x;
+//			const tcY:Number = tpvY-target.__control.y;
 			
 			// current
 			
 			
-			var csX:Number = tpvX - __start.x;
-			var csY:Number = tpvY - __start.y;
-			var sX:Number = csX*angleCos - csY*angleSin;
-			var sY:Number = csX*angleSin + csY*angleCos;
+			const csX:Number = tpvX - __start.x;
+			const csY:Number = tpvY - __start.y;
+			const sX:Number = csX*angleCos - csY*angleSin;
+			const sY:Number = csX*angleSin + csY*angleCos;
 			
-			var ccX:Number = tpvX - __control.x;
-			var ccY:Number = tpvY - __control.y;
-			var cX:Number = ccX*angleCos - ccY*angleSin;
-			var cY:Number = ccX*angleSin + ccY*angleCos;
+			const ccX:Number = tpvX - __control.x;
+			const ccY:Number = tpvY - __control.y;
+			const cX:Number = ccX*angleCos - ccY*angleSin;
+			const cY:Number = ccX*angleSin + ccY*angleCos;
 			
-			var ceX:Number = tpvX - __end.x;
-			var ceY:Number = tpvY - __end.y;
-			var eX:Number = ceX*angleCos - ceY*angleSin;
-			var eY:Number = ceX*angleSin + ceY*angleCos;
+			const ceX:Number = tpvX - __end.x;
+			const ceY:Number = tpvY - __end.y;
+			const eX:Number = ceX*angleCos - ceY*angleSin;
+			const eY:Number = ceX*angleSin + ceY*angleCos;
 									
 									
 			
-//			var sf2_x:Number = tsX*angleCos-tsY*angleSin;
-//			var sf2_y:Number = tsX*angleSin+tsY*angleCos;
-//			var sf2:Point = new Point(tsX*angleCos)-tsY*angleSin, tsX*angleSin+tsY*angleCos);
-//			var cf2:Point = new Point(tcX*angleCos-tcY*angleSin, tcX*angleSin+tcY*angleCos);
-//			var ef2:Point = new Point(teX*angleCos-teY*angleSin, teX*angleSin+teY*angleCos);
+//			const sf2_x:Number = tsX*angleCos-tsY*angleSin;
+//			const sf2_y:Number = tsX*angleSin+tsY*angleCos;
+//			const sf2:Point = new Point(tsX*angleCos)-tsY*angleSin, tsX*angleSin+tsY*angleCos);
+//			const cf2:Point = new Point(tcX*angleCos-tcY*angleSin, tcX*angleSin+tcY*angleCos);
+//			const ef2:Point = new Point(teX*angleCos-teY*angleSin, teX*angleSin+teY*angleCos);
 
 			var k:Number;
 			
@@ -2249,14 +2250,13 @@ package flash.geom {
 				A = 1;				
 			}
 			
-			var solves:Array = Equations.solveEquation(A, B, C, D, E);
-			var intersection:Intersection = new Intersection();
+			const solves:Array = Equations.solveEquation(A, B, C, D, E);
+			const intersection:Intersection = new Intersection();
 			
-			var i:uint;
-			var len:uint = solves.length;
 			var time:Number;
+			const len:uint = solves.length;
 			if (!isSegment && !target.isSegment) {
-				for (i = 0;i < len; i++) {
+				for (var i:uint = 0; i < len; i++) {
 					intersection.currentTimes[i] = solves[i];
 				}
 				return intersection;
