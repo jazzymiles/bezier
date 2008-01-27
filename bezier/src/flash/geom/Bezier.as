@@ -1099,7 +1099,6 @@ package flash.geom {
 		 **/
 		 
 		 
-		// TODO:
 		public function get parabolaFocusPoint():Point {
 			const startX:Number = __start.x;
 			const startY:Number = __start.y;
