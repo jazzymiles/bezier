@@ -161,9 +161,6 @@
 			if (Math.abs(A) < PRECISION) {
 				return solveQuadraticEquation(B, C, D);
 			}
-			var u:Number;
-			var v:Number; 
-			var x:Number;
 			
 			var b:Number = B/A;
 			var c:Number = C/A;
@@ -182,15 +179,14 @@
 			
 			const p:Number = -b*b/3 + c;
 			const q:Number = 2*b*b*b/27 - b*c/3 + d;
-
-			var d1:Number = q*q/4 + p*p*p/27;
-			if (d1 >= 0) {
-				d1 = Math.sqrt(d1);
-				u = mathPower(-q/2 + d1, 1/3);
-				v = mathPower(-q/2 - d1, 1/3);
-				x = u + v - b/3;
+			const r:Number = q*q/4 + p*p*p/27;
+			
+			var x:Number;
+			if (r >= 0) {
+				const squrtR:Number = Math.sqrt(r);
+				x = mathPower(-q/2 + squrtR, 1/3) + mathPower(-q/2 - squrtR, 1/3) - b/3;
 			} else {
-				x = 2*Math.sqrt(-p/3)*Math.cos(mathAtan2(-q/2, Math.sqrt(Math.abs(d1)))/3) - b/3;
+				x = 2*Math.sqrt(-p/3)*Math.cos(mathAtan2(-q/2, Math.sqrt(Math.abs(r)))/3) - b/3;
 			}
 			
 			const quadraticSolve:Array = solveQuadraticEquation(1, x + b, x*x + b*x + c);
