@@ -67,9 +67,13 @@ package {
 
 		private function showStep(k:uint):void {
 			var StepConstructor:Class = constructors[k];
+			if (StepConstructor == null) {
+				return;
+			}
 			if (!isNaN(k)) {
 				if (step) {
 					removeChild(step);
+					step = null;
 				}
 				step = new StepConstructor();
 				addChild(step);
