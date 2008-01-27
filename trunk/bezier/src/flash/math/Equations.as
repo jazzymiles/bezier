@@ -161,14 +161,14 @@
 			if (Math.abs(A) < PRECISION) {
 				return solveQuadraticEquation(B, C, D);
 			}
+			var u:Number;
+			var v:Number; 
+			var x:Number;
 			
 			var b:Number = B/A;
 			var c:Number = C/A;
 			var d:Number = D/A;
 			
-			var u:Number;
-			var v:Number; 
-			var x:Number;
 			
 			if (Math.abs(b) < PRECISION) {
 				b = 0;
@@ -192,11 +192,13 @@
 			} else {
 				x = 2*Math.sqrt(-p/3)*Math.cos(mathAtan2(-q/2, Math.sqrt(Math.abs(d1)))/3) - b/3;
 			}
-			const quadratic_solve:Array = solveQuadraticEquation(1, x + b, x*x + b*x + c);
-			if ((quadratic_solve[0] != x) && (quadratic_solve[1] != x)) {
-				quadratic_solve.push(x);
+			
+			const quadraticSolve:Array = solveQuadraticEquation(1, x + b, x*x + b*x + c);
+			if ((quadraticSolve[0] != x) && (quadraticSolve[1] != x)) {
+				quadraticSolve.push(x);
 			}
-			return quadratic_solve;
+			
+			return quadraticSolve;
 		}
 
 		/** Функция для решения уравнения четвертой степени, записанного в форме ax^4 + bx^3 + cx^2 + dx + e = 0
@@ -246,13 +248,13 @@
 			var c1:Number;
 			var c2:Number;
 			
-			const cubic_solve:Number = solveCubicEquation(1, -c, b*d - 4*e, -b*b*e + 4*c*e - d*d)[0];
-			const cubic_solve2:Number = cubic_solve/2;
+			const cubicSolve:Number = solveCubicEquation(1, -c, b*d - 4*e, -b*b*e + 4*c*e - d*d)[0];
+			const cubicSolve2:Number = cubicSolve/2;
 			
 			
-			var m:Number = b*b/4 - c + cubic_solve;
-			var n:Number = b*cubic_solve2 - d;
-			var k:Number = cubic_solve2*cubic_solve2 - e;
+			var m:Number = b*b/4 - c + cubicSolve;
+			var n:Number = b*cubicSolve2 - d;
+			var k:Number = cubicSolve2*cubicSolve2 - e;
 			
 			if (Math.abs(m) < PRECISION) {
 				m = 0;
@@ -271,20 +273,20 @@
 				
 				c1 = b/2 - sqrtM;
 				if (n > 0) {
-					c2 = cubic_solve2 - sqrtK;
+					c2 = cubicSolve2 - sqrtK;
 				} else {
-					c2 = cubic_solve2 + sqrtK;
+					c2 = cubicSolve2 + sqrtK;
 				}
 				
-				const quartic_solve:Array = solveQuadraticEquation(1, c1, c2);
+				const quarticSolve:Array = solveQuadraticEquation(1, c1, c2);
 				c1 = b/2 + sqrtM;
 				if (n > 0) {
-					c2 = cubic_solve2 + sqrtK;
+					c2 = cubicSolve2 + sqrtK;
 				} else {
-					c2 = cubic_solve2 - sqrtK;
+					c2 = cubicSolve2 - sqrtK;
 				}
 				
-				return quartic_solve.concat(solveQuadraticEquation(1, c1, c2));
+				return quarticSolve.concat(solveQuadraticEquation(1, c1, c2));
 			}
 			return [];
 		}
