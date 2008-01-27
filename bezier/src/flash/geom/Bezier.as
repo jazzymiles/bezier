@@ -2178,21 +2178,21 @@ package flash.geom {
 			var s1_x:Number = tsX*angleCos - tsY*angleSin;
 			var s1_y:Number = tsX*angleSin + tsY*angleCos;		
 				
-			if (Math.abs(e1_x)<0.000000001)
+			if (Math.abs(e1_x) < PRECISION) {
 				e1_x = 0;
-			if (Math.abs(e1_y)<0.000000001)
+			}
+			if (Math.abs(e1_y)< PRECISION) {
 				e1_y = 0;
-			if (Math.abs(s1_x)<0.000000001)
+			}
+			if (Math.abs(s1_x)< PRECISION) {
 				s1_x = 0;
-			if (Math.abs(s1_y)<0.000000001)
+			}
+			if (Math.abs(s1_y)< PRECISION) {
 				s1_y = 0;
+			}
 							
-				
-				
-			const nnX2:Number = nnX*angleCos - nnY*angleSin;
-			const nnY2:Number = nnX*angleSin + nnY*angleCos;
-			
-						
+//			const nnX2:Number = nnX*angleCos - nnY*angleSin;
+//			const nnY2:Number = nnX*angleSin + nnY*angleCos;
 //			const tsX:Number = tpvX-target.__start.x;
 //			const tsY:Number = tpvY-target.__start.y;
 //			const tcX:Number = tpvX-target.__control.x;
