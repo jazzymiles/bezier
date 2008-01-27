@@ -256,7 +256,7 @@
 			N = b/2*cubic_solve[0] - d;
 			K = cubic_solve[0]*cubic_solve[0]/4 - e;
 			
-			var range_min2:Number = Math.abs(M)+Math.abs(N)+Math.abs(K);
+//			var range_min2:Number = Math.abs(M)+Math.abs(N)+Math.abs(K);
 			if (Math.abs(M) < eps*eps)
 				M = 0;
 			if (Math.abs(N) < eps*eps)
@@ -264,7 +264,7 @@
 			if (Math.abs(K) < eps*eps)
 				K = 0;						
 
-			var ttttt:Number = N*N - 4*M*K;
+//			var ttttt:Number = N*N - 4*M*K;
 			//if ((M >= -eps) && (Math.abs(N*N - 4*M*K) < eps*Math.abs(N*N))) {
 			if ((M >= 0) && (K >= 0)/* && (Math.abs(N*N - 4*M*K) <= eps*N*N)*/) {
 				c1 = b/2 - Math.sqrt(M);

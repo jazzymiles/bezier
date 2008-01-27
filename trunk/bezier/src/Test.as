@@ -52,7 +52,7 @@ package {
 			// testBoundsIntersection();
 		}
 		
-		private function testBoundsIntersection():void {
+		protected function testBoundsIntersection():void {
 			var current:Rectangle = new Rectangle(100, 100, -20, -10);
 			var target:Rectangle = new Rectangle(100, 100, -20, -10);
 			Intersection.isIntersectionPossible(current, target);
