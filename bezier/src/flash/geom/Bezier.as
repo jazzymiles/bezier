@@ -1226,14 +1226,15 @@ package flash.geom {
 		 * 
 		 **/
 
-		public function getPoint(time:Number):Point {
+		public function getPoint(time:Number, point:Point=null):Point {
 			if (isNaN(time)) {
 				return undefined;
 			}
+			point = (point as Point) || new Point();
 			const f:Number = 1 - time;
-			const x:Number = __start.x*f*f + __control.x*2*time*f + __end.x*time*time;
-			const y:Number = __start.y*f*f + __control.y*2*time*f + __end.y*time*time;
-			return new Point(x, y);
+			point.x = __start.x*f*f + __control.x*2*time*f + __end.x*time*time;
+			point.y = __start.y*f*f + __control.y*2*time*f + __end.y*time*time;
+			return point;
 		}
 
 		/* *

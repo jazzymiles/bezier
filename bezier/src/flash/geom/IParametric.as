@@ -48,7 +48,7 @@ package flash.geom {
 		 * Calculate and return 2-dimentional point by time-interator.
 		 * @return Point;
 		 **/
-		function getPoint(time:Number):Point;
+		function getPoint(time:Number, point:Point=null):Point;
 
 		/* *
 		 * Вычисляет и возвращает time-итератор точки по дистанции от <code>start</code>.
