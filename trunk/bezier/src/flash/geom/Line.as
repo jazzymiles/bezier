@@ -267,10 +267,11 @@ package flash.geom {
 		 * @return Point point on line
 		 * 
 		 */
-		public function getPoint(time:Number):Point {
-			const x:Number = start.x + (end.x - start.x)*time;
-			const y:Number = start.y + (end.y - start.y)*time;
-			return new Point(x, y);
+		public function getPoint(time:Number, point:Point = null):Point {
+			point = (point as Point) || new Point();
+			point.x = start.x + (end.x - start.x)*time;
+			point.y = start.y + (end.y - start.y)*time;
+			return point;
 		}
 
 		/* *
