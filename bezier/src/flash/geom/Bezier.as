@@ -397,13 +397,17 @@ package flash.geom {
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 **/
 		public function Bezier(start:Point = undefined, control:Point = undefined, end:Point = undefined, isSegment:Boolean = true) {
+			initInstance(start, control, end, isSegment);
+		}
+		// 
+		protected function initInstance(start:Point = undefined, control:Point = undefined, end:Point = undefined, isSegment:Boolean = true) : void {
 			__start = (start as Point) || new Point();
 			__control = (control as Point) || new Point();
 			__end = (end as Point) || new Point();
 			__isSegment = Boolean(isSegment);
 		}
 
-		 // Поскольку публичные переменные нельзя нельзя переопределять в дочерних классах, 
+		// Поскольку публичные переменные нельзя нельзя переопределять в дочерних классах, 
 		 // start, control, end и isSegment реализованы как get-set методы, а не как публичные переменные.
 		
 		/* *
