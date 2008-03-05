@@ -1,5 +1,6 @@
 // UTF-8
 // translator: Flastar http://flastar.110mb.com
+
 package flash.geom {
 
 	/* *
@@ -41,21 +42,21 @@ package flash.geom {
 	 * @see Bezier
 	 * @see Intersection
 	 */
-	 
+
 	public class Line extends Object implements IParametric {
 
 		
-		protected const PRECISION:Number = 1e-10;
+		protected const PRECISION : Number = 1e-10;
 
-		protected var __start:Point;
-		protected var __end:Point;
-		protected var __isSegment:Boolean;
+		protected var __start : Point;
+		protected var __end : Point;
+		protected var __isSegment : Boolean;
 
-		public function Line(start:Point = undefined, end:Point = undefined, isSegment:Boolean = true) {
+		public function Line(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true) {
 			initInstance(start, end, isSegment);
 		}
-		
-		protected function initInstance(start:Point = undefined, end:Point = undefined, isSegment:Boolean = true) : void {
+
+		protected function initInstance(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true) : void {
 			__start = (start as Point) || new Point();
 			__end = (end as Point) || new Point();
 			__isSegment = Boolean(isSegment);
@@ -85,12 +86,12 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 **/
 
-		 
-		public function get start():Point {
+		
+		public function get start() : Point {
 			return __start;
 		}
 
-		public function set start(value:Point):void {
+		public function set start(value : Point) : void {
 			__start = value;
 		}
 
@@ -107,12 +108,12 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 **/
-		 
-		public function get end():Point {
+
+		public function get end() : Point {
 			return __end;
 		}
 
-		public function set end(value:Point):void {
+		public function set end(value : Point) : void {
 			__end = value;
 		}
 
@@ -157,11 +158,11 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 **/
-		public function get isSegment():Boolean {
+		public function get isSegment() : Boolean {
 			return __isSegment;
 		}
 
-		public function set isSegment(value:Boolean):void {
+		public function set isSegment(value : Boolean) : void {
 			__isSegment = Boolean(value);
 		}
 
@@ -174,7 +175,7 @@ package flash.geom {
 		 * @return Line copy of current object Line.  
 		 */
 
-		public function clone():Line {
+		public function clone() : Line {
 			return new Line(__start.clone(), __end.clone(), __isSegment);
 		}
 
@@ -189,13 +190,13 @@ package flash.geom {
 		 * Rotate realize respecting at point <code>start</code>.
 		 * The return value is between positive PI and negative PI. 
 		 **/
-		public function get angle():Number {
+		public function get angle() : Number {
 			return Math.atan2(__end.y - __start.y, __end.x - __start.x);
 		}
 
-		public function set angle(rad:Number):void {
-			const distance:Number = Point.distance(__start, __end);
-			const polar:Point = Point.polar(distance, rad);
+		public function set angle(rad : Number) : void {
+			const distance : Number = Point.distance(__start, __end);
+			const polar : Point = Point.polar(distance, rad);
 			__end.x = __start.x + polar.x;
 			__end.y = __start.y + polar.y; 
 		}
@@ -216,11 +217,11 @@ package flash.geom {
 		 * If variable undefined, center of rotation is point <code>start</code>
 		 */
 
-		public function angleOffset(rad:Number, fulcrum:Point = null):void {
+		public function angleOffset(rad : Number, fulcrum : Point = null) : void {
 			fulcrum = fulcrum || new Point();
-			const startLine:Line = new Line(fulcrum, __start);
+			const startLine : Line = new Line(fulcrum, __start);
 			startLine.angle += rad;
-			const endLine:Line = new Line(fulcrum, __end);
+			const endLine : Line = new Line(fulcrum, __end);
 			endLine.angle += rad;
 		}
 
@@ -239,7 +240,7 @@ package flash.geom {
 		 * @param dy:Number variable of moving at axe Y
 		 * 
 		 */		 		
-		public function offset(dx:Number, dy:Number):void {
+		public function offset(dx : Number, dy : Number) : void {
 			__start.offset(dx, dy);
 			__end.offset(dx, dy);
 		}
@@ -254,8 +255,8 @@ package flash.geom {
 		 * Return number only positively; 
 		 * @return Number;
 		 **/
-		 
-		public function get length():Number {
+
+		public function get length() : Number {
 			return Point.distance(__start, __end); 
 		}
 
@@ -271,10 +272,10 @@ package flash.geom {
 		 * @return Point point on line
 		 * 
 		 */
-		public function getPoint(time:Number, point:Point = null):Point {
+		public function getPoint(time : Number, point : Point = null) : Point {
 			point = (point as Point) || new Point();
-			point.x = __start.x + (__end.x - __start.x)*time;
-			point.y = __start.y + (__end.y - __start.y)*time;
+			point.x = __start.x + (__end.x - __start.x) * time;
+			point.y = __start.y + (__end.y - __start.y) * time;
 			return point;
 		}
 
@@ -291,8 +292,8 @@ package flash.geom {
 		 * @return Number
 		 * 
 		 */
-		public function getTimeByDistance(distance:Number):Number {
-			return distance/Point.distance(__start, __end);
+		public function getTimeByDistance(distance : Number) : Number {
+			return distance / Point.distance(__start, __end);
 		}
 
 		/* *
@@ -319,19 +320,19 @@ package flash.geom {
 		 * @param y
 		 * 
 		 */
-		public function setPoint(time:Number, x:Number = undefined, y:Number = undefined):void {
+		public function setPoint(time : Number, x : Number = undefined, y : Number = undefined) : void {
 			if (isNaN(x) && isNaN(y)) {
 				return;
 			}
-			const point:Point = getPoint(time);
+			const point : Point = getPoint(time);
 			if (!isNaN(x)) {
 				point.x = x;
 			}
 			if (!isNaN(y)) {
 				point.y = y;
 			}
-			__end.x = point.x + (point.x - __start.x)*((1 - time)/time);
-			__end.y = point.y + (point.y - __start.y)*((1 - time)/time);
+			__end.x = point.x + (point.x - __start.x) * ((1 - time) / time);
+			__end.y = point.y + (point.y - __start.y) * ((1 - time) / time);
 		}
 
 		/* *
@@ -340,17 +341,20 @@ package flash.geom {
 		/**
 		 * Return overall rectangle of object. 
 		 **/
-		public function get bounds():Rectangle {
-			const xMin:Number = Math.min(__start.x, __end.x);
-			const xMax:Number = Math.max(__start.x, __end.x);
-			const yMin:Number = Math.min(__start.y, __end.y);
-			const yMax:Number = Math.max(__start.y, __end.y);
-			const width:Number = xMax - xMin;
-			const height:Number = yMax - yMin;
-			return new Rectangle(xMin, yMin, width, height);
+		public function get bounds() : Rectangle {
+			if (__start.x > __end.x) {
+				if (__start.y > __end.y) {
+					return new Rectangle(__end.x, __end.y, __start.x - __end.x, __start.y - __end.y);
+				} else {
+					return new Rectangle(__end.x, __start.y, __start.x - __end.x, __end.y - __start.y);
+				}
+			}
+			if (__start.y > __end.y) {
+				return new Rectangle(__start.x, __end.y, __end.x - __start.x, __start.y - __end.y);
+			} 
+			return new Rectangle(__start.x, __start.y, __end.x - __start.x, __end.y - __start.y);
 		}
 
-		
 		/* *
 		 * Возвращает отрезок - сегмент линии, заданный начальным и конечным итераторами.
 		 * 
@@ -369,7 +373,7 @@ package flash.geom {
 		 * @return Line 
 		 * 
 		 */
-		public function getSegment(fromTime:Number = 0, toTime:Number = 1):Line {
+		public function getSegment(fromTime : Number = 0, toTime : Number = 1) : Line {
 			return new Line(getPoint(fromTime), getPoint(toTime));
 		}
 
@@ -391,7 +395,7 @@ package flash.geom {
 		 * @return Number 
 		 * 
 		 */
-		public function getSegmentLength(time:Number):Number {
+		public function getSegmentLength(time : Number) : Number {
 			return Point.distance(__start, getPoint(time));
 		}
 
@@ -427,18 +431,18 @@ package flash.geom {
 		 * @return 
 		 * 
 		 */
-		 
-		public function getTimesSequence(step:Number, startShift:Number = 0):Array {
+
+		public function getTimesSequence(step : Number, startShift : Number = 0) : Array {
 			step = Math.abs(step);
-			const distance:Number = (startShift%step + step)%step;
+			const distance : Number = (startShift % step + step) % step;
 			
-			const times:Array = new Array();
-			const lineLength:Number = Point.distance(__start, __end);
+			const times : Array = new Array();
+			const lineLength : Number = Point.distance(__start, __end);
 			if (distance > lineLength) {
 				return times;
 			}
-			const timeStep:Number = step/lineLength;
-			var time:Number = getTimeByDistance(distance);
+			const timeStep : Number = step / lineLength;
+			var time : Number = getTimeByDistance(distance);
 			
 			while (time <= 1) {
 				times[times.length] = time;
@@ -462,19 +466,19 @@ package flash.geom {
 		 * @see #isSegment
 		 */
 
-
-		public function intersectionLine(targetLine:Line):Intersection {
+		
+		public function intersectionLine(targetLine : Line) : Intersection {
 			// checkBounds
 			if (__isSegment && targetLine.__isSegment) {
-				const fxMax:Number = Math.max(__start.x, __end.x);
-				const fyMax:Number = Math.max(__start.y, __end.y);
-				const fxMin:Number = Math.min(__start.x, __end.x);
-				const fyMin:Number = Math.min(__start.y, __end.y);
+				const fxMax : Number = Math.max(__start.x, __end.x);
+				const fyMax : Number = Math.max(__start.y, __end.y);
+				const fxMin : Number = Math.min(__start.x, __end.x);
+				const fyMin : Number = Math.min(__start.y, __end.y);
 				
-				const sxMax:Number = Math.max(targetLine.__start.x, targetLine.__end.x);
-				const syMax:Number = Math.max(targetLine.__start.y, targetLine.__end.y);
-				const sxMin:Number = Math.min(targetLine.__start.x, targetLine.__end.x);
-				const syMin:Number = Math.min(targetLine.__start.y, targetLine.__end.y);
+				const sxMax : Number = Math.max(targetLine.__start.x, targetLine.__end.x);
+				const syMax : Number = Math.max(targetLine.__start.y, targetLine.__end.y);
+				const sxMin : Number = Math.min(targetLine.__start.x, targetLine.__end.x);
+				const syMin : Number = Math.min(targetLine.__start.y, targetLine.__end.y);
 		
 				if (fxMax < sxMin || sxMax < fxMin || fyMax < syMin || syMax < fyMin) { 
 					// no intersection
@@ -483,39 +487,39 @@ package flash.geom {
 			}
 			// end check bounds
 
-			var intersection:Intersection;
+			var intersection : Intersection;
 			
-			const fseX:Number = __end.x - __start.x;
-			const fseY:Number = __end.y - __start.y;
+			const fseX : Number = __end.x - __start.x;
+			const fseY : Number = __end.y - __start.y;
 			
-			const sseX:Number = targetLine.__end.x - targetLine.__start.x;
-			const sseY:Number = targetLine.__end.y - targetLine.__start.y;
+			const sseX : Number = targetLine.__end.x - targetLine.__start.x;
+			const sseY : Number = targetLine.__end.y - targetLine.__start.y;
 			
-			const sfsX:Number = __start.x - targetLine.__start.x;
-			const sfsY:Number = __start.y - targetLine.__start.y;
+			const sfsX : Number = __start.x - targetLine.__start.x;
+			const sfsY : Number = __start.y - targetLine.__start.y;
 			
 			
-			const denominator:Number = fseX*sseY - fseY*sseX;
-			const a:Number = sseX*sfsY - sfsX*sseY;
+			const denominator : Number = fseX * sseY - fseY * sseX;
+			const a : Number = sseX * sfsY - sfsX * sseY;
 			
 			if (denominator == 0) { 
 				if (a == 0) { 
 					// TODO: new coincident type
 					// coincident
-//					const sfeX:Number = start.x - targetLine.end.x;
-//					const sfeY:Number = start.y - targetLine.end.y;
-//					const startTime:Number = -(sfsX/fseX || sfsY/fseY) || 0;
-//					const endTime:Number = -(sfeX/fseX || sfeY/fseY) || 0;
-//					
-//					const order_array:Array = [new OrderedPoint(0, start),
-//						new OrderedPoint(1, end),
-//						new OrderedPoint(startTime, targetLine.start),
-//						new OrderedPoint(endTime, targetLine.end)];
-//					order_array.sortOn(OrderedPoint.TIME, Array.NUMERIC);
-//					
-//					const startOrdered:OrderedPoint = order_array[1];
-//					const endOrdered:OrderedPoint = order_array[2];
-					
+					//					const sfeX:Number = start.x - targetLine.end.x;
+					//					const sfeY:Number = start.y - targetLine.end.y;
+					//					const startTime:Number = -(sfsX/fseX || sfsY/fseY) || 0;
+					//					const endTime:Number = -(sfeX/fseX || sfeY/fseY) || 0;
+					//					
+					//					const order_array:Array = [new OrderedPoint(0, start),
+					//						new OrderedPoint(1, end),
+					//						new OrderedPoint(startTime, targetLine.start),
+					//						new OrderedPoint(endTime, targetLine.end)];
+					//					order_array.sortOn(OrderedPoint.TIME, Array.NUMERIC);
+					//					
+					//					const startOrdered:OrderedPoint = order_array[1];
+					//					const endOrdered:OrderedPoint = order_array[2];
+
 					intersection = new Intersection();
 					intersection.isCoincidence = true;
 					// intersection.coincidenceLine = new Line(startOrdered.point, endOrdered.point);
@@ -526,7 +530,7 @@ package flash.geom {
 				}
 			}
 			
-			const currentTime:Number = a/denominator;
+			const currentTime : Number = a / denominator;
 			if (__isSegment) {
 				if (currentTime < 0 || currentTime > 1) { 
 					// no intersection
@@ -534,8 +538,8 @@ package flash.geom {
 				}
 			}
 			
-			const b:Number = fseX*sfsY - sfsX*fseY;
-			const oppositeTime:Number = b/denominator;
+			const b : Number = fseX * sfsY - sfsX * fseY;
+			const oppositeTime : Number = b / denominator;
 			if (targetLine.__isSegment) {
 				if (oppositeTime < 0 || oppositeTime > 1) { 
 					// no intersection
@@ -562,8 +566,8 @@ package flash.geom {
 		 * @return 
 		 * 
 		 */		 		
-		public function intersectionBezier(target:Bezier):Intersection {
-			const intersection:Intersection = new Intersection();
+		public function intersectionBezier(target : Bezier) : Intersection {
+			const intersection : Intersection = new Intersection();
 			target;
 			return intersection;
 		}
@@ -580,12 +584,12 @@ package flash.geom {
 		 * @return Number - time-interator of point on line.
 		 * @see isSegment
 		 */
-		public function getClosest(fromPoint:Point):Number {
-			const from_distance:Number = Point.distance(__start, fromPoint);
-			const from_angle:Number = Math.atan2(__start.y - __end.y, __start.x - __end.x);
-			const difference:Number = from_angle - angle;
-			const distance:Number = from_distance*Math.cos(difference);
-			const time:Number = distance/length;
+		public function getClosest(fromPoint : Point) : Number {
+			const from_distance : Number = Point.distance(__start, fromPoint);
+			const from_angle : Number = Math.atan2(__start.y - __end.y, __start.x - __end.x);
+			const difference : Number = from_angle - angle;
+			const distance : Number = from_distance * Math.cos(difference);
+			const time : Number = distance / length;
 			if (!__isSegment) {
 				return time;
 			}
@@ -608,7 +612,7 @@ package flash.geom {
 		 * @return 
 		 * 
 		 */
-		public function toString():String {
+		public function toString() : String {
 			return 	"(start:" + __start + ", end:" + __end + ")";
 		}
 	}
@@ -618,12 +622,12 @@ import flash.geom.Point;
 
 class OrderedPoint {
 
-	public static const TIME:String = "time";
+	public static const TIME : String = "time";
 
-	public var time:Number;
-	public var point:Point;
+	public var time : Number;
+	public var point : Point;
 
-	public function OrderedPoint(timeValue:Number, pt:Point) {
+	public function OrderedPoint(timeValue : Number, pt : Point) {
 		time = timeValue;
 		point = pt.clone();
 	}
