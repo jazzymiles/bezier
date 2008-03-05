@@ -318,9 +318,9 @@ package flash.geom {
 
 		protected static const PRECISION:Number = 1e-10;
 
-		protected var __start:Point;
-		protected var __control:Point;
-		protected var __end:Point;
+		protected var startPoint:Point;
+		protected var controlPoint:Point;
+		protected var endPoint:Point;
 		protected var __isSegment:Boolean = true;
 
 		//**************************************************
@@ -401,9 +401,9 @@ package flash.geom {
 		}
 		// 
 		protected function initInstance(start:Point = undefined, control:Point = undefined, end:Point = undefined, isSegment:Boolean = true) : void {
-			__start = (start as Point) || new Point();
-			__control = (control as Point) || new Point();
-			__end = (end as Point) || new Point();
+			startPoint = (start as Point) || new Point();
+			controlPoint = (control as Point) || new Point();
+			endPoint = (end as Point) || new Point();
 			__isSegment = Boolean(isSegment);
 		}
 
@@ -436,11 +436,11 @@ package flash.geom {
 		 
 		 
 		public function get start():Point {
-			return __start;
+			return startPoint;
 		}
 
 		public function set start(value:Point):void {
-			__start = value;
+			startPoint = value;
 		}
 
 		/* *
@@ -464,11 +464,11 @@ package flash.geom {
 		 
 		 
 		public function get control():Point {
-			return __control;
+			return controlPoint;
 		}
 
 		public function set control(value:Point):void {
-			__control = value;
+			controlPoint = value;
 		}
 
 		/* *
@@ -490,11 +490,11 @@ package flash.geom {
 		 
 		 
 		public function get end():Point {
-			return __end;
+			return endPoint;
 		}
 
 		public function set end(value:Point):void {
-			__end = value;
+			endPoint = value;
 		}
 
 		
@@ -625,7 +625,7 @@ package flash.geom {
 		 
 
 		public function clone():Bezier {
-			return new Bezier(__start.clone(), __control.clone(), __end.clone(), isSegment);
+			return new Bezier(startPoint.clone(), controlPoint.clone(), endPoint.clone(), __isSegment);
 		}
 
 		//**************************************************
@@ -793,10 +793,10 @@ package flash.geom {
 		 **/
 		 
 		public function getSegmentLength(time:Number):Number {
-			const csX:Number = __control.x - __start.x;
-			const csY:Number = __control.y - __start.y;
-			const nvX:Number = __end.x - __control.x - csX;
-			const nvY:Number = __end.y - __control.y - csY;
+			const csX:Number = controlPoint.x - startPoint.x;
+			const csY:Number = controlPoint.y - startPoint.y;
+			const nvX:Number = endPoint.x - controlPoint.x - csX;
+			const nvY:Number = endPoint.y - controlPoint.y - csY;
 			
 			// vectors: c0 = 4*(cs,cs), с1 = 8*(cs, ec-cs), c2 = 4*(ec-cs,ec-cs)
 			const c0:Number = 4*(csX*csX + csY*csY);
@@ -941,9 +941,9 @@ package flash.geom {
 		 
 		public function get triangleArea():Number {
 			// heron's formula
-			const distanceStartControl:Number = Point.distance(__start, __control);
-			const distanceEndControl:Number = Point.distance(__end, __control);
-			const distanceStartEnd:Number = Point.distance(__start, __end);
+			const distanceStartControl:Number = Point.distance(startPoint, controlPoint);
+			const distanceEndControl:Number = Point.distance(endPoint, controlPoint);
+			const distanceStartEnd:Number = Point.distance(startPoint, endPoint);
 			
 			const halfPerimeter:Number = (distanceStartControl + distanceEndControl + distanceStartEnd)/2;
 			const area:Number = Math.sqrt(halfPerimeter*(halfPerimeter - distanceStartControl)*(halfPerimeter - distanceEndControl)*(halfPerimeter - distanceStartEnd)); 
@@ -975,28 +975,28 @@ package flash.geom {
 			var yMin:Number;
 			var yMax:Number;
 			
-			const x:Number = __start.x - 2*__control.x + __end.x;
-			const extremumTimeX:Number = ((__start.x - __control.x)/x) || 0;
+			const x:Number = startPoint.x - 2*controlPoint.x + endPoint.x;
+			const extremumTimeX:Number = ((startPoint.x - controlPoint.x)/x) || 0;
 			const extemumPointX:Point = getPoint(extremumTimeX);
 			
 			if (isNaN(extemumPointX.x) || extremumTimeX <= 0 || extremumTimeX >= 1) {
-				xMin = Math.min(__start.x, __end.x);
-				xMax = Math.max(__start.x, __end.x);
+				xMin = Math.min(startPoint.x, endPoint.x);
+				xMax = Math.max(startPoint.x, endPoint.x);
 			} else {
-				xMin = Math.min(extemumPointX.x, Math.min(__start.x, __end.x));
-				xMax = Math.max(extemumPointX.x, Math.max(__start.x, __end.x));
+				xMin = Math.min(extemumPointX.x, Math.min(startPoint.x, endPoint.x));
+				xMax = Math.max(extemumPointX.x, Math.max(startPoint.x, endPoint.x));
 			}
 			
-			const y:Number = __start.y - 2*__control.y + __end.y;
-			const extremumTimeY:Number = ((__start.y - __control.y)/y) || 0;
+			const y:Number = startPoint.y - 2*controlPoint.y + endPoint.y;
+			const extremumTimeY:Number = ((startPoint.y - controlPoint.y)/y) || 0;
 			const extemumPointY:Point = getPoint(extremumTimeY);
 			
 			if (isNaN(extemumPointY.y) || extremumTimeY <= 0 || extremumTimeY >= 1) {
-				yMin = Math.min(__start.y, __end.y);
-				yMax = Math.max(__start.y, __end.y);
+				yMin = Math.min(startPoint.y, endPoint.y);
+				yMax = Math.max(startPoint.y, endPoint.y);
 			} else {
-				yMin = Math.min(extemumPointY.y, Math.min(__start.y, __end.y));
-				yMax = Math.max(extemumPointY.y, Math.max(__start.y, __end.y));
+				yMin = Math.min(extemumPointY.y, Math.min(startPoint.y, endPoint.y));
+				yMax = Math.max(extemumPointY.y, Math.max(startPoint.y, endPoint.y));
 			}
 
 			const width:Number = xMax - xMin;
@@ -1068,11 +1068,11 @@ package flash.geom {
 		 **/
 
 		public function get parabolaVertex():Number {
-			const x:Number = __start.x - 2*__control.x + __end.x;
-			const y:Number = __start.y - 2*__control.y + __end.y;
+			const x:Number = startPoint.x - 2*controlPoint.x + endPoint.x;
+			const y:Number = startPoint.y - 2*controlPoint.y + endPoint.y;
 			const summ:Number = x*x + y*y;
-			const dx:Number = __start.x - __control.x;
-			const dy:Number = __start.y - __control.y;
+			const dx:Number = startPoint.x - controlPoint.x;
+			const dy:Number = startPoint.y - controlPoint.y;
 			const vertexTime:Number = (x*dx + y*dy)/summ;
 			if (isNaN(vertexTime)) {
 				return 1/2;
@@ -1104,19 +1104,19 @@ package flash.geom {
 		 
 		 
 		public function get parabolaFocusPoint():Point {
-			const startX:Number = __start.x;
-			const startY:Number = __start.y;
-			const controlX:Number = __control.x;
-			const controlY:Number = __control.y;
-			const endX:Number = __end.x;
-			const endY:Number = __end.y;
+			const startX:Number = startPoint.x;
+			const startY:Number = startPoint.y;
+			const controlX:Number = controlPoint.x;
+			const controlY:Number = controlPoint.y;
+			const endX:Number = endPoint.x;
+			const endY:Number = endPoint.y;
 
 			const x:Number = startX - 2*controlX + endX;
 			const y:Number = startY - 2*controlY + endY;
 			const summ:Number = x*x + y*y;
 			
 			if (summ == 0) {
-				return __control.clone();
+				return controlPoint.clone();
 			}
 			
 			const dx:Number = controlX - startX;
@@ -1236,8 +1236,8 @@ package flash.geom {
 			}
 			point = (point as Point) || new Point();
 			const f:Number = 1 - time;
-			point.x = __start.x*f*f + __control.x*2*time*f + __end.x*time*time;
-			point.y = __start.y*f*f + __control.y*2*time*f + __end.y*time*time;
+			point.x = startPoint.x*f*f + controlPoint.x*2*time*f + endPoint.x*time*time;
+			point.y = startPoint.y*f*f + controlPoint.y*2*time*f + endPoint.y*time*time;
 			return point;
 		}
 
@@ -1273,11 +1273,11 @@ package flash.geom {
 		public function angleOffset(value:Number, fulcrum:Point = null):void {
 			fulcrum = fulcrum || new Point();
 			
-			const startLine:Line = new Line(fulcrum, __start);
+			const startLine:Line = new Line(fulcrum, startPoint);
 			startLine.angle += value;
-			const controlLine:Line = new Line(fulcrum, __control);
+			const controlLine:Line = new Line(fulcrum, controlPoint);
 			controlLine.angle += value;
-			const endLine:Line = new Line(fulcrum, __end);
+			const endLine:Line = new Line(fulcrum, endPoint);
 			endLine.angle += value;
 		}
 
@@ -1308,8 +1308,8 @@ package flash.geom {
 		 */
 		 		
 		public function offset(dX:Number, dY:Number):void {
-			__start.offset(dX, dY);
-			__end.offset(dX, dY);
+			startPoint.offset(dX, dY);
+			endPoint.offset(dX, dY);
 		}
 
 		
@@ -1357,7 +1357,7 @@ package flash.geom {
 			const curveLength:Number = length;
 			var time:Number = distance/curveLength;
 			
-			if (isSegment) {
+			if (__isSegment) {
 				if (distance <= 0) {
 					return 0;
 				}
@@ -1365,10 +1365,10 @@ package flash.geom {
 					return 1;
 				}
 			}
-			const csX:Number = __control.x - __start.x;
-			const csY:Number = __control.y - __start.y;
-			const ecX:Number = __end.x - __control.x;
-			const ecY:Number = __end.y - __control.y;
+			const csX:Number = controlPoint.x - startPoint.x;
+			const csY:Number = controlPoint.y - startPoint.y;
+			const ecX:Number = endPoint.x - controlPoint.x;
+			const ecY:Number = endPoint.y - controlPoint.y;
 			const nvX:Number = ecX - csX;
 			const nvY:Number = ecY - csY;
 	
@@ -1486,10 +1486,10 @@ package flash.geom {
 				distance = distance%step;
 			}
 
-			const csX:Number = __control.x - __start.x;
-			const csY:Number = __control.y - __start.y;
-			const ecX:Number = __end.x - __control.x;
-			const ecY:Number = __end.y - __control.y;
+			const csX:Number = controlPoint.x - startPoint.x;
+			const csY:Number = controlPoint.y - startPoint.y;
+			const ecX:Number = endPoint.x - controlPoint.x;
+			const ecY:Number = endPoint.y - controlPoint.y;
 			const nvX:Number = ecX - csX;
 			const nvY:Number = ecY - csY;
 			
@@ -1620,24 +1620,24 @@ package flash.geom {
 			const tf:Number = 2*time*f;
 			
 			if (isNaN(x)) {
-				x = __start.x*fSquared + __control.x*2*tf + __end.x*tSquared;
+				x = startPoint.x*fSquared + controlPoint.x*2*tf + endPoint.x*tSquared;
 			}
 			if (isNaN(y)) {
-				y = __start.y*fSquared + __control.y*2*tf + __end.y*tSquared;
+				y = startPoint.y*fSquared + controlPoint.y*2*tf + endPoint.y*tSquared;
 			}
 			
 			switch (time) {
 				case 0:
-					__start.x = x;
-					__start.y = y; 
+					startPoint.x = x;
+					startPoint.y = y; 
 					break;
 				case 1:
-					__end.x = x; 
-					__end.y = y; 
+					endPoint.x = x; 
+					endPoint.y = y; 
 					break;
 				default: 
-					__control.x = (x - __end.x*tSquared - __start.x*fSquared)/tf;
-					__control.y = (y - __end.y*tSquared - __start.y*fSquared)/tf;
+					controlPoint.x = (x - endPoint.x*tSquared - startPoint.x*fSquared)/tf;
+					controlPoint.y = (y - endPoint.y*tSquared - startPoint.y*fSquared)/tf;
 			}
 		}
 
@@ -1689,12 +1689,12 @@ package flash.geom {
 			if (!(fromPoint as Point)) {
 				return NaN;
 			}
-			const sx:Number = __start.x;
-			const sy:Number = __start.y;
-			const cx:Number = __control.x;
-			const cy:Number = __control.y;
-			const ex:Number = __end.x;
-			const ey:Number = __end.y;
+			const sx:Number = startPoint.x;
+			const sy:Number = startPoint.y;
+			const cx:Number = controlPoint.x;
+			const cy:Number = controlPoint.y;
+			const ex:Number = endPoint.x;
+			const ey:Number = endPoint.y;
 	
 			const lpx:Number = sx - fromPoint.x;
 			const lpy:Number = sy - fromPoint.y;
@@ -1713,7 +1713,7 @@ package flash.geom {
 			
 			const extremumTimes:Array = Equations.solveCubicEquation(1, A, B, C);
 			
-			if (isSegment) {
+			if (__isSegment) {
 				extremumTimes.push(0);
 				extremumTimes.push(1);
 			}
@@ -1740,7 +1740,7 @@ package flash.geom {
 				isInside = (extremumTime >= 0) && (extremumTime <= 1);
 				
 				if (isNaN(closestPointTime)) {
-					if (!isSegment || isInside) {
+					if (!__isSegment || isInside) {
 						closestPointTime = extremumTime;
 						closestDistance = extremumDistance;
 					}
@@ -1748,7 +1748,7 @@ package flash.geom {
 				}
 				
 				if (extremumDistance < closestDistance) {
-					if (!isSegment || isInside) {
+					if (!__isSegment || isInside) {
 						closestPointTime = extremumTime;
 						closestDistance = extremumDistance;
 					}
@@ -1840,10 +1840,10 @@ package flash.geom {
 		 */
 
 		public function getTangentAngle(time:Number = 0):Number {
-			const t0X:Number = __start.x + (__control.x - __start.x)*time;
-			const t0Y:Number = __start.y + (__control.y - __start.y)*time;
-			const t1X:Number = __control.x + (__end.x - __control.x)*time;
-			const t1Y:Number = __control.y + (__end.y - __control.y)*time;
+			const t0X:Number = startPoint.x + (controlPoint.x - startPoint.x)*time;
+			const t0Y:Number = startPoint.y + (controlPoint.y - startPoint.y)*time;
+			const t1X:Number = controlPoint.x + (endPoint.x - controlPoint.x)*time;
+			const t1Y:Number = controlPoint.y + (endPoint.y - controlPoint.y)*time;
 			
 			const distanceX:Number = t1X - t0X;
 			const distanceY:Number = t1Y - t0Y;
@@ -1904,12 +1904,12 @@ package flash.geom {
 		public function intersectionLine(target:Line):Intersection {
 			var intersection:Intersection = new Intersection();
 			
-			const sX:Number = __start.x;
-			const sY:Number = __start.y;
-			const cX:Number = __control.x;
-			const cY:Number = __control.y;
-			const eX:Number = __end.x;
-			const eY:Number = __end.y;
+			const sX:Number = startPoint.x;
+			const sY:Number = startPoint.y;
+			const cX:Number = controlPoint.x;
+			const cY:Number = controlPoint.y;
+			const eX:Number = endPoint.x;
+			const eY:Number = endPoint.y;
 			const oX:Number = target.start.x;
 			const oY:Number = target.start.y;
 			const lineAngle:Number = target.angle;
@@ -1994,7 +1994,7 @@ package flash.geom {
 				time0 = a/c;
 				
 				outsideBezier0 = time0 < 0 || time0 > 1;
-				if (isSegment && outsideBezier0) {
+				if (__isSegment && outsideBezier0) {
 					return null;
 				}
 				
@@ -2027,7 +2027,7 @@ package flash.geom {
 			outsideBezier0 = time0 < 0 || time0 > 1;
 			outsideBezier1 = time1 < 0 || time1 > 1;
 			
-			if (isSegment && outsideBezier0 && outsideBezier1) {
+			if (__isSegment && outsideBezier0 && outsideBezier1) {
 				return null;
 			}
 			
@@ -2050,7 +2050,7 @@ package flash.geom {
 				return null;
 			}
 			
-			if (isSegment) {
+			if (__isSegment) {
 				if (target.isSegment) {
 					if (!outsideBezier0 && !outsideLine0) {
 						intersection.currentTimes.push(time0);
@@ -2154,11 +2154,11 @@ package flash.geom {
 			const tpvX:Number = targetParabolaVertex.x;
 			const tpvY:Number = targetParabolaVertex.y;
 			
-			const nX:Number = 2*vertexTime*(target.__start.x - 2*target.__control.x + target.__end.x) + 2*(target.__control.x - target.__start.x);
-			const nY:Number = 2*vertexTime*(target.__start.y - 2*target.__control.y + target.__end.y) + 2*(target.__control.y - target.__start.y);
+			const nX:Number = 2*vertexTime*(target.startPoint.x - 2*target.controlPoint.x + target.endPoint.x) + 2*(target.controlPoint.x - target.startPoint.x);
+			const nY:Number = 2*vertexTime*(target.startPoint.y - 2*target.controlPoint.y + target.endPoint.y) + 2*(target.controlPoint.y - target.startPoint.y);
 
-			const nnX:Number = 2*(target.__start.x - 2*target.__control.x + target.__end.x);
-			const nnY:Number = 2*(target.__start.y - 2*target.__control.y + target.__end.y);
+			const nnX:Number = 2*(target.startPoint.x - 2*target.controlPoint.x + target.endPoint.x);
+			const nnY:Number = 2*(target.startPoint.y - 2*target.controlPoint.y + target.endPoint.y);
 
 						
 			var angle:Number = -Math.atan2(nY, nX);
@@ -2172,10 +2172,10 @@ package flash.geom {
 			
 			
 			// target
-			const teX:Number = tpvX - target.__end.x;
-			const teY:Number = tpvY - target.__end.y;
-			const tsX:Number = tpvX - target.__start.x;
-			const tsY:Number = tpvY - target.__start.y;
+			const teX:Number = tpvX - target.endPoint.x;
+			const teY:Number = tpvY - target.endPoint.y;
+			const tsX:Number = tpvX - target.startPoint.x;
+			const tsY:Number = tpvY - target.startPoint.y;
 			
 			var e1_x:Number = teX*angleCos - teY*angleSin;
 			var e1_y:Number = teX*angleSin + teY*angleCos;
@@ -2198,26 +2198,26 @@ package flash.geom {
 							
 //			const nnX2:Number = nnX*angleCos - nnY*angleSin;
 //			const nnY2:Number = nnX*angleSin + nnY*angleCos;
-//			const tsX:Number = tpvX-target.__start.x;
-//			const tsY:Number = tpvY-target.__start.y;
-//			const tcX:Number = tpvX-target.__control.x;
-//			const tcY:Number = tpvY-target.__control.y;
+//			const tsX:Number = tpvX-target.startPoint.x;
+//			const tsY:Number = tpvY-target.startPoint.y;
+//			const tcX:Number = tpvX-target.controlPoint.x;
+//			const tcY:Number = tpvY-target.controlPoint.y;
 			
 			// current
 			
 			
-			const csX:Number = tpvX - __start.x;
-			const csY:Number = tpvY - __start.y;
+			const csX:Number = tpvX - startPoint.x;
+			const csY:Number = tpvY - startPoint.y;
 			const sX:Number = csX*angleCos - csY*angleSin;
 			const sY:Number = csX*angleSin + csY*angleCos;
 			
-			const ccX:Number = tpvX - __control.x;
-			const ccY:Number = tpvY - __control.y;
+			const ccX:Number = tpvX - controlPoint.x;
+			const ccY:Number = tpvY - controlPoint.y;
 			const cX:Number = ccX*angleCos - ccY*angleSin;
 			const cY:Number = ccX*angleSin + ccY*angleCos;
 			
-			const ceX:Number = tpvX - __end.x;
-			const ceY:Number = tpvY - __end.y;
+			const ceX:Number = tpvX - endPoint.x;
+			const ceY:Number = tpvY - endPoint.y;
 			const eX:Number = ceX*angleCos - ceY*angleSin;
 			const eY:Number = ceX*angleSin + ceY*angleCos;
 									
@@ -2259,7 +2259,7 @@ package flash.geom {
 			
 			var time:Number;
 			const len:uint = solves.length;
-			if (!isSegment && !target.isSegment) {
+			if (!__isSegment && !target.isSegment) {
 				for (var i:uint = 0; i < len; i++) {
 					intersection.currentTimes[i] = solves[i];
 				}
@@ -2296,7 +2296,7 @@ package flash.geom {
 		 * 
 		 */
 		public function toString():String {
-			return 	"(start:" + __start + ", control:" + __control + ", end:" + __end + ")";
+			return 	"(start:" + startPoint + ", control:" + controlPoint + ", end:" + endPoint + ")";
 		}
 
 		//**************************************************

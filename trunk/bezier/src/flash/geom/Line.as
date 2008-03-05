@@ -175,7 +175,7 @@ package flash.geom {
 		 */
 
 		public function clone():Line {
-			return new Line(__start.clone(), __end.clone(), isSegment);
+			return new Line(__start.clone(), __end.clone(), __isSegment);
 		}
 
 		/* *
@@ -465,7 +465,7 @@ package flash.geom {
 
 		public function intersectionLine(targetLine:Line):Intersection {
 			// checkBounds
-			if (isSegment && targetLine.isSegment) {
+			if (__isSegment && targetLine.__isSegment) {
 				const fxMax:Number = Math.max(__start.x, __end.x);
 				const fyMax:Number = Math.max(__start.y, __end.y);
 				const fxMin:Number = Math.min(__start.x, __end.x);
@@ -527,7 +527,7 @@ package flash.geom {
 			}
 			
 			const currentTime:Number = a/denominator;
-			if (isSegment) {
+			if (__isSegment) {
 				if (currentTime < 0 || currentTime > 1) { 
 					// no intersection
 					return null;
@@ -536,7 +536,7 @@ package flash.geom {
 			
 			const b:Number = fseX*sfsY - sfsX*fseY;
 			const oppositeTime:Number = b/denominator;
-			if (targetLine.isSegment) {
+			if (targetLine.__isSegment) {
 				if (oppositeTime < 0 || oppositeTime > 1) { 
 					// no intersection
 					return null;
@@ -586,7 +586,7 @@ package flash.geom {
 			const difference:Number = from_angle - angle;
 			const distance:Number = from_distance*Math.cos(difference);
 			const time:Number = distance/length;
-			if (!isSegment) {
+			if (!__isSegment) {
 				return time;
 			}
 			if(time < 0) {
