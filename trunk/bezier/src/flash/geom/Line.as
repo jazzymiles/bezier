@@ -624,7 +624,7 @@ class OrderedPoint {
 	public var point:Point;
 
 	public function OrderedPoint(timeValue:Number, pt:Point) {
-		this.time = timeValue;
-		this.point = pt.clone();
+		time = timeValue;
+		point = pt.clone();
 	}
 }
