@@ -914,6 +914,10 @@ package flash.geom {
 		public function get area():Number {
 			return triangleArea*(2/3);
 		}
+		
+		public function get massCenter():Point {
+			return Point.interpolate(controlPoint, Point.interpolate(startPoint, endPoint, 0.5), 0.2);
+		}
 
 		
 		/* *
