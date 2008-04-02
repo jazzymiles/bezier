@@ -920,6 +920,7 @@ package flash.geom {
 			return new Point(	(startPoint.x + endPoint.x) * .4 + controlPoint.x * .2, 
 								(startPoint.y + endPoint.y) * .4 + controlPoint.y * .2
 							);
+			// return Point.interpolate(controlPoint, Point.interpolate(startPoint, endPoint, 0.5), 0.2);
 		}
 
 		
