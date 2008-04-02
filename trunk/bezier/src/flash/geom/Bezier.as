@@ -919,7 +919,7 @@ package flash.geom {
 		/**
 		 * Gravity center of the figure limited by Bezier curve and line <code>SE</code>.
 		 * 
-		 * @return Point  
+		 * @return Point
 		 **/
 
 		public function get geometricCentroid() : Point {
