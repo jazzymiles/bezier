@@ -915,11 +915,17 @@ package flash.geom {
 		public function get area() : Number {
 			return triangleArea * (2 / 3);
 		}
+		
+		/**
+		 * Gravity center of the figure limited by Bezier curve and line <code>SE</code>.
+		 * 
+		 * @return Point  
+		 **/
 
 		public function get geometricCentroid() : Point {
-			return new Point(	(startPoint.x + endPoint.x) * .4 + controlPoint.x * .2, 
-								(startPoint.y + endPoint.y) * .4 + controlPoint.y * .2
-							);
+			const x:Number = (startPoint.x + endPoint.x) * .4 + controlPoint.x * .2;
+			const y:Number = (startPoint.y + endPoint.y) * .4 + controlPoint.y * .2;
+			return new Point(x, y);
 			// return Point.interpolate(controlPoint, Point.interpolate(startPoint, endPoint, 0.5), 0.2);
 		}
 
