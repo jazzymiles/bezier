@@ -915,7 +915,7 @@ package flash.geom {
 		public function get area() : Number {
 			return triangleArea * (2 / 3);
 		}
-		
+
 		/**
 		 * Gravity center of the figure limited by Bezier curve and line <code>SE</code>.
 		 * 
@@ -923,10 +923,29 @@ package flash.geom {
 		 **/
 
 		public function get geometricCentroid() : Point {
-			const x:Number = (startPoint.x + endPoint.x) * .4 + controlPoint.x * .2;
-			const y:Number = (startPoint.y + endPoint.y) * .4 + controlPoint.y * .2;
+			const x : Number = (startPoint.x + endPoint.x) * .4 + controlPoint.x * .2;
+			const y : Number = (startPoint.y + endPoint.y) * .4 + controlPoint.y * .2;
 			return new Point(x, y);
 			// return Point.interpolate(controlPoint, Point.interpolate(startPoint, endPoint, 0.5), 0.2);
+		}
+
+		/**
+		 * Gravity center of the figure limited by Bezier curve and lines <code>SC</code> and <code>CE</code>.
+		 * 
+		 * @return Point
+		 **/
+
+		public function get externalGeometricCentroid() : Point {
+			const centroidX : Number = (startPoint.x + endPoint.x) * .4 + controlPoint.x * .2;
+			const centroidY : Number = (startPoint.y + endPoint.y) * .4 + controlPoint.y * .2;
+			
+			const triangleX : Number = (startPoint.x + controlPoint.x + endPoint.x) / 3;
+			const triangleY : Number = (startPoint.y + controlPoint.y + endPoint.y) / 3;
+			
+			const x : Number = triangleX * 3 - centroidX * 2;
+			const y : Number = triangleY * 3 - centroidY * 2;
+			
+			return new Point(x, y);
 		}
 
 		
@@ -1254,7 +1273,7 @@ package flash.geom {
 			point.y = startPoint.y * f * f + controlPoint.y * 2 * time * f + endPoint.y * time * time;
 			return point;
 		}
-		
+
 		/**
 		 * Вычисляет time-итератор точки, находящейся на заданной дистанции 
 		 * по кривой от точки <code>start</code><BR/>
@@ -1654,7 +1673,7 @@ package flash.geom {
 			controlPoint.offset(dX, dY);
 			endPoint.offset(dX, dY);
 		}
-		
+
 		
 		
 		
