@@ -1649,7 +1649,7 @@ package flash.geom {
 		 *
 		 */
 
-		public function offset(dX : Number, dY : Number) : void {
+		public function offset(dX : Number = 0, dY : Number = 0) : void {
 			startPoint.offset(dX, dY);
 			controlPoint.offset(dX, dY);
 			endPoint.offset(dX, dY);
