@@ -9,11 +9,11 @@ package howtodo.view {
 
 	[Event(name="change", type="flash.events.Event")]
 
-	public class PointView extends Sprite {
+	public class DragPoint extends Sprite {
 
-		public static var grid : uint = 10;
+		public static var grid : uint = 100;
 
-		private static var __last_selected : PointView;
+		private static var __last_selected : DragPoint;
 
 		public const point : Point = new Point();
 		private const change : Event = new Event(Event.CHANGE);
@@ -25,7 +25,7 @@ package howtodo.view {
 
 		private const nameTxt : TextField = new TextField();
 
-		public function PointView() : void {
+		public function DragPoint() : void {
 			addEventListener(MouseEvent.MOUSE_DOWN, onMouseDownHandler);
 			dragable = false;
 			initNameTxt();

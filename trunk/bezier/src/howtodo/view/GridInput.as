@@ -26,7 +26,7 @@ package howtodo.view {
 		}
 
 		private function onFocusIn(event : FocusEvent) : void {
-			var currentGrid : uint = (PointView.grid || 10);
+			var currentGrid : uint = (DragPoint.grid || 10);
 			text = currentGrid.toString();
 			setSelection(0, 10);
 			stage.addEventListener(MouseEvent.MOUSE_UP, onStageMouseUp);
@@ -38,13 +38,13 @@ package howtodo.view {
 		}
 
 		private function onFocusOut(event : FocusEvent) : void {
-			PointView.grid = Number(parseInt(text)) || 10;
-			if (PointView.grid > 100) {
-				PointView.grid = 100;
-			} else if (PointView.grid < 10) {
-				PointView.grid = 10;
+			DragPoint.grid = Number(parseInt(text)) || 10;
+			if (DragPoint.grid > 100) {
+				DragPoint.grid = 100;
+			} else if (DragPoint.grid < 10) {
+				DragPoint.grid = 10;
 			}
-			text = "grid step: " + PointView.grid;
+			text = "grid step: " + DragPoint.grid;
 			dispatchEvent(GRID_CHANGED);
 		}
 	}

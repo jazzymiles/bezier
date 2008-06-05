@@ -7,7 +7,7 @@
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
 	
-	import howtodo.view.PointView;		
+	import howtodo.view.DragPoint;		
 
 	public class IntersectionsTest extends BezierUsage {
 
@@ -26,9 +26,9 @@
 //		private const endGreen:PointView=new PointView();
 //		private const lineGreen:Line = new Line(startGreen.point, endGreen.point);
 
-		protected const startGray:PointView = new PointView();
-		protected const controlGray:PointView = new PointView();
-		protected const endGray:PointView = new PointView();
+		protected const startGray:DragPoint = new DragPoint();
+		protected const controlGray:DragPoint = new DragPoint();
+		protected const endGray:DragPoint = new DragPoint();
 		protected const bezierGray:Bezier = new Bezier(startGray.point, controlGray.point, endGray.point);
 
 		protected var bezierBlue:Bezier;
@@ -212,9 +212,9 @@
 			}
 		}
 
-		protected function showIntersection(point:Point, small:Boolean, time:Number):PointView {
+		protected function showIntersection(point:Point, small:Boolean, time:Number):DragPoint {
 			if (point is Point) {
-				var intersection:PointView = new PointView();
+				var intersection:DragPoint = new DragPoint();
 				intersection.position = point;
 				addChild(intersection);
 				intersections.push(intersection);
@@ -230,7 +230,7 @@
 
 		protected function removeIntersections():void {
 			while(intersections.length) {
-				var intersectionPoint:PointView = intersections.pop();
+				var intersectionPoint:DragPoint = intersections.pop();
 				removeChild(intersectionPoint);
 			}
 		}

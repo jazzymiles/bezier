@@ -6,13 +6,13 @@
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	import howtodo.view.PointView;	
+	import howtodo.view.DragPoint;	
 
 	public class Step08Bounce extends BezierUsage {
 		
 		private static const DESCRIPTION:String = "<B>Bounse: detect intersection (not finished methods)</B><BR/><BR/>drag control points";
 		
-		private const ball:PointView = new PointView();
+		private const ball:DragPoint = new DragPoint();
 		private const stageRectangle:Rectangle = new Rectangle();
 		private const stepLine:Line = new Line();
 		
