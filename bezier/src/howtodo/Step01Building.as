@@ -5,7 +5,7 @@ package howtodo {
 	import flash.geom.Line;
 	import flash.geom.Point;
 	
-	import howtodo.view.PointView;	
+	import howtodo.view.DragPoint;	
 
 	/**
 	 * @example
@@ -43,9 +43,9 @@ package howtodo {
 		private static const MAX:uint=20;
 		private var showNum:Number = 0;
 		
-		private const timePoint:PointView = new PointView();
-		private const time1Point:PointView = new PointView();
-		private const time2Point:PointView = new PointView();
+		private const timePoint:DragPoint = new DragPoint();
+		private const time1Point:DragPoint = new DragPoint();
+		private const time2Point:DragPoint = new DragPoint();
 
 		private var startLine:Line;
 		private var endLine:Line;

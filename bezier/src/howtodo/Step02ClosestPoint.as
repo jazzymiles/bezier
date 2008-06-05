@@ -4,7 +4,7 @@ package howtodo {
 	import flash.geom.Line;
 	import flash.geom.Point;
 	
-	import howtodo.view.PointView;	
+	import howtodo.view.DragPoint;	
 
 	/**
 	 * @example
@@ -43,8 +43,8 @@ package howtodo {
 		
 		private static const DESCRIPTION:String = "<B>Closest point</B><BR/><BR/>Red line - isSegment=false <BR/>Blue line - isSegment=true";
 		
-		private const closestUnlimited:PointView = new PointView();
-		private const closestLimited:PointView = new PointView();
+		private const closestUnlimited:DragPoint = new DragPoint();
+		private const closestLimited:DragPoint = new DragPoint();
 		private const mouse:Point = new Point();
 		
 		private var unlimited:Line;

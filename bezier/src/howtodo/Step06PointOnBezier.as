@@ -1,13 +1,13 @@
 package howtodo {
 	import flash.events.Event;
 	
-	import howtodo.view.PointView;	
+	import howtodo.view.DragPoint;	
 
 	public class Step06PointOnBezier extends BezierUsage {
 		
 		private static const DESCRIPTION:String = "<B>Distance by curve</B><BR/><BR/>uniform motion";
 		
-		private const point:PointView = new PointView();
+		private const point:DragPoint = new DragPoint();
 		private var distance:Number = 0;
 		
 		/**	

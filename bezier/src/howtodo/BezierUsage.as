@@ -10,15 +10,15 @@ package howtodo {
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
 	
-	import howtodo.view.PointView;	
+	import howtodo.view.DragPoint;	
 
 	public class BezierUsage extends Sprite {
 
 		private var descriptionTxt:TextField;
 		
-		protected var start:PointView = new PointView();
-		protected var control:PointView = new PointView();
-		protected var end:PointView = new PointView();
+		protected var start:DragPoint = new DragPoint();
+		protected var control:DragPoint = new DragPoint();
+		protected var end:DragPoint = new DragPoint();
 		protected var bezier:Bezier = new Bezier(start.point, control.point, end.point);
 
 		public function BezierUsage() {
@@ -60,7 +60,7 @@ package howtodo {
 			obj.y = Math.round(Math.random()*(stage.stageHeight-100))+100;
 		}
 
-		protected function initControl(pt:PointView, color:uint = 0, pointName:String = ""):void {
+		protected function initControl(pt:DragPoint, color:uint = 0, pointName:String = ""):void {
 			randomizePosition(pt);
 			pt.dragable = true;
 			if (color) {

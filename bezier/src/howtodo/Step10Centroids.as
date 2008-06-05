@@ -2,7 +2,7 @@ package howtodo {
 	import flash.events.Event;
 	import flash.geom.Point;
 	
-	import howtodo.view.PointView;	
+	import howtodo.view.DragPoint;	
 
 	/**
 	 * @author ivan.dembicki@gmail.com
@@ -11,11 +11,11 @@ package howtodo {
 		
 		private static const DESCRIPTION:String = "<B>Centroids</B>";
 		
-		protected var internalCentroid:PointView = new PointView();
-		protected var externalCentroid:PointView = new PointView();
-		protected var triangleCentroid:PointView = new PointView();
+		protected var internalCentroid:DragPoint = new DragPoint();
+		protected var externalCentroid:DragPoint = new DragPoint();
+		protected var triangleCentroid:DragPoint = new DragPoint();
 		
-		protected var midPoint:PointView = new PointView();
+		protected var midPoint:DragPoint = new DragPoint();
 		
 		
 		public function Step10Centroids() {
@@ -34,7 +34,7 @@ package howtodo {
 			onPointMoved();
 		}
 		
-		private function initCentroid(centroid:PointView, pointName:String) : void {
+		private function initCentroid(centroid:DragPoint, pointName:String) : void {
 			centroid.pointName = pointName;
 			addChild(centroid);
 		}

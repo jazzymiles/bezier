@@ -5,18 +5,18 @@ package howtodo {
 	import flash.geom.Line;
 	import flash.geom.Point;
 	
-	import howtodo.view.PointView;	
+	import howtodo.view.DragPoint;	
 
 	public class Step04EmulationCubic extends BezierUsage {
 		
 		private static const DESCRIPTION:String = "<B>Smooth connection</B><BR/><BR/>Press Space button for enable/disable Cubic Bezier";
 		
-		private var controlS:PointView = new PointView();
-		private var controlE:PointView = new PointView();
+		private var controlS:DragPoint = new DragPoint();
+		private var controlE:DragPoint = new DragPoint();
 		
-		private var q_start:PointView=new PointView();
-		private var q_mid:PointView=new PointView();
-		private var q_end:PointView=new PointView();
+		private var q_start:DragPoint=new DragPoint();
+		private var q_mid:DragPoint=new DragPoint();
+		private var q_end:DragPoint=new DragPoint();
 		
 		private var cubicEnabled:Boolean=true;
 		

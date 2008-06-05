@@ -4,7 +4,7 @@ package howtodo {
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
-	import howtodo.view.PointView;	
+	import howtodo.view.DragPoint;	
 
 	public class Step05SmoothCurve extends BezierUsage {
 
@@ -99,7 +99,7 @@ package howtodo {
 			roupePoint.nextPoint = end.point;
 		}
 		
-		override protected function initControl(pt:PointView, color:uint = 0, pointName:String = ""):void {
+		override protected function initControl(pt:DragPoint, color:uint = 0, pointName:String = ""):void {
 			color, pointName;
 			randomizePosition(pt);
 			pt.dragable = true;
