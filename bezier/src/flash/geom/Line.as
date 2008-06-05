@@ -240,9 +240,9 @@ package flash.geom {
 		 * @param dy:Number variable of moving at axe Y
 		 * 
 		 */		 		
-		public function offset(dx : Number, dy : Number) : void {
-			__start.offset(dx, dy);
-			__end.offset(dx, dy);
+		public function offset(dX : Number = 0, dY : Number = 0) : void {
+			__start.offset(dX, dY);
+			__end.offset(dX, dY);
 		}
 
 		/* *

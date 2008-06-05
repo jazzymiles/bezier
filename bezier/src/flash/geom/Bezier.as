@@ -922,7 +922,7 @@ package flash.geom {
 		 * @return Point
 		 **/
 
-		public function get geometricCentroid() : Point {
+		public function get internalCentroid() : Point {
 			const x : Number = (startPoint.x + endPoint.x) * .4 + controlPoint.x * .2;
 			const y : Number = (startPoint.y + endPoint.y) * .4 + controlPoint.y * .2;
 			return new Point(x, y);
@@ -935,20 +935,25 @@ package flash.geom {
 		 * @return Point
 		 **/
 
-		public function get externalGeometricCentroid() : Point {
-			const centroidX : Number = (startPoint.x + endPoint.x) * .4 + controlPoint.x * .2;
-			const centroidY : Number = (startPoint.y + endPoint.y) * .4 + controlPoint.y * .2;
-			
-			const triangleX : Number = (startPoint.x + controlPoint.x + endPoint.x) / 3;
-			const triangleY : Number = (startPoint.y + controlPoint.y + endPoint.y) / 3;
-			
-			const x : Number = triangleX * 3 - centroidX * 2;
-			const y : Number = triangleY * 3 - centroidY * 2;
-			
+		public function get externalCentroid() : Point {
+			const x : Number = (startPoint.x + endPoint.x) * .2 + controlPoint.x * .6 ;
+			const y : Number = (startPoint.y + endPoint.y) * .2 + controlPoint.y * .6;
 			return new Point(x, y);
+			// return Point.interpolate(controlPoint, Point.interpolate(startPoint, endPoint, 0.5), 0.6);
 		}
 
-		
+		/**
+		 * Gravity center of triangle <code>SCE</code>.
+		 * 
+		 * @return Point
+		 **/
+		public function get triangleCentroid() : Point {
+			const x : Number = (startPoint.x + endPoint.x + controlPoint.x) / 3 ;
+			const y : Number = (startPoint.y + endPoint.y + controlPoint.y) / 3;
+			return new Point(x, y);
+			// return Point.interpolate(controlPoint, Point.interpolate(startPoint, endPoint, 0.5), 0.6);
+		}
+
 		/* *
 		 * Вычисляет и возвращает площадь треугольника ∆SCE, 
 		 * образуемого контрольными точками <code>start, control, end</code>.  
@@ -959,7 +964,7 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 **/
-		 
+		
 		/**
 		 * Calculates and returns the area of a triangle ∆SCE, which is formed of
 		 * control points <code>start, control, end</code>.
@@ -1674,8 +1679,6 @@ package flash.geom {
 			endPoint.offset(dX, dY);
 		}
 
-		
-		
 		
 		//**************************************************
 		//				BEZIER AND EXTERNAL POINTS

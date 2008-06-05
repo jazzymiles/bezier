@@ -104,7 +104,7 @@ package flash.geom {
 		 * @return void 
 		 **/
 		 
-		function offset(dx:Number, dy:Number):void;
+		function offset(dX : Number = 0, dY : Number = 0):void;
 
 		/**
 		 * 
