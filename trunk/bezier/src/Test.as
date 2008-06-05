@@ -8,7 +8,7 @@ package {
 	
 	import howtodo.*;
 	import howtodo.view.GridInput;
-	import howtodo.view.PointView;
+	import howtodo.view.DragPoint;
 	import howtodo.view.SwitchButton;	
 
 	[SWF(backgroundColor="0xFFFFFF")]
@@ -42,7 +42,7 @@ package {
 		private function initInstance() : void {
 			initStage();
 			initSwitchButtons();
-			PointView.grid = 100;
+			DragPoint.grid = 100;
 			initGrid();
 		}
 		
@@ -99,7 +99,7 @@ package {
 			addChild(gridTxt);
 			gridTxt.x = 5;
 			gridTxt.y = 5;
-			gridTxt.text = "grid step: "+PointView.grid;
+			gridTxt.text = "grid step: "+DragPoint.grid;
 			gridTxt.addEventListener(Event.CHANGE, onGridChange);
 			redrawGrid();
 		}
@@ -109,7 +109,7 @@ package {
 		}
 
 		private function redrawGrid() : void {
-			const gridStep:uint = PointView.grid;
+			const gridStep:uint = DragPoint.grid;
 			const gridWidth:uint = stage.stageWidth;
 			const gridHeight:uint = stage.stageHeight;
 			
