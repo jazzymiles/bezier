@@ -16,7 +16,7 @@ package {
 	public class Test extends Sprite {
 	
 		
-		private var step:Sprite;
+		private var stepContainer:Sprite;
 		
 		private const constructors:Array = [
 			Step01Building,
@@ -79,7 +79,7 @@ package {
 			stage.align = StageAlign.TOP_LEFT;
 			stage.frameRate = 31;
 			
-			stage.addEventListener(Event.RESIZE, onStageResize);
+			stage.addEventListener(Event.RESIZE, redrawGrid);
 		}
 		
 		private function showStep(k:uint):void {
@@ -88,12 +88,12 @@ package {
 				return;
 			}
 			if (!isNaN(k)) {
-				if (step) {
-					removeChild(step);
-					step = null;
+				if (stepContainer) {
+					removeChild(stepContainer);
+					stepContainer = null;
 				}
-				step = new StepConstructor();
-				addChildAt(step, 0);
+				stepContainer = new StepConstructor();
+				addChildAt(stepContainer, 0);
 			}
 		}
 		
@@ -111,7 +111,7 @@ package {
 			redrawGrid();
 		}
 
-		private function redrawGrid() : void {
+		private function redrawGrid(event : Event = null) : void {
 			const gridStep:uint = DragPoint.grid;
 			const gridWidth:uint = stage.stageWidth;
 			const gridHeight:uint = stage.stageHeight;
@@ -128,10 +128,6 @@ package {
 				graphics.moveTo(0, pY);
 				graphics.lineTo(gridWidth, pY);
 			}
-		}
-		
-		private function onStageResize(event : Event) : void {
-			redrawGrid();
 		}
 		
 //		protected function testBoundsIntersection():void {
