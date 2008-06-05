@@ -1,18 +1,16 @@
 package {
-	import flash.geom.Intersection;	
-	import flash.geom.Rectangle;	
+	import flash.display.DisplayObject;
 	import flash.display.Sprite;
 	import flash.display.StageAlign;
 	import flash.display.StageScaleMode;
-	import flash.events.FocusEvent;
-	import flash.events.KeyboardEvent;
+	import flash.events.Event;
 	import flash.text.TextField;
-	import flash.text.TextFieldType;
-	import flash.utils.clearInterval;
-	import flash.utils.setInterval;
 	
-	import howtodo.*;	
-	
+	import howtodo.*;
+	import howtodo.view.GridInput;
+	import howtodo.view.PointView;
+	import howtodo.view.SwitchButton;	
+
 	[SWF(backgroundColor="0xFFFFFF")]
 
 	public class Test extends Sprite {
@@ -21,7 +19,6 @@ package {
 		private var step:Sprite;
 		
 		private const constructors:Array = [
-			Step00HowToDo,
 			Step01Building,
 			Step02ClosestPoint,
 			Step03EditDrag,
@@ -31,38 +28,55 @@ package {
 			Step07PointOnCurve,
 			Step08Bounce,
 			Step09DashedLine,
+			Step10Centroids,
 			IntersectionsTest
 		];
-		
+			
+		private const switchButtonsTarget : Sprite = new Sprite();
+		private const SPACE : uint = 5;
+
 		public function Test() {
+			initInstance();
+		}
+		
+		private function initInstance() : void {
+			initStage();
+			initSwitchButtons();
+			PointView.grid = 100;
+			initGrid();
+		}
+		
+		private function initSwitchButtons() : void {
+			addChild(switchButtonsTarget);
+			switchButtonsTarget.x = 400;
+			
+			var switchButton : SwitchButton = new SwitchButton(); 
+			switchButtonsTarget.addChild(switchButton);
+			switchButton.addEventListener(Event.CHANGE, onSwitchButtonChange);
+			
+			var prevButton:SwitchButton = switchButton;
+			
+			for (var i : uint = 1; i < constructors.length; i++) {
+				switchButton = new SwitchButton(); 
+				switchButtonsTarget.addChild(switchButton);
+				switchButton.x = prevButton.x + prevButton.width+SPACE;
+				prevButton = switchButton;
+				switchButton.addEventListener(Event.CHANGE, onSwitchButtonChange);
+			}
+		}
+		
+		private function onSwitchButtonChange(event : Event) : void {
+			const switchButton : SwitchButton = event.target as SwitchButton;
+			if (switchButton != null) {
+				var num:uint = switchButton.parent.getChildIndex(switchButton);
+				showStep(num);
+			}
+		}
+
+		private function initStage() : void {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.frameRate = 31;
-			stage.addEventListener(KeyboardEvent.KEY_UP, onKeyUpHandler);
-			
-			PointView.GRID = 100;
-			initGrid();
-			
-			var interval:uint = setInterval(function ():void {
-				onKeyUpHandler();
-				clearInterval(interval);
-			},100);
-			
-			
-			// testBoundsIntersection();
-		}
-		
-		protected function testBoundsIntersection():void {
-			var current:Rectangle = new Rectangle(100, 100, -20, -10);
-			var target:Rectangle = new Rectangle(100, 100, -20, -10);
-			Intersection.isIntersectionPossible(current, target);
-			target.x+=20;
-			Intersection.isIntersectionPossible(current, target);
-			
-			current = new Rectangle(100, 100, 100, 100);
-			target = new Rectangle(110, 110, 80, 80);
-			Intersection.isIntersectionPossible(current, target);
-			Intersection.isIntersectionPossible(target, current);
 		}
 
 		private function showStep(k:uint):void {
@@ -76,40 +90,55 @@ package {
 					step = null;
 				}
 				step = new StepConstructor();
-				addChild(step);
-			}
-		}
-		
-		private function onKeyUpHandler(event:KeyboardEvent=null):void {
-			var k:uint;
-			if (event is KeyboardEvent) {
-				k = event.keyCode;
-			} else {
-				k = 48;
-			}
-			if (k>47 && k<58) {
-				if (event && event.shiftKey) {
-					showStep(k-38);
-				} else {
-					showStep(k-48);
-				}
+				addChildAt(step, 0);
 			}
 		}
 		
 		private function initGrid():void {
-			var gridTxt:TextField = new TextField();
+			var gridTxt : GridInput = new GridInput();
 			addChild(gridTxt);
-			gridTxt.text = PointView.GRID+" - grid step";
-			gridTxt.type = TextFieldType.INPUT;
-			gridTxt.addEventListener(FocusEvent.FOCUS_OUT, onFocusOut);
-			gridTxt.restrict = "0-9";
+			gridTxt.x = 5;
+			gridTxt.y = 5;
+			gridTxt.text = "grid step: "+PointView.grid;
+			gridTxt.addEventListener(Event.CHANGE, onGridChange);
+			redrawGrid();
+		}
+		
+		private function onGridChange(event : Event) : void {
+			redrawGrid();
 		}
 
-		private function onFocusOut(event:FocusEvent):void {
-			var gridTxt:TextField = event.target as TextField;
-			PointView.GRID = Number(parseInt(gridTxt.text)) || 10;
-			gridTxt.text = PointView.GRID+" - grid step";
+		private function redrawGrid() : void {
+			const gridStep:uint = PointView.grid;
+			const gridWidth:uint = stage.stageWidth;
+			const gridHeight:uint = stage.stageHeight;
+			
+			graphics.clear();
+			graphics.lineStyle(0, 0xCCCCCC, 1);
+			
+			for (var pX : uint = 0; pX < gridWidth; pX+=gridStep) {
+				graphics.moveTo(pX, 0);
+				graphics.lineTo(pX, gridHeight);
+			}
+			
+			for (var pY : uint = 0;pY < gridHeight; pY += gridStep) {
+				graphics.moveTo(0, pY);
+				graphics.lineTo(gridWidth, pY);
+			}
 		}
+		
+//		protected function testBoundsIntersection():void {
+//			var current:Rectangle = new Rectangle(100, 100, -20, -10);
+//			var target:Rectangle = new Rectangle(100, 100, -20, -10);
+//			Intersection.isIntersectionPossible(current, target);
+//			target.x+=20;
+//			Intersection.isIntersectionPossible(current, target);
+//			
+//			current = new Rectangle(100, 100, 100, 100);
+//			target = new Rectangle(110, 110, 80, 80);
+//			Intersection.isIntersectionPossible(current, target);
+//			Intersection.isIntersectionPossible(target, current);
+//		}
 		
 		
 	}
