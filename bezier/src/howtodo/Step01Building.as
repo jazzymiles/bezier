@@ -1,11 +1,12 @@
 package howtodo {
-	
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Bezier;
 	import flash.geom.Line;
 	import flash.geom.Point;
 	
+	import howtodo.view.PointView;	
+
 	/**
 	 * @example
 	 * Демонстрация интерполяционного построения линии и кривой Безье второго порядка.<BR/>

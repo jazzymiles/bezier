@@ -4,7 +4,9 @@
 	import flash.geom.Intersection;
 	import flash.geom.Line;
 	import flash.geom.Point;
-	import flash.geom.Rectangle;	
+	import flash.geom.Rectangle;
+	
+	import howtodo.view.PointView;	
 
 	public class Step08Bounce extends BezierUsage {
 		

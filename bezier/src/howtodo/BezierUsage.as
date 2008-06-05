@@ -9,6 +9,8 @@ package howtodo {
 	import flash.geom.Rectangle;
 	import flash.text.TextField;
 	import flash.text.TextFieldAutoSize;
+	
+	import howtodo.view.PointView;	
 
 	public class BezierUsage extends Sprite {
 
@@ -42,7 +44,7 @@ package howtodo {
 				txt.autoSize = TextFieldAutoSize.LEFT;
 				txt.mouseEnabled = false;
 				txt.mouseWheelEnabled = false;
-				txt.x = 200;
+				txt.x = 120;
 				addChild(txt);
 				descriptionTxt = txt;
 			}
@@ -50,11 +52,12 @@ package howtodo {
 		}
 
 		protected function onPointMoved(event:Event = undefined):void {
+			
 		}
 
 		protected function randomizePosition(obj:DisplayObject):void {
 			obj.x = Math.round(Math.random()*stage.stageWidth);
-			obj.y = Math.round(Math.random()*stage.stageHeight);
+			obj.y = Math.round(Math.random()*(stage.stageHeight-100))+100;
 		}
 
 		protected function initControl(pt:PointView, color:uint = 0, pointName:String = ""):void {
