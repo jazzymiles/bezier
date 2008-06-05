@@ -48,7 +48,8 @@ package {
 		
 		private function initSwitchButtons() : void {
 			addChild(switchButtonsTarget);
-			switchButtonsTarget.x = 400;
+			switchButtonsTarget.x = 405;
+			switchButtonsTarget.y = 5;
 			
 			var switchButton : SwitchButton = new SwitchButton(); 
 			switchButtonsTarget.addChild(switchButton);
@@ -77,8 +78,10 @@ package {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
 			stage.frameRate = 31;
+			
+			stage.addEventListener(Event.RESIZE, onStageResize);
 		}
-
+		
 		private function showStep(k:uint):void {
 			var StepConstructor:Class = constructors[k];
 			if (StepConstructor == null) {
@@ -125,6 +128,10 @@ package {
 				graphics.moveTo(0, pY);
 				graphics.lineTo(gridWidth, pY);
 			}
+		}
+		
+		private function onStageResize(event : Event) : void {
+			redrawGrid();
 		}
 		
 //		protected function testBoundsIntersection():void {
