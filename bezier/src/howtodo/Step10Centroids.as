@@ -11,12 +11,11 @@ package howtodo {
 		
 		private static const DESCRIPTION:String = "<B>Centroids</B>";
 		
-		protected var internalCentroid:DragPoint = new DragPoint();
-		protected var externalCentroid:DragPoint = new DragPoint();
-		protected var triangleCentroid:DragPoint = new DragPoint();
+		protected const internalCentroid:DragPoint = new DragPoint();
+		protected const externalCentroid:DragPoint = new DragPoint();
+		protected const triangleCentroid:DragPoint = new DragPoint();
 		
-		protected var midPoint:DragPoint = new DragPoint();
-		
+		protected const midPoint:DragPoint = new DragPoint();
 		
 		public function Step10Centroids() {
 			super();
