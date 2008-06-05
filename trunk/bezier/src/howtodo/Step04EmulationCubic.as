@@ -1,11 +1,12 @@
 package howtodo {
-	
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Bezier;
 	import flash.geom.Line;
 	import flash.geom.Point;
 	
+	import howtodo.view.PointView;	
+
 	public class Step04EmulationCubic extends BezierUsage {
 		
 		private static const DESCRIPTION:String = "<B>Smooth connection</B><BR/><BR/>Press Space button for enable/disable Cubic Bezier";

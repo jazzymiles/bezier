@@ -1,10 +1,11 @@
 package howtodo {
-	
 	import flash.display.DisplayObject;
 	import flash.events.Event;
 	import flash.events.MouseEvent;
 	import flash.geom.Point;
 	
+	import howtodo.view.PointView;	
+
 	public class Step05SmoothCurve extends BezierUsage {
 
 		private static const DESCRIPTION:String = "<B>Multiple Bezier smooth connection</B><BR/><BR/>Drag points";	

@@ -1,11 +1,13 @@
 ﻿package howtodo {
-	import flash.ui.Keyboard;	
-	import flash.events.KeyboardEvent;	
 	import flash.events.Event;
+	import flash.events.KeyboardEvent;
 	import flash.geom.Bezier;
 	import flash.geom.Intersection;
 	import flash.geom.Line;
 	import flash.geom.Point;
+	import flash.ui.Keyboard;
+	
+	import howtodo.view.PointView;		
 
 	public class IntersectionsTest extends BezierUsage {
 
