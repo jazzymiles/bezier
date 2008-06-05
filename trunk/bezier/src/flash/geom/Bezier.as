@@ -876,7 +876,7 @@ package flash.geom {
 
 		/**
 		 * Calculates and returns the area of the figure limited by Bezier curve and
-		 * a segment <code> SE </code>.
+		 * line <code>SE</code>.
 		 * The area of this figure makes 2/3 areas of a triangle ∆SCE, which is formed of
 		 * control points <code>start, control, end</code>.<BR/>
 		 * Accordingly, the rest of a triangle makes 1/3 its areas.
@@ -951,7 +951,7 @@ package flash.geom {
 			const x : Number = (startPoint.x + endPoint.x + controlPoint.x) / 3 ;
 			const y : Number = (startPoint.y + endPoint.y + controlPoint.y) / 3;
 			return new Point(x, y);
-			// return Point.interpolate(controlPoint, Point.interpolate(startPoint, endPoint, 0.5), 0.6);
+			// return Point.interpolate(controlPoint, Point.interpolate(startPoint, endPoint, 0.5), 1/3);
 		}
 
 		/* *
