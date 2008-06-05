@@ -915,6 +915,39 @@ package flash.geom {
 		public function get area() : Number {
 			return triangleArea * (2 / 3);
 		}
+		/* *
+		 * Вычисляет и возвращает площадь треугольника ∆SCE, 
+		 * образуемого контрольными точками <code>start, control, end</code>.  
+		 * 
+		 * @return Number
+		 * 
+		 * @see #area
+		 * 
+		 * @lang rus
+		 **/
+		
+		/**
+		 * Calculates and returns the area of a triangle ∆SCE, which is formed of
+		 * control points <code>start, control, end</code>.
+		 *
+		 * @return Number
+		 *
+		 * @see #area
+		 *
+		 * @lang eng
+		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 **/
+
+		public function get triangleArea() : Number {
+			// heron's formula
+			const distanceStartControl : Number = Point.distance(startPoint, controlPoint);
+			const distanceEndControl : Number = Point.distance(endPoint, controlPoint);
+			const distanceStartEnd : Number = Point.distance(startPoint, endPoint);
+			
+			const halfPerimeter : Number = (distanceStartControl + distanceEndControl + distanceStartEnd) / 2;
+			const area : Number = Math.sqrt(halfPerimeter * (halfPerimeter - distanceStartControl) * (halfPerimeter - distanceEndControl) * (halfPerimeter - distanceStartEnd)); 
+			return area;
+		}
 
 		/**
 		 * Gravity center of the figure limited by Bezier curve and line <code>SE</code>.
@@ -954,39 +987,6 @@ package flash.geom {
 			// return Point.interpolate(controlPoint, Point.interpolate(startPoint, endPoint, 0.5), 1/3);
 		}
 
-		/* *
-		 * Вычисляет и возвращает площадь треугольника ∆SCE, 
-		 * образуемого контрольными точками <code>start, control, end</code>.  
-		 * 
-		 * @return Number
-		 * 
-		 * @see #area
-		 * 
-		 * @lang rus
-		 **/
-		
-		/**
-		 * Calculates and returns the area of a triangle ∆SCE, which is formed of
-		 * control points <code>start, control, end</code>.
-		 *
-		 * @return Number
-		 *
-		 * @see #area
-		 *
-		 * @lang eng
-		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
-		 **/
-
-		public function get triangleArea() : Number {
-			// heron's formula
-			const distanceStartControl : Number = Point.distance(startPoint, controlPoint);
-			const distanceEndControl : Number = Point.distance(endPoint, controlPoint);
-			const distanceStartEnd : Number = Point.distance(startPoint, endPoint);
-			
-			const halfPerimeter : Number = (distanceStartControl + distanceEndControl + distanceStartEnd) / 2;
-			const area : Number = Math.sqrt(halfPerimeter * (halfPerimeter - distanceStartControl) * (halfPerimeter - distanceEndControl) * (halfPerimeter - distanceStartEnd)); 
-			return area;
-		}
 
 		/* *
 		 * Вычисляет и возвращает габаритный прямоугольник сегмента кривой Безье.<BR/> 
