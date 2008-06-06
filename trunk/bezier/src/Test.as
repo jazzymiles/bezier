@@ -5,7 +5,7 @@ package {
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.text.TextField;
-	
+
 	import howtodo.*;
 	import howtodo.view.GridInput;
 	import howtodo.view.DragPoint;
@@ -14,12 +14,11 @@ package {
 	[SWF(backgroundColor="0xFFFFFF")]
 
 	public class Test extends Sprite {
-	
+
 		
-		private var stepContainer:Sprite;
-		
-		private const constructors:Array = [
-			Step01Building,
+		private var stepContainer : Sprite;
+
+		private const constructors : Array = [Step01Building,
 			Step02ClosestPoint,
 			Step03EditDrag,
 			Step04EmulationCubic,
@@ -29,23 +28,22 @@ package {
 			Step08Bounce,
 			Step09DashedLine,
 			Step10Centroids,
-			IntersectionsTest
-		];
-			
+			IntersectionsTest];
+
 		private const switchButtonsTarget : Sprite = new Sprite();
 		private const SPACE : uint = 5;
 
 		public function Test() {
 			initInstance();
 		}
-		
+
 		private function initInstance() : void {
 			initStage();
 			initSwitchButtons();
 			DragPoint.grid = 100;
 			initGrid();
 		}
-		
+
 		private function initSwitchButtons() : void {
 			addChild(switchButtonsTarget);
 			switchButtonsTarget.x = 405;
@@ -55,21 +53,21 @@ package {
 			switchButtonsTarget.addChild(switchButton);
 			switchButton.addEventListener(Event.CHANGE, onSwitchButtonChange);
 			
-			var prevButton:SwitchButton = switchButton;
+			var prevButton : SwitchButton = switchButton;
 			
-			for (var i : uint = 1; i < constructors.length; i++) {
+			for (var i : uint = 1;i < constructors.length; i++) {
 				switchButton = new SwitchButton(); 
 				switchButtonsTarget.addChild(switchButton);
-				switchButton.x = prevButton.x + prevButton.width+SPACE;
+				switchButton.x = prevButton.x + prevButton.width + SPACE;
 				prevButton = switchButton;
 				switchButton.addEventListener(Event.CHANGE, onSwitchButtonChange);
 			}
 		}
-		
+
 		private function onSwitchButtonChange(event : Event) : void {
 			const switchButton : SwitchButton = event.target as SwitchButton;
 			if (switchButton != null) {
-				var num:uint = switchButton.parent.getChildIndex(switchButton);
+				var num : uint = switchButton.parent.getChildIndex(switchButton);
 				showStep(num);
 			}
 		}
@@ -81,9 +79,9 @@ package {
 			
 			stage.addEventListener(Event.RESIZE, redrawGrid);
 		}
-		
-		private function showStep(k:uint):void {
-			var StepConstructor:Class = constructors[k];
+
+		private function showStep(k : uint) : void {
+			var StepConstructor : Class = constructors[k];
 			if (StepConstructor == null) {
 				return;
 			}
@@ -96,30 +94,30 @@ package {
 				addChildAt(stepContainer, 0);
 			}
 		}
-		
-		private function initGrid():void {
+
+		private function initGrid() : void {
 			var gridTxt : GridInput = new GridInput();
 			addChild(gridTxt);
 			gridTxt.x = 5;
 			gridTxt.y = 5;
-			gridTxt.text = "grid step: "+DragPoint.grid;
+			gridTxt.text = "grid step: " + DragPoint.grid;
 			gridTxt.addEventListener(Event.CHANGE, onGridChange);
 			redrawGrid();
 		}
-		
+
 		private function onGridChange(event : Event) : void {
 			redrawGrid();
 		}
 
 		private function redrawGrid(event : Event = null) : void {
-			const gridStep:uint = DragPoint.grid;
-			const gridWidth:uint = stage.stageWidth;
-			const gridHeight:uint = stage.stageHeight;
+			const gridStep : uint = DragPoint.grid;
+			const gridWidth : uint = stage.stageWidth;
+			const gridHeight : uint = stage.stageHeight;
 			
 			graphics.clear();
 			graphics.lineStyle(0, 0xCCCCCC, 1);
 			
-			for (var pX : uint = 0; pX < gridWidth; pX+=gridStep) {
+			for (var pX : uint = 0;pX < gridWidth; pX += gridStep) {
 				graphics.moveTo(pX, 0);
 				graphics.lineTo(pX, gridHeight);
 			}
@@ -142,8 +140,6 @@ package {
 //			Intersection.isIntersectionPossible(current, target);
 //			Intersection.isIntersectionPossible(target, current);
 //		}
-		
-		
 	}
 }
 
