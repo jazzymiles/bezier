@@ -1,4 +1,5 @@
 package howtodo {
+	import flash.geom.Line;	
 	import flash.events.Event;
 	import flash.geom.Point;
 	
@@ -15,19 +16,21 @@ package howtodo {
 		protected const externalCentroid:DragPoint = new DragPoint();
 		protected const triangleCentroid:DragPoint = new DragPoint();
 		
+		protected const bezierAxis : Line = new Line();
+		
 		protected const midPoint:DragPoint = new DragPoint();
 		
 		public function Step10Centroids() {
 			super();
-			initInstance();
 		}
 		
-		private function initInstance() : void {
+		override protected function init() : void {
+			super.init();
 			initDescription(DESCRIPTION);
 			
-			initCentroid(internalCentroid, "Oi");
-			initCentroid(externalCentroid, "Oe");
-			initCentroid(triangleCentroid, "Ot");
+			initCentroid(internalCentroid, "Gi");
+			initCentroid(externalCentroid, "Ge");
+			initCentroid(triangleCentroid, "Gt");
 			initCentroid(midPoint, "M");
 			
 			onPointMoved();
@@ -42,6 +45,9 @@ package howtodo {
 			graphics.clear();
 			graphics.lineStyle(0, 0x0000FF, 1);
 			drawBezier(bezier);
+			
+			graphics.lineStyle(0, 0x0000FF, .3);
+			drawLine(bezierAxis);
 		}
 		
 		override protected function onPointMoved(event:Event=undefined):void {
@@ -51,6 +57,11 @@ package howtodo {
 			externalCentroid.position = bezier.externalCentroid;
 			
 			triangleCentroid.position = Point.interpolate(internalCentroid.position, externalCentroid.position, 2/3);
+			
+			bezierAxis.start = bezier.control;
+			bezierAxis.end = midPoint.position;
+			
+			
 			
 			redraw();
 		}

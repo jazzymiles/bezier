@@ -34,8 +34,9 @@ package howtodo.view {
 
 		public function initNameTxt() : void {
 			nameTxt.autoSize = TextFieldAutoSize.LEFT;
-			nameTxt.x = 8;
-			nameTxt.y = -18;
+			const space : uint = 2;
+			nameTxt.x = __radius + space;
+			nameTxt.y = __radius + space - 20;
 			nameTxt.selectable = false;
 			nameTxt.mouseEnabled = false;
 		}
@@ -116,23 +117,23 @@ package howtodo.view {
 		}
 
 		public function set textPosition(value : uint) : void {
+			const space : uint = 2;
 			switch (value) {
 				case 1:
-					nameTxt.x = 8;
-					nameTxt.y = 3;
+					nameTxt.x = __radius + space;
+					nameTxt.y = __radius - space;
 					break;
 				case 2:
-					nameTxt.x = -(8 + nameTxt.width);
-					;
-					nameTxt.y = 3;
+					nameTxt.x = -(__radius + space + nameTxt.width);
+					nameTxt.y = __radius - space;
 					break;
 				case 3:
-					nameTxt.x = -(8 + nameTxt.width);
-					nameTxt.y = -18;
+					nameTxt.x = -(__radius + space + nameTxt.width);
+					nameTxt.y = __radius + space - 20;
 					break;
 				default:
-					nameTxt.x = 8;
-					nameTxt.y = -18;
+					nameTxt.x = __radius + space;
+					nameTxt.y = __radius + space - 20;
 			}
 		}
 

@@ -5,10 +5,10 @@ package {
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.text.TextField;
-
+	
 	import howtodo.*;
-	import howtodo.view.GridInput;
 	import howtodo.view.DragPoint;
+	import howtodo.view.GridInput;
 	import howtodo.view.SwitchButton;	
 
 	[SWF(backgroundColor="0xFFFFFF")]
@@ -40,10 +40,23 @@ package {
 		private function initInstance() : void {
 			initStage();
 			initSwitchButtons();
-			DragPoint.grid = 100;
+			DragPoint.grid = 50;
 			initGrid();
+			
+			showByFlashvars();
 		}
-
+		
+		private function showByFlashvars() : void {
+			var demoNum:Number = Number(stage.loaderInfo.parameters["demo"]);
+			if (!isNaN(demoNum)) {
+				try {
+					var switchButton : SwitchButton = switchButtonsTarget.getChildAt(demoNum-1) as SwitchButton;
+					switchButton.onMouseClick(null);
+				} catch (err:Error) {
+				}
+			}
+		}
+		
 		private function initSwitchButtons() : void {
 			addChild(switchButtonsTarget);
 			switchButtonsTarget.x = 405;
