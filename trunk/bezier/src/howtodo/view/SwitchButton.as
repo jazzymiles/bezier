@@ -17,7 +17,6 @@ package howtodo.view {
 			initInstance();
 		}
 		
-		
 		public function get text() : String {
 			return TEXT.htmlText;
 		}
@@ -60,7 +59,7 @@ package howtodo.view {
 			}
 		}
 		
-		private function onMouseClick(event : MouseEvent) : void {
+		public function onMouseClick(event : MouseEvent) : void {
 			parent.dispatchEvent(SWITCH_BUTTON_EVENT);
 			mouseEnabled = false;
 			redraw();
