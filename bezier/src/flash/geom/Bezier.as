@@ -2303,7 +2303,7 @@ package flash.geom {
 			
 			var time:Number;
 			var targetPoint:Point;
-			var A2, B2, C2:Number;
+			var A2:Number, B2:Number, C2:Number;
 			var solves2:Array;
 			const len:uint = solves.length;
 			if (!isSegment && !target.isSegment) {
