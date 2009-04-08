@@ -1,5 +1,6 @@
 // UTF-8
 // translator: Flastar http://flastar.110mb.com
+
 package flash.geom {
 
 	/* *
@@ -104,7 +105,7 @@ package flash.geom {
 	public class Intersection extends Object {
 
 		
-		public static function isIntersectionPossible(current:Rectangle, target:Rectangle):Boolean {
+		public static function isIntersectionPossible(current : Rectangle, target : Rectangle) : Boolean {
 			current = current.clone();
 			target = target.clone();
 			
@@ -145,7 +146,11 @@ package flash.geom {
 		 * Property, that show type of crossing.<BR/> 
 		 * 
 		 */
-		public var isCoincidence:Boolean = false;
+		public var isCoincidence : Boolean = false;
+
+		public var coincidenceLine : Line;
+
+		public var coincidenceBezier : Bezier;		
 
 		/* *
 		 * Массив, содержащий time-итераторы точек пересечения.
@@ -155,7 +160,7 @@ package flash.geom {
 		 * Array, having time-interators of points of crossing.
 		 * time-interators given for object, method whose was call. 
 		 **/
-		public const currentTimes:Array = new Array();
+		public const currentTimes : Array = new Array();
 
 		/* *
 		 * Массив, содержащий time-итераторы точек пересечения.
@@ -167,6 +172,6 @@ package flash.geom {
 		 * time-interators given for object, whose was dan 
 		 * in role argument with calling method for getting crossings. 
 		 **/
-		public const targetTimes:Array = new Array();
+		public const targetTimes : Array = new Array();
 	}
 }
