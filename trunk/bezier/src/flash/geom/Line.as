@@ -2,8 +2,7 @@
 // translator: Flastar http://flastar.110mb.com
 
 package flash.geom {
-
-	/* *
+	/* *
 	 * Класс Line представляет линию в параметрическом представлении, 
 	 * задаваемую точками на плоскости <code>start</code> и <code>end</code>
 	 * и реализован в поддержку встроенного метода <code>lineTo()</code>.<BR/>
@@ -42,27 +41,20 @@ package flash.geom {
 	 * @see Bezier
 	 * @see Intersection
 	 */
-
-	public class Line extends Object implements IParametric {
-
-		
-		protected const PRECISION : Number = 1e-10;
-
-		protected var __start : Point;
+	public class Line extends Object implements IParametric {
+				protected const PRECISION : Number = 1e-10;
+		protected var __start : Point;
 		protected var __end : Point;
 		protected var __isSegment : Boolean;
-
-		public function Line(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true) {
+		public function Line(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true) {
 			initInstance(start, end, isSegment);
 		}
-
-		protected function initInstance(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true) : void {
+		protected function initInstance(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true) : void {
 			__start = (start as Point) || new Point();
 			__end = (end as Point) || new Point();
 			__isSegment = Boolean(isSegment);
 		}
-
-		/*
+		/*
 		 * Поскольку публичные переменные нельзя нельзя переопределять в дочерних классах, 
 		 * start, end и isSegment реализованы как get-set методы, а не как публичные переменные.
 		 */
@@ -85,17 +77,13 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 **/
-
-		
-		public function get start() : Point {
+				public function get start() : Point {
 			return __start;
 		}
-
-		public function set start(value : Point) : void {
+		public function set start(value : Point) : void {
 			__start = value;
 		}
-
-		/* *
+		/* *
 		 * Конечная опорная (anchor) точка отрезка. Итератор <code>time</code> равен единице.
 		 *  
 		 * @langversion 3.0
@@ -108,16 +96,13 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 **/
-
-		public function get end() : Point {
+		public function get end() : Point {
 			return __end;
 		}
-
-		public function set end(value : Point) : void {
+		public function set end(value : Point) : void {
 			__end = value;
 		}
-
-		/* *
+		/* *
 		 * Определяет является ли линия бесконечной в обе стороны
 		 * или ограничена в пределах итераторов от 0 до 1.<BR/>
 		 * <BR/>
@@ -161,12 +146,10 @@ package flash.geom {
 		public function get isSegment() : Boolean {
 			return __isSegment;
 		}
-
-		public function set isSegment(value : Boolean) : void {
+		public function set isSegment(value : Boolean) : void {
 			__isSegment = Boolean(value);
 		}
-
-		/* *
+		/* *
 		 * 
 		 * @return Line копия текущего объекта Line.  
 		 */	
@@ -174,12 +157,10 @@ package flash.geom {
 		 * 
 		 * @return Line copy of current object Line.  
 		 */
-
-		public function clone() : Line {
+		public function clone() : Line {
 			return new Line(__start.clone(), __end.clone(), __isSegment);
 		}
-
-		/* *
+		/* *
 		 * Угол наклона линии в радианах.
 		 * Поворот осуществляется относительно точки <code>start</code>.
 		 * Возвращаемое значение находится в пределах от положительного PI до отрицательного PI;
@@ -193,15 +174,13 @@ package flash.geom {
 		public function get angle() : Number {
 			return Math.atan2(__end.y - __start.y, __end.x - __start.x);
 		}
-
-		public function set angle(rad : Number) : void {
+		public function set angle(rad : Number) : void {
 			const distance : Number = Point.distance(__start, __end);
 			const polar : Point = Point.polar(distance, rad);
 			__end.x = __start.x + polar.x;
 			__end.y = __start.y + polar.y; 
 		}
-
-		/* *
+		/* *
 		 * Поворачивает линию относительно точки <code>fulcrum</code> на заданный угол.
 		 * Если точка <code>fulcrum</code> не задана, используется (0,0);
 		 * @param value:Number угол поворота в радианах
@@ -216,16 +195,14 @@ package flash.geom {
 		 * @param fulcrum:Point center of rotation. 
 		 * If variable undefined, center of rotation is point <code>start</code>
 		 */
-
-		public function angleOffset(rad : Number, fulcrum : Point = null) : void {
+		public function angleOffset(rad : Number, fulcrum : Point = null) : void {
 			fulcrum = fulcrum || new Point();
 			const startLine : Line = new Line(fulcrum, __start);
 			startLine.angle += rad;
 			const endLine : Line = new Line(fulcrum, __end);
 			endLine.angle += rad;
 		}
-
-		/* *
+		/* *
 		 * Смещает линию на заданное расстояние по осям X и Y.  
 		 * 
 		 * @param dx:Number величина смещения по оси X
@@ -244,8 +221,7 @@ package flash.geom {
 			__start.offset(dX, dY);
 			__end.offset(dX, dY);
 		}
-
-		/* *
+		/* *
 		 * Вычисляет и возвращает длину отрезка <code>start</code>-<code>end</code>.
 		 * Возвращаемое число всегда положительное значение; 
 		 * @return Number;
@@ -255,12 +231,10 @@ package flash.geom {
 		 * Return number only positively; 
 		 * @return Number;
 		 **/
-
-		public function get length() : Number {
+		public function get length() : Number {
 			return Point.distance(__start, __end); 
 		}
-
-		/* *
+		/* *
 		 * Вычисляет и возвращает точку на линии, заданную time-итератором.
 		 * @param time time-итератор
 		 * @return Point точка на линии
@@ -278,8 +252,7 @@ package flash.geom {
 			point.y = __start.y + (__end.y - __start.y) * time;
 			return point;
 		}
-
-		/* *
+		/* *
 		 * Вычисляет и возвращает time-итератор точки находящейся на заданной дистанции по линии от точки start. 
 		 * @param distance:Number
 		 * @return Number
@@ -295,8 +268,7 @@ package flash.geom {
 		public function getTimeByDistance(distance : Number) : Number {
 			return distance / Point.distance(__start, __end);
 		}
-
-		/* *
+		/* *
 		 * Изменяет позицию точки <code>end</code> таким образром, 
 		 * что точка <code>P<sub>time</sub></code> станет в координаты,
 		 * заданные параметрами <code>x</code> и <code>y</code>.
@@ -334,8 +306,7 @@ package flash.geom {
 			__end.x = point.x + (point.x - __start.x) * ((1 - time) / time);
 			__end.y = point.y + (point.y - __start.y) * ((1 - time) / time);
 		}
-
-		/* *
+		/* *
 		 * Возвращает габаритный прямоугольник объекта. 
 		 **/
 		/**
@@ -354,8 +325,7 @@ package flash.geom {
 			} 
 			return new Rectangle(__start.x, __start.y, __end.x - __start.x, __end.y - __start.y);
 		}
-
-		/* *
+		/* *
 		 * Возвращает отрезок - сегмент линии, заданный начальным и конечным итераторами.
 		 * 
 		 * @param fromTime:Number time-итератор начальной точки сегмента
@@ -376,8 +346,7 @@ package flash.geom {
 		public function getSegment(fromTime : Number = 0, toTime : Number = 1) : Line {
 			return new Line(getPoint(fromTime), getPoint(toTime));
 		}
-
-		/* *
+		/* *
 		 * Возвращает длину сегмента линии от точки <code>start</code> 
 		 * до точки на линии, заданной time-итератором.
 		 *  
@@ -398,8 +367,7 @@ package flash.geom {
 		public function getSegmentLength(time : Number) : Number {
 			return Point.distance(__start, getPoint(time));
 		}
-
-		/* *
+		/* *
 		 * Вычисляет и возвращает массив точек на линии удаленных друг от друга на 
 		 * расстояние, заданное параметром <code>step</code>.<BR/>
 		 * Перавя точка массива будет смещена от стартовой точки на расстояние, 
@@ -431,8 +399,7 @@ package flash.geom {
 		 * @return 
 		 * 
 		 */
-
-		public function getTimesSequence(step : Number, startShift : Number = 0) : Array {
+		public function getTimesSequence(step : Number, startShift : Number = 0) : Array {
 			step = Math.abs(step);
 			const distance : Number = (startShift % step + step) % step;
 			
@@ -450,8 +417,7 @@ package flash.geom {
 			}
 			return times;
 		}
-
-		/* *
+		/* *
 		 * Вычисляет и возвращает пересечение двух линий.
 		 * @param line:Line
 		 * @return Intersection;
@@ -465,9 +431,7 @@ package flash.geom {
 		 * 
 		 * @see #isSegment
 		 */
-
-		
-		public function intersectionLine(targetLine : Line) : Intersection {
+				public function intersectionLine(targetLine : Line) : Intersection {
 			// checkBounds
 			if (__isSegment && targetLine.__isSegment) {
 				const fxMax : Number = Math.max(__start.x, __end.x);
@@ -486,75 +450,76 @@ package flash.geom {
 				} 
 			}
 			// end check bounds
+			var intersection : Intersection = new Intersection();
+			
+			var solve : Point = new Point();
 
-			var intersection : Intersection;
+			const	a1 : Number = __end.y - __start.y,
+					b1 : Number = __start.x - __end.x,
+					c1 : Number = -a1 * __start.x - b1 * __start.y,
+					a2 : Number = targetLine.__end.y - targetLine.__start.y,
+					b2 : Number = targetLine.__start.x - targetLine.__end.x,
+					c2 : Number = -a2 * targetLine.__start.x - b2 * targetLine.__start.y;
 			
-			const fseX : Number = __end.x - __start.x;
-			const fseY : Number = __end.y - __start.y;
-			
-			const sseX : Number = targetLine.__end.x - targetLine.__start.x;
-			const sseY : Number = targetLine.__end.y - targetLine.__start.y;
-			
-			const sfsX : Number = __start.x - targetLine.__start.x;
-			const sfsY : Number = __start.y - targetLine.__start.y;
-			
-			
-			const denominator : Number = fseX * sseY - fseY * sseX;
-			const a : Number = sseX * sfsY - sfsX * sseY;
-			
-			if (denominator == 0) { 
-				if (a == 0) { 
-					// TODO: new coincident type
-					// coincident
-					//					const sfeX:Number = start.x - targetLine.end.x;
-					//					const sfeY:Number = start.y - targetLine.end.y;
-					//					const startTime:Number = -(sfsX/fseX || sfsY/fseY) || 0;
-					//					const endTime:Number = -(sfeX/fseX || sfeY/fseY) || 0;
-					//					
-					//					const order_array:Array = [new OrderedPoint(0, start),
-					//						new OrderedPoint(1, end),
-					//						new OrderedPoint(startTime, targetLine.start),
-					//						new OrderedPoint(endTime, targetLine.end)];
-					//					order_array.sortOn(OrderedPoint.TIME, Array.NUMERIC);
-					//					
-					//					const startOrdered:OrderedPoint = order_array[1];
-					//					const endOrdered:OrderedPoint = order_array[2];
-
-					intersection = new Intersection();
+			var determinant : Number = a1 * b2 - a2 * b1;
+			if(!determinant) {
+				if(!(__start.x * a2 + __start.y * b2 + c2)) {
 					intersection.isCoincidence = true;
-					// intersection.coincidenceLine = new Line(startOrdered.point, endOrdered.point);
+										
+					var reT : Number;
+					var rsT : Number;
+					
+					var beT : Number;
+					var bsT : Number;
+					
+					const leT : Number = 1;
+					const lsT : Number = 0;
+					
+					if(b1) {
+						bsT = (__start.x - targetLine.__start.x) / b1;
+						beT = (__start.x - targetLine.__end.x) / b1;
+					} else { 
+						bsT = (targetLine.__start.y - __start.y) / a1;
+						beT = (targetLine.__end.y - __start.y) / a1;
+					}
+					// считаем пересечение отрезков
+					if ((lsT - bsT) * (lsT - beT) <= 0 && (leT - bsT) * (leT - beT) <= 0) {
+						reT = leT;
+						rsT = lsT; 
+					} else if ((bsT - lsT) * (bsT - leT) <= 0 && (beT - lsT) * (beT - leT) <= 0) {
+						reT = beT;
+						rsT = bsT; 
+					} else if ((bsT - lsT) * (bsT - leT) <= 0 && (beT - lsT) * (beT - leT) >= 0) {
+						rsT = bsT;
+						reT = (lsT - bsT) * (lsT - beT) <= 0 ? lsT : leT;
+					} else if ((bsT - lsT) * (bsT - leT) >= 0 && (beT - lsT) * (beT - leT) <= 0) {
+						rsT = beT;
+						reT = (lsT - bsT) * (lsT - beT) <= 0 ? lsT : leT;
+					}
+					intersection.coincidenceLine = new Line(new Point(-rsT * b1 + __start.x, rsT * a1 + __start.y), new Point(-reT * b1 + __start.x, reT * a1 + __start.y));
 					return intersection;
-				} else { 
-					// parallel
-					return null;
 				}
+				return null;
 			}
+			solve.x = -(c1 * b2 - c2 * b1) / determinant;
+			solve.y = -(a1 * c2 - a2 * c1) / determinant;
 			
-			const currentTime : Number = a / denominator;
-			if (__isSegment) {
-				if (currentTime < 0 || currentTime > 1) { 
-					// no intersection
-					return null;
-				}
-			}
+			const time : Number = b1 ? (__start.x - solve.x) / b1 : (solve.y - __start.y) / a1;
+			const targetTime : Number = b2 ? (targetLine.__start.x - solve.x) / b2 : (solve.y - targetLine.__start.y) / a2;
 			
-			const b : Number = fseX * sfsY - sfsX * fseY;
-			const oppositeTime : Number = b / denominator;
-			if (targetLine.__isSegment) {
-				if (oppositeTime < 0 || oppositeTime > 1) { 
-					// no intersection
-					return null;
-				}
+			if(isSegment) {
+				if(time < 0 || time > 1)
+				return null;				
 			}
-
-			intersection = new Intersection();
-			intersection.currentTimes[0] = currentTime;
-			intersection.targetTimes[0] = oppositeTime;
+			if(targetLine.isSegment) {
+				if(targetTime < 0 || targetTime > 1)
+				return null;				
+			}
+			intersection.currentTimes.push(time);
+			intersection.targetTimes.push(targetTime);
 			return intersection;
 		}
-
-		
-		/* *
+		/* *
 		 * Вычисляет и возвращает пересечение с Bezier;
 		 * @param target:Bezier
 		 * @return 
@@ -567,9 +532,8 @@ package flash.geom {
 		 * 
 		 */		 		
 		public function intersectionBezier(target : Bezier) : Intersection {
-			const intersection : Intersection = new Intersection();
-			target;
-			return intersection;
+			// TODO : Поменять местами таргет и зис
+			return target.intersectionLine(this);
 		}
 
 		/* *
@@ -585,11 +549,26 @@ package flash.geom {
 		 * @see isSegment
 		 */
 		public function getClosest(fromPoint : Point) : Number {
+			// TODO: Протестить
+			const	a1 : Number = __end.y - __start.y,
+					b1 : Number = __start.x - __end.x,
+					c1 : Number = -a1 * __start.x - b1 * __start.y;
+			
+			if(!a1 && !b1) return undefined;
+			
+			const k : Number = (a1 * fromPoint.x + b1 * fromPoint.y + c1) / (a1 * a1 + b1 * b1);
+			const p : Point = new Point(fromPoint.x - a1 * k, fromPoint.y - b1 * k);
+			
+			const time : Number = b1 ? (__start.x - p.x) / b1 : (p.y - __start.y) / a1;
+		
+			/* зачем тригонометрия?
 			const from_distance : Number = Point.distance(__start, fromPoint);
 			const from_angle : Number = Math.atan2(__start.y - __end.y, __start.x - __end.x);
 			const difference : Number = from_angle - angle;
-			const distance : Number = from_distance * Math.cos(difference);
-			const time : Number = distance / length;
+			const distance : Number = from_distance*Math.cos(difference);
+			const time : Number = distance/length;
+			 * 
+			 */
 			if (!__isSegment) {
 				return time;
 			}
@@ -601,10 +580,7 @@ package flash.geom {
 			}
 			return time;
 		}
-
-		
-		
-		//**************************************************
+						//**************************************************
 		//				UTILS 
 		//**************************************************
 		/**
@@ -617,7 +593,7 @@ package flash.geom {
 		}
 	}
 }
-
+/*
 import flash.geom.Point;
 
 class OrderedPoint {
@@ -632,3 +608,5 @@ class OrderedPoint {
 		point = pt.clone();
 	}
 }
+ * 
+ */
