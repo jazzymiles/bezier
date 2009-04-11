@@ -1938,7 +1938,7 @@ package flash.geom {
 
 		public function intersectionLine(target : Line) : Intersection {
 			// быстрая проверка.
-			// очевидно, что паробола никогда не выходит за пределы сектора SCE
+			// очевидно, что порабола никогда не выходит за пределы сектора SCE
 			// если если кривая бесконечна смторим пересечения секторов
 			// если конечна, пересечение треугольников SCE
 
@@ -2340,6 +2340,7 @@ package flash.geom {
 					
 			var intersection : Intersection;
 			
+			// обе кривые - прямые линии. Возможно пересечение в виде прямой
 			if(ax2 * by2 == ay2 * bx2 && ax1 * by1 == ay1 * bx1) {
 				// TODO поправки на C
 				intersection = intersectionLine(new Line(target.startPoint,target.endPoint));				
