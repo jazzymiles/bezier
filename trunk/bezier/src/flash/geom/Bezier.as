@@ -915,6 +915,7 @@ package flash.geom {
 		public function get area() : Number {
 			return triangleArea * (2 / 3);
 		}
+
 		/* *
 		 * Вычисляет и возвращает площадь треугольника ∆SCE, 
 		 * образуемого контрольными точками <code>start, control, end</code>.  
@@ -987,7 +988,7 @@ package flash.geom {
 			// return Point.interpolate(controlPoint, Point.interpolate(startPoint, endPoint, 0.5), 1/3);
 		}
 
-
+		
 		/* *
 		 * Вычисляет и возвращает габаритный прямоугольник сегмента кривой Безье.<BR/> 
 		 * <I>Установка свойству isSegment=false не изменяет результат вычислений.</I> 
@@ -1485,7 +1486,7 @@ package flash.geom {
 			var f0 : Number;
 			
 			while (distance <= curveLength) {
-				const limiter : Number = 20;
+				var limiter : Number = 20;
 		
 				if (c2 == 0) {
 					if (c1 == 0) {
@@ -1742,11 +1743,23 @@ package flash.geom {
 			
 			const delimiter : Number = 2 * (kpx * kpx + kpy * kpy);
 			
-			const A : Number = 3 * (npx * kpx + npy * kpy) / delimiter;
-			const B : Number = ((npx * npx + npy * npy) + 2 * (lpx * kpx + lpy * kpy)) / delimiter;
-			const C : Number = (npx * lpx + npy * lpy) / delimiter;
+			var A : Number;
+			var B : Number;
+			var C : Number;
+			var extremumTimes : Array;
 			
-			const extremumTimes : Array = Equations.solveCubicEquation(1, A, B, C);
+			if(delimiter) {
+				A = 3 * (npx * kpx + npy * kpy) / delimiter;
+				B = ((npx * npx + npy * npy) + 2 * (lpx * kpx + lpy * kpy)) / delimiter;
+				C = (npx * lpx + npy * lpy) / delimiter;
+			
+				extremumTimes = Equations.solveCubicEquation(1, A, B, C);
+			} else {				
+				B = (npx * npx + npy * npy) + 2 * (lpx * kpx + lpy * kpy);
+				C = npx * lpx + npy * lpy;
+								
+				extremumTimes = Equations.solveLinearEquation(B, C);
+			}
 			
 			if (__isSegment) {
 				extremumTimes.push(0);
@@ -1767,9 +1780,6 @@ package flash.geom {
 				extremumTime = extremumTimes[i];
 				extremumPoint = getPoint(extremumTime);
 				
-				// TODO: [Dembicki] протестировать, вспомнить, что тут за проблема, пофиксить.
-				// PROBLEM!!!!!
-				// trace("extremumDistance: "+extremumTime);
 				extremumDistance = Point.distance(fromPoint, extremumPoint);
 				
 				isInside = (extremumTime >= 0) && (extremumTime <= 1);
@@ -1926,40 +1936,46 @@ package flash.geom {
 		 * 
 		 */
 
-		// TODO: [Sergeev] метод не закончен.
-		// 1. нигде не реализован расчет targetTimes. 
-		//    Т.е. везде, где заполняем currentTimes должно быть заполнение targetTimes. 
-		// 2. нет расчета совпадений
-		// 3. нужно прокомментировать блоки кода, указать какой случай рассматривается. 
-		// 4. оптимизация: поскольку на практике в 90 и более процентах случаев
-		//    пересечения не будет, очень важно продумать стратегию простых проверок
-		//    в самом начале метода. Таких как Intersection.isIntersectionPossible();
-		//    Нужны быстрые, элементарные проверки.
-		
-		public function intersectionLine(target:Line):Intersection {
-			var intersection:Intersection = new Intersection();
+		public function intersectionLine(target : Line) : Intersection {
+			// быстрая проверка.
+			// очевидно, что паробола никогда не выходит за пределы сектора SCE
+			// если если кривая бесконечна смторим пересечения секторов
+			// если конечна, пересечение треугольников SCE
+
+			if(!intersectionRayLine(controlPoint, endPoint, target.start, target.end, isSegment, target.isSegment))
+			if(!intersectionRayLine(controlPoint, startPoint, target.start, target.end, isSegment, target.isSegment)) {
+				var	p1 : Point = new Point(startPoint.x - controlPoint.x, startPoint.y - controlPoint.y),
+					p2 : Point = new Point(endPoint.x - controlPoint.x, endPoint.y - controlPoint.y),
+					p3 : Point = new Point(target.start.x - controlPoint.x, target.start.y - controlPoint.y),
+					angle : Point = new Point((p1.x * p2.x + p1.y * p2.y) / p1.length / p2.length, (p1.x * p2.y - p2.x * p1.y) / p1.length / p2.length),
+					angle2 : Point = new Point((p3.x * p2.x + p3.y * p2.y) / p3.length / p2.length, (p3.x * p2.y - p2.x * p3.y) / p3.length / p2.length);
+				if(angle.y * angle2.y < 0 || angle2.x < angle.x) return null;
+			}			
 			
-			const sX:Number = startPoint.x;
-			const sY:Number = startPoint.y;
-			const cX:Number = controlPoint.x;
-			const cY:Number = controlPoint.y;
-			const eX:Number = endPoint.x;
-			const eY:Number = endPoint.y;
-			const oX:Number = target.start.x;
-			const oY:Number = target.start.y;
-			const lineAngle:Number = target.angle;
-			var cosa:Number = Math.cos(lineAngle);
-			var sina:Number = Math.sin(lineAngle);
+			
+			var intersection : Intersection = new Intersection();
+			
+			const sX : Number = startPoint.x;
+			const sY : Number = startPoint.y;
+			const cX : Number = controlPoint.x;
+			const cY : Number = controlPoint.y;
+			const eX : Number = endPoint.x;
+			const eY : Number = endPoint.y;
+			const oX : Number = target.start.x;
+			const oY : Number = target.start.y;
+			const lineAngle : Number = target.angle;
+			var cosa : Number = Math.cos(lineAngle);
+			var sina : Number = Math.sin(lineAngle);
 			//
-			var time0:Number;
-			var time1:Number;
-			var lineTime0:Number;
-			var lineTime1:Number;
-			var intersectionPoint0:Point;
-			var intersectionPoint1:Point;
-			const distanceX:Number = target.end.x - target.start.x;
-			const distanceY:Number = target.end.y - target.start.y;
-			const checkByX:Boolean = Math.abs(distanceX) > Math.abs(distanceY);
+			var time0 : Number;
+			var time1 : Number;
+			var lineTime0 : Number;
+			var lineTime1 : Number;
+			var intersectionPoint0 : Point;
+			var intersectionPoint1 : Point;
+			const distanceX : Number = target.end.x - target.start.x;
+			const distanceY : Number = target.end.y - target.start.y;
+			const checkByX : Boolean = Math.abs(distanceX) > Math.abs(distanceY);
 
 			
 			if (Math.abs(cosa) < 1e-6) {
@@ -1969,18 +1985,92 @@ package flash.geom {
 				sina = 0;
 			}
 			
+						
+			// кривая лежит на прямой
+			if((sX + eX - 2 * cX) * (cY - sY) == (sY + eY - 2 * cY) * (cX - sX)) {				
+
+				const	al : Number = -distanceY,
+						bl : Number = distanceX, 
+						cl : Number = -al * oX - bl * oY;
+					
+				if(!(al * sX + bl * sY + cl) && !(al * eX + bl * eY + cl) && !(al * cX + bl * cY + cl)) {
+					
+					intersection.isCoincidence = true;					
+					
+					// прямые заданы параметрически, нет нужды делать лишние проверки
+					
+					// результат
+					var reT : Number;
+					var rsT : Number;
+					// видимый отрезок
+					var beT : Number;
+					var bsT : Number;
+					// точки кривой безье
+					var sT : Number;
+					var cT : Number;
+					var eT : Number;
+					// заданная прямая
+					const leT : Number = 1;
+					const lsT : Number = 0;
+					
+					if(bl) {
+						sT = (sX - oX) / bl;
+						cT = (cX - oX) / bl;
+						eT = (eX - oX) / bl;
+					} else { 
+						// прямые строго вертикальны
+						sT = (oY - sY) / al;
+						cT = (oY - cY) / al;
+						eT = (oY - eY) / al;
+					}
+					
+					// случай, когда управляющая точка лежит вне опорных
+					if((cT - sT) * (cT - eT) > 0) {					
+						const p : Point = bl ? getPoint(-(cX - sX) / (sX + eX - 2 * cX)) : getPoint(-(cY - sY) / (sY + eY - 2 * cY));
+						bsT = bl ? (p.x - oX) / bl : (oY - p.y) / al;
+						if(Math.abs(bsT - sT) > Math.abs(bsT - eT))
+								beT = sT;
+							else
+								beT = eT;
+					} else {
+						beT = eT;
+						bsT = sT;
+					}
+					
+					// считаем пересечение отрезков
+					if ((lsT - bsT) * (lsT - beT) <= 0 && (leT - bsT) * (leT - beT) <= 0) {
+						reT = leT;
+						rsT = lsT; 
+					} else if ((bsT - lsT) * (bsT - leT) <= 0 && (beT - lsT) * (beT - leT) <= 0) {
+						reT = beT;
+						rsT = bsT; 
+					} else if ((bsT - lsT) * (bsT - leT) <= 0 && (beT - lsT) * (beT - leT) >= 0) {
+						rsT = bsT;
+						reT = (lsT - bsT) * (lsT - beT) <= 0 ? lsT : leT;
+					} else if ((bsT - lsT) * (bsT - leT) >= 0 && (beT - lsT) * (beT - leT) <= 0) {
+						rsT = beT;
+						reT = (lsT - bsT) * (lsT - beT) <= 0 ? lsT : leT;
+					}
+					intersection.targetTimes.push(rsT);
+					intersection.targetTimes.push(reT);
+					intersection.coincidenceLine = new Line(new Point(rsT * bl + oX, -rsT * al + oY), new Point(reT * bl + oX, -reT * al + oY));
+											
+					return intersection;
+				}
+			}
 			
-			
-			var divider:Number = -2*sina*cX + sina*eX + sina*sX + 2*cosa*cY - cosa*eY - cosa*sY;
+			var divider : Number = -2 * sina * cX + sina * eX + sina * sX + 2 * cosa * cY - cosa * eY - cosa * sY;
 			if (Math.abs(divider) < 1e-6) {
 				divider = 0;
 			}
 			
-			
+			// единственное решение. Иначе говоря отрезок параллелен параболе
 			if (divider == 0) {
 				
-				const divider2:Number = (-2*sX + 2*cX)*sina - (-2*sY + 2*cY)*cosa;
+				const divider2 : Number = (-2 * sX + 2 * cX) * sina - (-2 * sY + 2 * cY) * cosa;
 				if (divider2 == 0) {
+					
+					// Это вообще что?					
 					intersection.currentTimes[0] = 0;
 					intersection.currentTimes[1] = 1;
 					
@@ -1988,45 +2078,68 @@ package flash.geom {
 					intersectionPoint1 = getPoint(1);
 					
 					if (checkByX) {
-						lineTime0 = (intersectionPoint0.x - target.start.x)/distanceX;
-						lineTime1 = (intersectionPoint1.x - target.start.x)/distanceX;
+						lineTime0 = (intersectionPoint0.x - target.start.x) / distanceX;
+						lineTime1 = (intersectionPoint1.x - target.start.x) / distanceX;
 					} else {
-						lineTime0 = (intersectionPoint0.y - target.start.y)/distanceY;
-						lineTime1 = (intersectionPoint1.y - target.start.y)/distanceY;
+						lineTime0 = (intersectionPoint0.y - target.start.y) / distanceY;
+						lineTime1 = (intersectionPoint1.y - target.start.y) / distanceY;
 					}
-				} else {
-					
-					time0 = -((sX - oX)*sina - (sY - oY)*cosa)/divider2;
-					
-					intersection.currentTimes[0] = time0;
-					intersectionPoint0 = getPoint(time0);
-					
-					const intersection_is_in_segment:Number = (intersectionPoint0.x-target.start.x)* (intersectionPoint0.x-target.end.x);
-					if (intersection_is_in_segment>0)
-						intersection = null;
+					return intersection;
 				}
 				
+				
+				time0 = -((sX - oX) * sina - (sY - oY) * cosa) / divider2;
+				intersectionPoint0 = getPoint(time0);
+
+				var intersection_is_in_segment : Number;											
+				if(checkByX > 0) {						
+					intersection_is_in_segment = (intersectionPoint0.x - target.start.x) * (intersectionPoint0.x - target.end.x);
+				} else { 
+					intersection_is_in_segment = (intersectionPoint0.y - target.start.y) * (intersectionPoint0.y - target.end.y);
+				}
+					
+				if(isSegment && target.isSegment) {
+					if(time0 < 0 || time0 > 1)
+						return null;											
+					if (intersection_is_in_segment > 0)
+						return null;
+				}
+				if(!isSegment && target.isSegment) {
+					if (intersection_is_in_segment > 0)
+						return null;
+				}
+				if(isSegment && !target.isSegment) { 
+					if(time0 < 0 || time0 > 1)
+						return null;
+				}		
+						 
+				if (checkByX) {
+					lineTime0 = (intersectionPoint0.x - target.start.x) / distanceX;
+				} else {
+					lineTime0 = (intersectionPoint0.y - target.start.y) / distanceY;
+				}					
+				intersection.currentTimes.push(time0);
+				intersection.targetTimes.push(lineTime0);
 				return intersection;
-			} 
+			}
 			
-			const discriminant:Number = +cosa*cosa*(sY*oY + cY*cY - eY*sY - 2*cY*oY + eY*oY) + sina*cosa*(-sY*oX - eY*oX - 2*cY*cX + eX*sY - sX*oY + 2*cY*oX + 2*cX*oY + eY*sX - eX*oY) + sina*sina*(eX*oX + sX*oX - 2*cX*oX + cX*cX - eX*sX);
-			
-			
+			const discriminant : Number = +cosa * cosa * (sY * oY + cY * cY - eY * sY - 2 * cY * oY + eY * oY) + sina * cosa * (-sY * oX - eY * oX - 2 * cY * cX + eX * sY - sX * oY + 2 * cY * oX + 2 * cX * oY + eY * sX - eX * oY) + sina * sina * (eX * oX + sX * oX - 2 * cX * oX + cX * cX - eX * sX);
 			
 			if (discriminant < 0) {
 				return null;
 			}
 			
-			const a:Number = -2*cosa*sY + 2*sina*sX + 2*cosa*cY - 2*sina*cX;
-			const c:Number = 2*divider;
+			const a : Number = -2 * cosa * sY + 2 * sina * sX + 2 * cosa * cY - 2 * sina * cX;
+			const c : Number = 2 * divider;
 			
-			var outsideBezier0:Boolean;
-			var outsideLine0:Boolean;
-			var outsideBezier1:Boolean;
-			var outsideLine1:Boolean;
+			var outsideBezier0 : Boolean;
+			var outsideLine0 : Boolean;
+			var outsideBezier1 : Boolean;
+			var outsideLine1 : Boolean;
 			
+			// касательная
 			if (discriminant == 0) {
-				time0 = a/c;
+				time0 = a / c;
 				
 				outsideBezier0 = time0 < 0 || time0 > 1;
 				if (isSegment && outsideBezier0) {
@@ -2036,9 +2149,9 @@ package flash.geom {
 				intersectionPoint0 = getPoint(time0);
 				
 				if (checkByX) {
-					lineTime0 = (intersectionPoint0.x - target.start.x)/distanceX;
+					lineTime0 = (intersectionPoint0.x - target.start.x) / distanceX;
 				} else {
-					lineTime0 = (intersectionPoint0.y - target.start.y)/distanceX;
+					lineTime0 = (intersectionPoint0.y - target.start.y) / distanceY;
 				}
 				
 				outsideLine0 = lineTime0 < 0 || lineTime0 > 1;
@@ -2054,10 +2167,11 @@ package flash.geom {
 			}
 			
 			// if discriminant > 0
+			// пересечение по двум точкам
 
-			const b:Number = 2*Math.sqrt(discriminant);
-			time0 = (a - b)/c;
-			time1 = (a + b)/c;
+			const b : Number = 2 * Math.sqrt(discriminant);
+			time0 = (a - b) / c;
+			time1 = (a + b) / c;		
 			
 			outsideBezier0 = time0 < 0 || time0 > 1;
 			outsideBezier1 = time1 < 0 || time1 > 1;
@@ -2071,11 +2185,11 @@ package flash.geom {
 			
 			
 			if (distanceX) {
-				lineTime0 = (intersectionPoint0.x - target.start.x)/distanceX;
-				lineTime1 = (intersectionPoint1.x - target.start.x)/distanceX;
+				lineTime0 = (intersectionPoint0.x - target.start.x) / distanceX;
+				lineTime1 = (intersectionPoint1.x - target.start.x) / distanceX;
 			} else {
-				lineTime0 = (intersectionPoint0.y - target.start.y)/distanceY;
-				lineTime1 = (intersectionPoint1.y - target.start.y)/distanceY;
+				lineTime0 = (intersectionPoint0.y - target.start.y) / distanceY;
+				lineTime1 = (intersectionPoint1.y - target.start.y) / distanceY;
 			}
 			
 			outsideLine0 = lineTime0 < 0 || lineTime0 > 1;
@@ -2172,184 +2286,135 @@ package flash.geom {
 		 */		
 
 		// TODO: [Sergeev] метод не закончен.
-		// 1. Убрать рекурсию - в первую очередь.
-		// 2. Метод иногда дает пересечение в случаях, когда его нет. (iv:сделаю тест)  
-		// 3. нигде не реализован расчет targetTimes. 
-		//    Т.е. везде, где заполняем currentTimes должно быть заполнение targetTimes. 
 		// 4. Требуется расчета совпадений
-		// 5. Нужно прокомментировать блоки кода, указать какой случай рассматривается. 
-		// 6. оптимизация: поскольку на практике в 90 и более процентах случаев
-		//    пересечения не будет, очень важно продумать стратегию простых проверок
-		//    в самом начале метода. Таких как Intersection.isIntersectionPossible();
-		//    Нужны быстрые, элементарные проверки.
 
-		public function intersectionBezier(target:Bezier):Intersection {
-			const vertexTime:Number = target.parabolaVertex;
-			const targetParabolaVertex:Point = target.getPoint(vertexTime);
-			const tpvX:Number = targetParabolaVertex.x;
-			const tpvY:Number = targetParabolaVertex.y;
-			
-			const nX:Number = 2*vertexTime*(target.startPoint.x - 2*target.controlPoint.x + target.endPoint.x) + 2*(target.controlPoint.x - target.startPoint.x);
-			const nY:Number = 2*vertexTime*(target.startPoint.y - 2*target.controlPoint.y + target.endPoint.y) + 2*(target.controlPoint.y - target.startPoint.y);
+		public function intersectionBezier(target : Bezier) : Intersection {
+			// быстрая проверка.
+			// очевидно, что порабола никогда не выходит за пределы сектора SCE
+			// если если кривая бесконечна смторим пересечения секторов
+			// если конечна, пересечение треугольников SCE
 
-			const nnX:Number = 2*(target.startPoint.x - 2*target.controlPoint.x + target.endPoint.x);
-			const nnY:Number = 2*(target.startPoint.y - 2*target.controlPoint.y + target.endPoint.y);
-
-						
-			var angle:Number = -Math.atan2(nY, nX);
-			if ((nX==0)&&(nY==0))
-			{
-				angle = -Math.atan2(nnY, nnX);
-			}
-			
-			const angleSin:Number = Math.sin(angle);
-			const angleCos:Number = Math.cos(angle);
-			
-			
-			// target
-			const teX:Number = tpvX - target.endPoint.x;
-			const teY:Number = tpvY - target.endPoint.y;
-			const tsX:Number = tpvX - target.startPoint.x;
-			const tsY:Number = tpvY - target.startPoint.y;
-			const tcX:Number = tpvX - target.controlPoint.x;
-			const tcY:Number = tpvY - target.controlPoint.y;
-			
-			var e1_x:Number = teX*angleCos - teY*angleSin;
-			var e1_y:Number = teX*angleSin + teY*angleCos;
-			
-			var s1_x:Number = tsX*angleCos - tsY*angleSin;
-			var s1_y:Number = tsX*angleSin + tsY*angleCos;		
-			
-			var c1_x:Number = tcX*angleCos - tcY*angleSin;
-			var c1_y:Number = tcX*angleSin + tcY*angleCos;		
-				
-			if (Math.abs(e1_x) < PRECISION) {
-				e1_x = 0;
-			}
-			if (Math.abs(e1_y)< PRECISION) {
-				e1_y = 0;
-			}
-			if (Math.abs(s1_x)< PRECISION) {
-				s1_x = 0;
-			}
-			if (Math.abs(s1_y)< PRECISION) {
-				s1_y = 0;
-			}
-							
-//			const nnX2:Number = nnX*angleCos - nnY*angleSin;
-//			const nnY2:Number = nnX*angleSin + nnY*angleCos;
-//			const tsX:Number = tpvX-target.startPoint.x;
-//			const tsY:Number = tpvY-target.startPoint.y;
-//			const tcX:Number = tpvX-target.controlPoint.x;
-//			const tcY:Number = tpvY-target.controlPoint.y;
-			
-			// current
-			
-			
-			const csX:Number = tpvX - startPoint.x;
-			const csY:Number = tpvY - startPoint.y;
-			const sX:Number = csX*angleCos - csY*angleSin;
-			const sY:Number = csX*angleSin + csY*angleCos;
-			
-			const ccX:Number = tpvX - controlPoint.x;
-			const ccY:Number = tpvY - controlPoint.y;
-			const cX:Number = ccX*angleCos - ccY*angleSin;
-			const cY:Number = ccX*angleSin + ccY*angleCos;
-			
-			const ceX:Number = tpvX - endPoint.x;
-			const ceY:Number = tpvY - endPoint.y;
-			const eX:Number = ceX*angleCos - ceY*angleSin;
-			const eY:Number = ceX*angleSin + ceY*angleCos;
-									
-									
-			
-//			const sf2_x:Number = tsX*angleCos-tsY*angleSin;
-//			const sf2_y:Number = tsX*angleSin+tsY*angleCos;
-//			const sf2:Point = new Point(tsX*angleCos)-tsY*angleSin, tsX*angleSin+tsY*angleCos);
-//			const cf2:Point = new Point(tcX*angleCos-tcY*angleSin, tcX*angleSin+tcY*angleCos);
-//			const ef2:Point = new Point(teX*angleCos-teY*angleSin, teX*angleSin+teY*angleCos);
-
-			var k:Number;
-			
-			if (e1_x!=0)
-				k = e1_y/e1_x/e1_x;
-			else
-				if (s1_x!=0)
-				{
-					k = s1_y/s1_x/s1_x;			
+			if(!intersectionRay(controlPoint, endPoint, target.controlPoint, target.endPoint, isSegment, target.isSegment))
+			if(!intersectionRay(controlPoint, startPoint, target.controlPoint, target.endPoint, isSegment, target.isSegment))
+			if(!intersectionRay(controlPoint, endPoint, target.controlPoint, target.startPoint, isSegment, target.isSegment))
+			if(!intersectionRay(controlPoint, startPoint, target.controlPoint, target.startPoint, isSegment, target.isSegment)) {
+				// лучи не пересекаются
+				// но один сектор может поглотить другой
+				var litmus : Number = 0;
+				var	p1 : Point = new Point(startPoint.x - controlPoint.x, startPoint.y - controlPoint.y),
+					p2 : Point = new Point(endPoint.x - controlPoint.x, endPoint.y - controlPoint.y),
+					p3 : Point = new Point(target.controlPoint.x - controlPoint.x, target.controlPoint.y - controlPoint.y),
+					angle : Point = new Point((p1.x * p2.x + p1.y * p2.y) / p1.length / p2.length, (p1.x * p2.y - p2.x * p1.y) / p1.length / p2.length),
+					angle2 : Point = new Point((p3.x * p2.x + p3.y * p2.y) / p3.length / p2.length, (p3.x * p2.y - p2.x * p3.y) / p3.length / p2.length);
+				// второй внутри первого
+				if(angle.y * angle2.y < 0 || angle2.x < angle.x) {
+					litmus++;
 				}
-				else
-				{
-					k = c1_y/c1_x/c1_x;			
+				p1 = new Point(target.startPoint.x - target.controlPoint.x, target.startPoint.y - target.controlPoint.y);
+				p2 = new Point(target.endPoint.x - target.controlPoint.x, target.endPoint.y - target.controlPoint.y);
+				p3 = new Point(controlPoint.x - target.controlPoint.x, controlPoint.y - target.controlPoint.y);
+				angle = new Point((p1.x * p2.x + p1.y * p2.y) / p1.length / p2.length, (p1.x * p2.y - p2.x * p1.y) / p1.length / p2.length);
+				angle2 = new Point((p3.x * p2.x + p3.y * p2.y) / p3.length / p2.length, (p3.x * p2.y - p2.x * p3.y) / p3.length / p2.length);
+				// первый внутри второго
+				if(angle.y * angle2.y < 0 || angle2.x < angle.x) {
+					litmus++;
 				}
+				if(litmus == 2) return null;
+			}
+			
+			const	ax1 : Number = startPoint.x + endPoint.x - 2 * controlPoint.x,
+					bx1 : Number = 2 * controlPoint.x - 2 * startPoint.x,
+					cx1 : Number = startPoint.x,
+					ax2 : Number = target.startPoint.x + target.endPoint.x - 2 * target.controlPoint.x,
+					bx2 : Number = 2 * target.controlPoint.x - 2 * target.startPoint.x,
+					cx2 : Number = target.startPoint.x,
+					ay1 : Number = startPoint.y + endPoint.y - 2 * controlPoint.y,
+					by1 : Number = 2 * controlPoint.y - 2 * startPoint.y,
+					cy1 : Number = startPoint.y,
+					ay2 : Number = target.startPoint.y + target.endPoint.y - 2 * target.controlPoint.y,
+					by2 : Number = 2 * target.controlPoint.y - 2 * target.startPoint.y,
+					cy2 : Number = target.startPoint.y,
 					
-			var A:Number = k*(sX - 2*cX + eX)*(sX - 2*cX + eX);
-			var B:Number = k*4*(sX - 2*cX + eX)*(cX - sX);
-			var C:Number = k*(4*(cX - sX)*(cX - sX) + 2*sX*(sX - 2*cX + eX)) - (sY - 2*cY + eY);
-			var D:Number = k*4*sX*(cX - sX) - 2*(cY - sY);
-			var E:Number = k*sX*sX - sY;
+					cy : Number = cy1 - cy2,
+					cx : Number = cx1 - cx2;
+					
+			var intersection : Intersection;
 			
-			if (Math.abs(A)>0.000000000001)
-			{
-				B /= A;
-				C /= A;
-				D /= A;
-				E /= A;
-				A = 1;				
+			if(ax2 * by2 == ay2 * bx2 && ax1 * by1 == ay1 * bx1) {
+				// TODO поправки на C
+				intersection = intersectionLine(new Line(target.startPoint,target.endPoint));				
+				return intersection;
 			}
+					
+			// решение «в лоб»
+			const	A : Number = -(ax2 * ay1 - ax1 * ay2) * (ax2 * ay1 - ax1 * ay2),
+					B : Number = -2 * (ax2 * ay1 - ax1 * ay2) * (-ay2 * bx1 + ax2 * by1),
+					C : Number = -ay2 * ay2 * (bx1 * bx1 + 2 * ax1 * cx) - ax2 * (by2 * (ay1 * bx2 - ax1 * by2) + ax2 * (by1 * by1 + 2 * ay1 * cy)) + ay2 * (-ax1 * bx2 * by2 + ay1 * (bx2 * bx2 + 2 * ax2 * cx) + 2 * ax2 * (bx1 * by1 + ax1 * cy)),
+					D : Number = -2 * ay2 * ay2 * bx1 * cx + ay2 * (bx2 * bx2 * by1 - bx1 * bx2 * by2 + 2 * ax2 * (by1 * cx + bx1 * cy)) + ax2 * (-bx2 * by1 * by2 + bx1 * by2 * by2 - 2 * ax2 * by1 * cy),
+					E : Number = -ay2 * ay2 * cx * cx + ay2 * (-bx2 * by2 * cx + bx2 * bx2 * cy + 2 * ax2 * cx * cy) - ax2 * (-by2 * by2 * cx + bx2 * by2 * cy + ax2 * cy * cy);
+					
+			const solves : Array = Equations.solveEquation(A, B, C, D, E);
+			intersection = new Intersection();
 			
-			const solves:Array = Equations.solveEquation(A, B, C, D, E);
-			const intersection:Intersection = new Intersection();
 			
-			var time:Number;
-			var targetPoint:Point;
-			var A2:Number, B2:Number, C2:Number;
-			var solves2:Array;
-			const len:uint = solves.length;
-			if (!isSegment && !target.isSegment) {
-				for (var i:uint = 0; i < len; i++) {
-					intersection.currentTimes[i] = solves[i];
-					targetPoint = getPoint(solves[i]);
-					A2 = s1_x-2*c1_x+e1_x;
-					B2 = -2*s1_x+2*c1_x;
-					C2 = s1_x;
-					solves2 = Equations.solveQuadraticEquation(A2, B2, C2);
-					//тут решение полюбому одно будет.
-					intersection.targetTimes[i] = solves2[0];					
-				}
+			//поворачиваем кривую в вертикальное положение. Решение будет одно и только одно.
+			const	tga : Number = ay2 ? -ax2 / ay2 : null,
+					sina : Number = ay2 ? tga / Math.sqrt(1 + tga * tga) : sign(-ax2),
+					cosa : Number = ay2 ? 1 / Math.sqrt(1 + tga * tga) : 0;
+					
+			const	bxn : Number = bx2 * cosa + by2 * sina,
+					cxn : Number = cx2 * cosa + cy2 * sina;
+					
+			var	pSolve : Point;
+			
+			// бесконечное множество решений. То есть есть совпадение кривых
+			if(!A && !B && !C && !D && !E) {
+				var	t1 : Number,
+					t2 : Number,
+					
+					rt1 : Number,
+					rt2 : Number;
+
+				pSolve = getPoint(0);
+				t1 = (pSolve.x * cosa + pSolve.y * sina - cxn) / bxn;
+				pSolve = getPoint(1);
+				t2 = (pSolve.x * cosa + pSolve.y * sina - cxn) / bxn;
+				
+				if (t1 * (t1 - 1) <= 0 && t2 * (t2 - 1) <= 0) {
+					rt2 = t2;
+					rt1 = t1; 
+				} else if ( t1 * t2 <= 0 && (1 - t1) * (1 - t2) <= 0) {
+					rt2 = 1;
+					rt1 = 0; 
+				} else if ( t1 * t2 <= 0 && (1 - t1) * (1 - t2) >= 0) {
+					rt1 = 0;
+					rt2 = t1 * (t1 - 1) <= 0 ? t1 : t2;
+				} else if (t1 * t2 >= 0 && (1 - t1) * (1 - t2) <= 0) {
+					rt1 = 1;
+					rt2 = t1 * (t1 - 1) <= 0 ? t1 : t2;
+				} else {
+					// нет пересечений
+					return null;
+				}				
+				
+				intersection.isCoincidence = true;
+				intersection.coincidenceBezier = target.getSegment(rt1, rt2);
 				return intersection;
 			}
 			
-			if (!target.isSegment) {
-				for (i = 0;i < len; i++) {
-					time = solves[i];
-					if (time >= 0 && time <= 1) {
-						intersection.currentTimes.push(time);
-						targetPoint = getPoint(time);
-						A2 = s1_x-2*c1_x+e1_x;
-						B2 = -2*s1_x+2*c1_x;
-						C2 = s1_x;
-						solves2 = Equations.solveQuadraticEquation(A2, B2, C2);
-						//тут решение полюбому одно будет.
-						intersection.targetTimes.push(solves2[0]);	
-					}
-				}
-				return intersection;
-			}
 			
-			// TODO: check if point on target segment
-			for (i = 0;i < len; i++) {
-				time = solves[i];
-				intersection.currentTimes.push(time);
-				
-				targetPoint = getPoint(time);
-				A2 = s1_x-2*c1_x+e1_x;
-				B2 = -2*s1_x+2*c1_x;
-				C2 = s1_x;
-				solves2 = Equations.solveQuadraticEquation(A2, B2, C2);
-				//тут решение полюбому одно будет.
-				intersection.targetTimes.push(solves2[0]);	
-				
+			for(var i : Number = 0 ;i < solves.length; i++) {
+				pSolve = getPoint(solves[i]);
+				var ox : Number = pSolve.x * cosa + pSolve.y * sina;
+				//var oy : Number = pSolve.y * cosa - pSolve.x * sina;
+				// TODO: если кривая — прямая линия?
+				var ot : Number = bxn ? (ox - cxn) / bxn : 0.5;
+				if(isSegment && (solves[i] >= 1 || solves[i] <= 0))
+					continue;
+				if(target.isSegment && (ot >= 1 || ot <= 0))
+					continue;
+				intersection.targetTimes.push(ot);
+				intersection.currentTimes.push(solves[i]);
 			}
 			
 			return intersection;
@@ -2360,20 +2425,74 @@ package flash.geom {
 		//**************************************************
 		//				UTILS 
 		//**************************************************
+		
 		/**
 		 * 
 		 * @return String 
 		 * 
 		 */
-		public function toString():String {
+		public function toString() : String {
 			return 	"(start:" + startPoint + ", control:" + controlPoint + ", end:" + endPoint + ")";
 		}
 
 		//**************************************************
 		//				PRIVATE 
 		//**************************************************
+		private function sign(vol : Number) : Number {
+			if(vol > 0) return 1;
+			if(vol < 0) return -1;
+			return 0;
+		}
 
-		
+		private function intersectionRay(p1s : Point, p1e : Point, p2s : Point, p2e : Point, seg1 : Boolean, seg2 : Boolean) : Boolean {
+			const	dx1 : Number = p1e.x - p1s.x,
+					dy1 : Number = p1e.y - p1s.y,
+					dx2 : Number = p2e.x - p2s.x,
+					dy2 : Number = p2e.y - p2s.y,
+					
+					div : Number = dx1 * dy2 - dy1 * dx2;
+					
+			var		t1 : Number,
+					t2 : Number; 
+			
+			// параллельны
+			if(!div) {				
+				// совпадение точек
+				if(p1e.x == p2e.x && p1e.y == p2e.y) return true;										
+			} else {
+				t1 = (dx2 * (p1s.y - p2s.y) - dy2 * (p1s.x - p2s.x)) / div;
+				t2 = (dx1 * (p1s.y - p2s.y) - dy1 * (p1s.x - p2s.x)) / div;
+				if(t1 >= 1 && seg1) return false;
+				if(t2 >= 1 && seg2) return false;
+				if(t2 > 0 && t1 > 0) return true;
+			}
+			return false;
+		}
+
+		private function intersectionRayLine(p1s : Point, p1e : Point, p2s : Point, p2e : Point, seg1 : Boolean, seg2 : Boolean) : Boolean {
+			const	dx1 : Number = p1e.x - p1s.x,
+					dy1 : Number = p1e.y - p1s.y,
+					dx2 : Number = p2e.x - p2s.x,
+					dy2 : Number = p2e.y - p2s.y,
+					
+					div : Number = dx1 * dy2 - dy1 * dx2;
+					
+			var		t1 : Number,
+					t2 : Number; 
+			
+			// параллельны
+			if(!div) {				
+				// совпадение точек
+				if(p1e.x == p2e.x && p1e.y == p2e.y) return true;										
+			} else {
+				t1 = (dx2 * (p1s.y - p2s.y) - dy2 * (p1s.x - p2s.x)) / div;
+				t2 = (dx1 * (p1s.y - p2s.y) - dy1 * (p1s.x - p2s.x)) / div;
+				if(t1 >= 1 && seg1) return false;
+				if(t2 >= 1 && seg2) return false;
+				if(t1 > 0) return true;
+			}
+			return false;
+		}
 	}
 }
 
