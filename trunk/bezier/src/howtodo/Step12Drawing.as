@@ -54,7 +54,7 @@ package howtodo {
 				drawLine(line);
 			}
 			
-			graphics.lineStyle(0, 0xFF0000, 1);
+			graphics.lineStyle(3, 0xFF0000, 1);
 			
 			shapeNum = 0;
 			while (true) {
