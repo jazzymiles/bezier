@@ -28,7 +28,8 @@ package {
 			Step08Bounce,
 			Step09DashedLine,
 			Step10Centroids,
-			IntersectionsTest];
+			IntersectionsTest,
+			Step12Drawing];
 
 		private const switchButtonsTarget : Sprite = new Sprite();
 		private const SPACE : uint = 5;
