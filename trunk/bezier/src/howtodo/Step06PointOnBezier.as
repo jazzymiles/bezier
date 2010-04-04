@@ -45,6 +45,13 @@ package howtodo {
 			
 			initDescription(DESCRIPTION);
 			
+			start.x = 100;
+			start.y = 300;
+			control.x = 300;
+			control.y = 300;
+			end.x = 700;
+			end.y = 500;
+			
 			addEventListener(Event.ENTER_FRAME, enterFrameHandler);
 			addChild(point);
 			redraw();

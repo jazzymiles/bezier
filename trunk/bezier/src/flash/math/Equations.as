@@ -84,7 +84,15 @@
 
 		public static function solveLinearEquation(A:Number, B:Number):Array {
 			if (Math.abs(A) < PRECISION) {
-				return [];
+				
+				if (Math.abs(B) < PRECISION) 
+				{
+					return null;
+				}
+				else
+				{
+					return [];
+				}
 			}
 			return [-B/A];
 		}

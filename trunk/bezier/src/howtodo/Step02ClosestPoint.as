@@ -62,12 +62,22 @@ package howtodo {
 			unlimited = new Line(start.point, control.point);
 			limited = new Line(control.point, end.point);
 			
+			start.x = 100;
+			start.y = 300;
+			control.x = 300;
+			control.y = 300;
+			end.x = 700;
+			end.y = 500;
+			
+			/*
+			//TODO: было изначально, вернуть!
 			start.x = stage.stageWidth*.1;
 			start.y = stage.stageHeight*.9;
 			control.x = stage.stageWidth*.7;
 			control.y = stage.stageHeight*.1;
 			end.x = stage.stageWidth*.7;
 			end.y = stage.stageHeight*.2;
+			*/
 			
 			addChild(closestUnlimited);
 			addChild(closestLimited);
@@ -84,6 +94,7 @@ package howtodo {
 		}
 		
 		private function redraw ():void {
+						
 			bezier.isSegment = false;
 			var unlimitedTime:Number = bezier.getClosest(mouse);
 			bezier.isSegment = true;
@@ -108,7 +119,7 @@ package howtodo {
 			graphics.lineStyle(0, 0xFF0000, .5);
 			drawLine(new Line(mouse, closestUnlimited.point));
 			graphics.lineStyle(0, 0x0000FF, 1);
-			drawLine(new Line(mouse, closestLimited.point));
+			drawLine(new Line(mouse, closestLimited.point));									
 		}
 
 
