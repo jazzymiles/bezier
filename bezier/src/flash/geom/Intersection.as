@@ -1,7 +1,8 @@
 // UTF-8
 // translator: Flastar http://flastar.110mb.com
 
-package flash.geom {
+package flash.geom 
+{
 
 	/* *
 	 * Если пересечение существует, то результатом вычисления может быть либо массив точек,
@@ -102,30 +103,36 @@ package flash.geom {
 	 * 
 	 * 
 	 */	 
-	public class Intersection extends Object {
+	public class Intersection extends Object 
+	{
 
 		
-		public static function isIntersectionPossible(current : Rectangle, target : Rectangle) : Boolean {
+		public static function isIntersectionPossible(current : Rectangle, target : Rectangle) : Boolean 
+		{
 			current = current.clone();
 			target = target.clone();
 			
 			// fix negative
-			if (current.width < 0) {
+			if (current.width < 0) 
+			{
 				current.x += current.width;
-				current.width = -current.width;
+				current.width = - current.width;
 			}
-			if (current.height < 0) {
+			if (current.height < 0) 
+			{
 				current.y += current.height;
-				current.height = -current.height;
+				current.height = - current.height;
 			}
 			
-			if (target.width < 0) {
+			if (target.width < 0) 
+			{
 				target.x += target.width;
-				target.width = -target.width;
+				target.width = - target.width;
 			}
-			if (target.height < 0) {
+			if (target.height < 0) 
+			{
 				target.y += target.height;
-				target.height = -target.height;
+				target.height = - target.height;
 			}
 			// fix zero
 			current.width += 1e-10;
@@ -173,5 +180,56 @@ package flash.geom {
 		 * in role argument with calling method for getting crossings. 
 		 **/
 		public const targetTimes : Array = new Array();
+
+		
+		/* *
+		 * Меняет местами time-итераторы текущей и таргет фигур.
+		 * Метод часто используется там, где делается перевызов на другой метод пересечения, например, с вырожденной фигурой.
+		 * Не стоит забывать в таких случаях, что у разных фигур могут быть разные итераторы для одной и той же точки. 
+		 * Если есть такая опасность, то следует дополнительно скорректировать time-итераторы через методы getPoint и getPointOnCurve.
+		 *    
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * @lang rus
+		 **/
+		public function switchCurrentAndTarget() : void
+		{
+			var time : Number;
+			for(var i : int = 0;i < currentTimes.length; i++) 
+			{
+				time = currentTimes[i];
+				currentTimes[i] = targetTimes[i];
+				targetTimes[i] = time;
+			}			
+		}
+
+		/* *
+		 * Добавляет новую точку в пересечение, с учетом флагов ограниченности пересекающихся фигур.
+		 * 
+		 * @param solutionForCurrent:Number time-итератор для текущей фигуры
+		 * @param solutionForTarget:Number time-итератор для пересекающей фигуры
+		 * @param currentIsSegment:Boolean флаг ограниченности для текущей фигуры
+		 * @param targetIsSegment:Boolean флаг ограниченности для пересекающей фигуры
+		 *  
+		 * @return Intersection текущий объект с пересечением
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * @lang rus
+		 **/
+
+		public function addIntersection(solutionForCurrent : Number, solutionForTarget : Number, currentIsSegment : Boolean, targetIsSegment : Boolean) : Intersection
+		{						
+			var segmentRestrictionForCurve : Boolean = (! currentIsSegment) || ((solutionForCurrent >= 0) && (solutionForCurrent <= 1));
+			var segmentRestrictionForLine : Boolean = (! targetIsSegment) || ((solutionForTarget >= 0) && (solutionForTarget <= 1));
+							
+			if (segmentRestrictionForCurve && segmentRestrictionForLine)	
+			{								
+				targetTimes.push(solutionForTarget);
+				currentTimes.push(solutionForCurrent);
+			}
+			
+			return this;
+		}
 	}
 }

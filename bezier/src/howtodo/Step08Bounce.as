@@ -10,7 +10,7 @@
 
 	public class Step08Bounce extends BezierUsage {
 		
-		private static const DESCRIPTION:String = "<B>Bounse: detect intersection (not finished methods)</B><BR/><BR/>drag control points";
+		private static const DESCRIPTION:String = "<B>Bounce: detect intersection (not finished methods)</B><BR/><BR/>drag control points";
 		
 		private const ball:DragPoint = new DragPoint();
 		private const stageRectangle:Rectangle = new Rectangle();
@@ -70,6 +70,9 @@
 			end.x = 700;
 			end.y = 700;
 			
+			bezier.isSegment = true;
+			stepLine.isSegment = true;
+			
 			onResize();
 			redraw();
 			
@@ -101,7 +104,8 @@
 			ball.y+=speedY;
 			stepLine.end = ball.position;
 			var intersection:Intersection = bezier.intersectionLine(stepLine);
-			if (intersection) {
+			if ((intersection)&&(intersection.currentTimes.length > 0)) 
+			{
 				// trace(intersection.currentTimes, intersection.oppositeTimes);
 				var time:Number = intersection.currentTimes[0];
 				var fulcrum:Point = bezier.getPoint(time);

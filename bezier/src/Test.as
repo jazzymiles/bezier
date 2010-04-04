@@ -18,7 +18,8 @@ package {
 		
 		private var stepContainer : Sprite;
 
-		private const constructors : Array = [Step01Building,
+		private const constructors : Array = [
+			Step01Building,
 			Step02ClosestPoint,
 			Step03EditDrag,
 			Step04EmulationCubic,
@@ -28,8 +29,9 @@ package {
 			Step08Bounce,
 			Step09DashedLine,
 			Step10Centroids,
-			IntersectionsTest,
-			Step12Drawing];
+			Step11Intersections,
+			Step12GeometryProperties,
+			Step13MovingRotating]; 
 
 		private const switchButtonsTarget : Sprite = new Sprite();
 		private const SPACE : uint = 5;
