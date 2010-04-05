@@ -31,7 +31,9 @@ package {
 			Step10Centroids,
 			Step11Intersections,
 			Step12GeometryProperties,
-			Step13MovingRotating]; 
+			Step13MovingRotating,
+			Step14ClosestPointTimeTest,
+			Step15IntersectionsTimeTest]; 
 
 		private const switchButtonsTarget : Sprite = new Sprite();
 		private const SPACE : uint = 5;
@@ -91,8 +93,8 @@ package {
 		private function initStage() : void {
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			stage.align = StageAlign.TOP_LEFT;
-			stage.frameRate = 31;
-			
+			stage.frameRate = 100;
+						
 			stage.addEventListener(Event.RESIZE, redrawGrid);
 		}
 

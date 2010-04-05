@@ -121,7 +121,7 @@ package flash.geom
 		 */
 		 
 		 
-		 /* *
+		/* *
 		 * Начальная опорная точка прямой. Итератор <code>time</code> равен нулю.
 		 * 
 		 * @return Point начальная точка прямой
@@ -257,7 +257,7 @@ package flash.geom
 			__isRay = Boolean(value);
 		}
 
-
+		
 		/* *
 		 * Создает и возвращает копию текущего объекта Line. 
 		 * Обратите внимание, что в копии опорные точки так же копируются, и являются новыми объектами.
@@ -358,7 +358,7 @@ package flash.geom
 			return new Point(start.x - end.x, start.y - end.y);			
 		}
 
-
+		
 		/**
 		 * Проверка вырожденности прямой в точку.
 		 * Если прямая вырождена в точку, то возвращается объект класса Point с координатой точки, в которую вырождена прямая.
@@ -422,7 +422,7 @@ package flash.geom
 		{
 			return Math.atan2(__end.y - __start.y, __end.x - __start.x);
 		}
-		
+
 		public function set angle(rad : Number) : void 
 		{
 			const distance : Number = Point.distance(__start, __end);
@@ -613,7 +613,7 @@ package flash.geom
 		 */
 		public function getTimeByDistance(distance : Number) : Number 
 		{
-			var lineLength:Number = this.length;
+			var lineLength : Number = this.length;
 			
 			if (lineLength > PRECISION)
 			{
@@ -999,13 +999,13 @@ package flash.geom
 		 * @lang rus
 		 */
 
-
+		
 		public function intersectionPoint(target : Point) : Intersection 
 		{
 			var intersection : Intersection = new Intersection();
 			
-			var closestTime:Number = this.getClosest(target);
-			var closestPoint:Point = this.getPoint(closestTime);
+			var closestTime : Number = this.getClosest(target);
+			var closestPoint : Point = this.getPoint(closestTime);
 						
 			if (Point.distance(target, closestPoint) < PRECISION)
 			{
@@ -1063,106 +1063,133 @@ package flash.geom
 		//TODO: забытый метод! переделать тут все нафиг. Sergeyev
 		public function intersectionLine(targetLine : Line) : Intersection 
 		{
-			// checkBounds
-			if (__isSegment && targetLine.__isSegment) 
-			{
-				const fxMax : Number = Math.max(__start.x, __end.x);
-				const fyMax : Number = Math.max(__start.y, __end.y);
-				const fxMin : Number = Math.min(__start.x, __end.x);
-				const fyMin : Number = Math.min(__start.y, __end.y);
-				
-				const sxMax : Number = Math.max(targetLine.__start.x, targetLine.__end.x);
-				const syMax : Number = Math.max(targetLine.__start.y, targetLine.__end.y);
-				const sxMin : Number = Math.min(targetLine.__start.x, targetLine.__end.x);
-				const syMin : Number = Math.min(targetLine.__start.y, targetLine.__end.y);
-		
-				if (fxMax < sxMin || sxMax < fxMin || fyMax < syMin || syMax < fyMin) 
-				{ 
-					// no intersection
-					return new Intersection();  
-				} 
-			}
-			// end check bounds
-
 			var intersection : Intersection = new Intersection();
 			
-			var solve : Point = new Point();
-
-			const	a1 : Number = __end.y - __start.y,
-					b1 : Number = __start.x - __end.x,
-					c1 : Number = - a1 * __start.x - b1 * __start.y,
-					a2 : Number = targetLine.__end.y - targetLine.__start.y,
-					b2 : Number = targetLine.__start.x - targetLine.__end.x,
-					c2 : Number = - a2 * targetLine.__start.x - b2 * targetLine.__start.y;
-			
-			var determinant : Number = a1 * b2 - a2 * b1;
-			if(! determinant) 
+			if (__isSegment && targetLine.__isSegment) 
 			{
-				if(! (__start.x * a2 + __start.y * b2 + c2)) 
+				var currentBoundBox : Rectangle = this.bounds;
+				var targetBoundBox : Rectangle = targetLine.bounds;
+						
+				if (currentBoundBox.right < targetBoundBox.left || targetBoundBox.right < currentBoundBox.left || currentBoundBox.top < targetBoundBox.bottom || targetBoundBox.top < currentBoundBox.bottom) 
+				{ 
+					return intersection;  
+				} 
+			}
+			
+			var startToEnd : Point = this.startToEnd;
+			var targetStartToEnd : Point = targetLine.startToEnd;
+			
+			const currentDeterminant : Number = startToEnd.x * __start.y - startToEnd.y * __start.x;
+			const targetDeterminant : Number = targetStartToEnd.x * targetLine.__start.y - targetStartToEnd.y * targetLine.__start.x;
+			const crossDeterminant : Number = startToEnd.x * targetStartToEnd.y - startToEnd.y * targetStartToEnd.x;
+			const crossDeterminant2 : Number = __start.x * targetStartToEnd.y - __start.y * targetStartToEnd.x;
+			
+			if(Math.abs(crossDeterminant) < PRECISION) 
+			{
+				if(Math.abs(crossDeterminant2 + targetDeterminant) < PRECISION) 
 				{
 					intersection.isCoincidence = true;
 										
-					var reT : Number;
-					var rsT : Number;
+					var coincidenceStartTime : Number;
+					var coincidenceEndTime : Number;
 					
-					var beT : Number;
-					var bsT : Number;
+					var currentEndTime : Number;
+					var currentStartTime : Number;
 					
-					const leT : Number = 1;
-					const lsT : Number = 0;
+					const linesStartTime : Number = 0;
+					const linesEndTime : Number = 1;					
 					
-					if (b1) 
+					if (Math.abs(startToEnd.x) > PRECISION) 
 					{
-						bsT = (__start.x - targetLine.__start.x) / b1;
-						beT = (__start.x - targetLine.__end.x) / b1;
+						currentStartTime = - (__start.x - targetLine.__start.x) / startToEnd.x;
+						currentEndTime = - (__start.x - targetLine.__end.x) / startToEnd.x;
 					} 
 					else 
 					{ 
-						bsT = (targetLine.__start.y - __start.y) / a1;
-						beT = (targetLine.__end.y - __start.y) / a1;
+						if (Math.abs(startToEnd.y) > PRECISION) 
+						{
+							currentStartTime = (targetLine.__start.y - __start.y) / startToEnd.y;
+							currentEndTime = (targetLine.__end.y - __start.y) / startToEnd.y;
+						}
+						else
+						{
+							currentStartTime = 0;
+							currentEndTime = 0;
+						}
 					}
-					// считаем пересечение отрезков
-					if ((lsT - bsT) * (lsT - beT) <= 0 && (leT - bsT) * (leT - beT) <= 0) 
+					
+					if ((linesStartTime - currentStartTime) * (linesStartTime - currentEndTime) <= 0 && (linesEndTime - currentStartTime) * (linesEndTime - currentEndTime) <= 0) 
 					{
-						reT = leT;
-						rsT = lsT; 
-					} else if ((bsT - lsT) * (bsT - leT) <= 0 && (beT - lsT) * (beT - leT) <= 0) 
+						coincidenceEndTime = linesEndTime;
+						coincidenceStartTime = linesStartTime; 
+					} 
+					else if ((currentStartTime - linesStartTime) * (currentStartTime - linesEndTime) <= 0 && (currentEndTime - linesStartTime) * (currentEndTime - linesEndTime) <= 0) 
 					{
-						reT = beT;
-						rsT = bsT; 
-					} else if ((bsT - lsT) * (bsT - leT) <= 0 && (beT - lsT) * (beT - leT) >= 0) 
+						coincidenceEndTime = currentEndTime;
+						coincidenceStartTime = currentStartTime; 
+					} else if ((currentStartTime - linesStartTime) * (currentStartTime - linesEndTime) <= 0 && (currentEndTime - linesStartTime) * (currentEndTime - linesEndTime) >= 0) 
 					{
-						rsT = bsT;
-						reT = (lsT - bsT) * (lsT - beT) <= 0 ? lsT : leT;
-					} else if ((bsT - lsT) * (bsT - leT) >= 0 && (beT - lsT) * (beT - leT) <= 0) 
+						coincidenceStartTime = currentStartTime;
+						coincidenceEndTime = (linesStartTime - currentStartTime) * (linesStartTime - currentEndTime) <= 0 ? linesStartTime : linesEndTime;
+					} else if ((currentStartTime - linesStartTime) * (currentStartTime - linesEndTime) >= 0 && (currentEndTime - linesStartTime) * (currentEndTime - linesEndTime) <= 0) 
 					{
-						rsT = beT;
-						reT = (lsT - bsT) * (lsT - beT) <= 0 ? lsT : leT;
+						coincidenceStartTime = currentEndTime;
+						coincidenceEndTime = (linesStartTime - currentStartTime) * (linesStartTime - currentEndTime) <= 0 ? linesStartTime : linesEndTime;
 					}
-					intersection.coincidenceLine = new Line(new Point(- rsT * b1 + __start.x, rsT * a1 + __start.y), new Point(- reT * b1 + __start.x, reT * a1 + __start.y));
-					return intersection;
+					var startPoint : Point = new Point(coincidenceStartTime * startToEnd.x + __start.x, coincidenceStartTime * startToEnd.y + __start.y);
+					var endPoint : Point = new Point(coincidenceEndTime * startToEnd.x + __start.x, coincidenceEndTime * startToEnd.y + __start.y);
+					intersection.coincidenceLine = new Line(startPoint, endPoint);
 				}
+				
 				return intersection;
 			}
-			solve.x = - (c1 * b2 - c2 * b1) / determinant;
-			solve.y = - (a1 * c2 - a2 * c1) / determinant;
-			
-			const time : Number = b1 ? (__start.x - solve.x) / b1 : (solve.y - __start.y) / a1;
-			const targetTime : Number = b2 ? (targetLine.__start.x - solve.x) / b2 : (solve.y - targetLine.__start.y) / a2;
-			
-			if(isSegment) 
+			else
 			{
-				if(time < 0 || time > 1)
-				return null;				
+				var solve : Point = new Point();			
+				solve.x = (currentDeterminant * targetStartToEnd.x - targetDeterminant * startToEnd.x) / crossDeterminant;
+				solve.y = (currentDeterminant * targetStartToEnd.y - targetDeterminant * startToEnd.y) / crossDeterminant;
+			
+				var time : Number;
+				if (Math.abs(startToEnd.x) > PRECISION)
+				{
+					time = (solve.x - __start.x) / startToEnd.x;
+				}
+				else
+				{
+					if (Math.abs(startToEnd.y) > PRECISION)
+					{
+						time = (solve.y - __start.y) / startToEnd.y;
+					}
+					else
+					{
+						time = Number.NaN;
+					}
+				}
+				
+				var targetTime : Number;
+				if (Math.abs(targetStartToEnd.x) > PRECISION)
+				{
+					targetTime = (solve.x - targetLine.__start.x) / targetStartToEnd.x;
+				}
+				else
+				{
+					if (Math.abs(startToEnd.y) > PRECISION)
+					{
+						targetTime = (solve.y - targetLine.__start.y) / targetStartToEnd.y;
+					}
+					else
+					{
+						targetTime = Number.NaN;
+					}
+				}
+				if ((! isSegment || (time >= 0 && time <= 1)) && (! targetLine.isSegment || (targetTime >= 0 && targetTime <= 1)))
+				{								
+					intersection.currentTimes.push(time);
+					intersection.targetTimes.push(targetTime);
+				}
+				
+				return intersection;
 			}
-			if(targetLine.isSegment) 
-			{
-				if(targetTime < 0 || targetTime > 1)
-				return intersection;				
-			}
-			intersection.currentTimes.push(time);
-			intersection.targetTimes.push(targetTime);
-			return intersection;
 		}
 
 		/**
@@ -1175,7 +1202,7 @@ package flash.geom
 		 */		   		
 		public function intersectionBezier(target : Bezier) : Intersection 
 		{
-			var intersection:Intersection = target.intersectionLine(this);
+			var intersection : Intersection = target.intersectionLine(this);
 			intersection.switchCurrentAndTarget();
 			return intersection;
 		}
@@ -1222,16 +1249,16 @@ package flash.geom
 		 **/
 		public function getClosest(fromPoint : Point) : Number 
 		{
-			const startToEnd:Point = this.startToEnd;
-			const startToEndLength:Number = startToEnd.length;
+			const startToEnd : Point = this.startToEnd;
+			const startToEndLength : Number = startToEnd.length;
 						
 			if( startToEndLength < PRECISION)
 			{
-				 return 0;
+				return 0;
 			}
 			
-			const selfProjection: Number = - startToEnd.y * __start.x + startToEnd.x * __start.y;
-			const projection : Number = (startToEnd.y * fromPoint.x + startToEnd.x * fromPoint.y + selfProjection) / (startToEndLength*startToEndLength);
+			const selfProjection : Number = - startToEnd.y * __start.x + startToEnd.x * __start.y;
+			const projection : Number = (startToEnd.y * fromPoint.x + startToEnd.x * fromPoint.y + selfProjection) / (startToEndLength * startToEndLength);
 			const point : Point = new Point(fromPoint.x - startToEnd.y * projection, fromPoint.y - startToEnd.x * projection);
 			const time : Number = startToEnd.x ? (__start.x - point.x) / startToEnd.x : (point.y - __start.y) / startToEnd.y;
 					
