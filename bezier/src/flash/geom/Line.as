@@ -280,7 +280,7 @@ package flash.geom {
 		 * const clone:Line = line.clone();
 		 * trace("random line: "+line);
 		 * trace("clone line: "+clone);
-		 * trace(bezier == clone); //false
+		 * trace(line == clone); //false
 		 * 	 
 		 * </listing>
 		 * 
