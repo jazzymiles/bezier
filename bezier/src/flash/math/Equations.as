@@ -25,7 +25,7 @@
 
 	public class Equations {
 		
-		protected static const PRECISION:Number = 1e-10;
+		public static const PRECISION:Number = 1e-10;
 
 		/** Универсальная функция для решения уравнений c одним неизвестным. <BR/>
 		 * Осуществляет перевызов на соответствующий метод, в зависимости от количества параметров. <BR/>

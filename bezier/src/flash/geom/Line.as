@@ -1,9 +1,9 @@
 // UTF-8
 // translator: Flastar http://flastar.110mb.com
 
-package flash.geom 
-{
-
+package flash.geom {
+	import flash.math.Equations;	
+	
 	/* *
 	 * Класс Line представляет линию в параметрическом представлении, 
 	 * задаваемую точками на плоскости <code>start</code> и <code>end</code>
@@ -50,7 +50,7 @@ package flash.geom
 	{
 
 		
-		protected const PRECISION : Number = 1e-10;
+		protected static const PRECISION : Number = Equations.PRECISION;
 
 		protected var __start : Point;
 		protected var __end : Point;
