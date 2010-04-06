@@ -317,7 +317,7 @@ package flash.geom {
 
 	public class Bezier extends Object implements IParametric {
 
-		protected static const PRECISION : Number = 1e-10;
+		protected static const PRECISION : Number = Equations.PRECISION;
 
 		protected var startPoint : Point;
 		protected var controlPoint : Point;
