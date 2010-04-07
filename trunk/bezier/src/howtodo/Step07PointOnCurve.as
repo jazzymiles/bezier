@@ -48,7 +48,7 @@ package howtodo {
 		
 		override protected function enterFrameHandler(event:Event):void {
 			super.enterFrameHandler(event);
-			distance+=3;
+			distance+=1;
 			distance=distance%roupe.length;
 			point.position = roupe.getPointByDistance(distance);
 		}

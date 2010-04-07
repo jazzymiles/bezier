@@ -94,8 +94,8 @@
 		private function initBallMotion ():void {
 			ball.x = 1;
 			ball.y = stageRectangle.height-1;
-			speedX = 10; // Math.random()+10;
-			speedY =-10; //Math.random()-11;
+			speedX = 3; // Math.random()+10;
+			speedY =-3; //Math.random()-11;
 		}
 		
 		private function moveBall():void {

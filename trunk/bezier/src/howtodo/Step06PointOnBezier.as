@@ -58,7 +58,7 @@ package howtodo {
 		}
 		
 		protected function enterFrameHandler(event:Event=undefined):void {
-			distance+=3;
+			distance+=1;
 			updatePosition();
 		}
 		

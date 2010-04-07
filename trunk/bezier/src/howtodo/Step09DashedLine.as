@@ -13,7 +13,7 @@ package howtodo {
 		private var lineLength:Number = 50;
 		private var gapLength:Number = 20;
 		
-		private var speed:Number = 1;
+		private var speed:Number = 0.25;
 		private var shift:Number = 0;
 		
 		public function Step09DashedLine () {
