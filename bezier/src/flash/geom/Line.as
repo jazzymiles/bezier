@@ -302,9 +302,9 @@ package flash.geom {
 		
 		/**
 		 * Получение вектора из начальной точки прямой в конечную точку.
-		 * Обратный вектор можно получить методом <a href="#endToStart">endToStart</a><BR/> 
+		 * Обратный вектор можно получить методом <a href="#endToStartVector">endToStartVector</a><BR/> 
 		 *  
-		 * @see #endToStart
+		 * @see #endToStartVector
 		 * 
 		 * @return Point вектор из начальной точки в конечную
 		 * 
@@ -314,7 +314,7 @@ package flash.geom {
 		 * import flash.geom.Point;
 		 *		
 		 * const line:Line = Line( new Point(100, 300), new Point(400, 200));
-		 * var point:Point = line.startToEnd;
+		 * var point:Point = line.startToEndVector;
 		 * trace(point.x+" "+point.y); //300 -100
 		 *  
 		 * </listing>
@@ -324,16 +324,16 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */		
-		public function get startToEnd() : Point
+		public function get startToEndVector() : Point
 		{
 			return new Point(end.x - start.x, end.y - start.y);			
 		}
 
 		/**
 		 * Получение вектора из конечной точки прямой в начальную точку.
-		 * Обратный вектор можно получить методом <a href="#endToStart">startToEnd</a><BR/> 
+		 * Обратный вектор можно получить методом <a href="#endToStartVector">startToEndVector</a><BR/> 
 		 *  
-		 * @see #startToEnd
+		 * @see #startToEndVector
 		 * 
 		 * @return Point вектор из конечной точки в начальную
 		 * 
@@ -343,7 +343,7 @@ package flash.geom {
 		 * import flash.geom.Point;
 		 *		
 		 * const line:Line = Line( new Point(100, 300), new Point(400, 200));
-		 * var point:Point = line.endToStart;
+		 * var point:Point = line.endToStartVector;
 		 * trace(point.x+" "+point.y); //-300 100
 		 *  
 		 * </listing>
@@ -353,7 +353,7 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */		
-		public function get endToStart() : Point
+		public function get endToStartVector() : Point
 		{
 			return new Point(start.x - end.x, start.y - end.y);			
 		}
@@ -389,7 +389,7 @@ package flash.geom {
 		 */
 		public function lineAsPoint() : Point
 		{
-			if (this.startToEnd.length < PRECISION)
+			if (this.startToEndVector.length < PRECISION)
 			{
 				return start.clone();				
 			}
@@ -1060,7 +1060,6 @@ package flash.geom {
 		 * @lang rus 
 		 */
 
-		//TODO: забытый метод! переделать тут все нафиг. Sergeyev
 		public function intersectionLine(targetLine : Line) : Intersection 
 		{
 			var intersection : Intersection = new Intersection();
@@ -1076,13 +1075,13 @@ package flash.geom {
 				} 
 			}
 			
-			var startToEnd : Point = this.startToEnd;
-			var targetStartToEnd : Point = targetLine.startToEnd;
+			var startToEndVector : Point = this.startToEndVector;
+			var targetStartToEndVector : Point = targetLine.startToEndVector;
 			
-			const currentDeterminant : Number = startToEnd.x * __start.y - startToEnd.y * __start.x;
-			const targetDeterminant : Number = targetStartToEnd.x * targetLine.__start.y - targetStartToEnd.y * targetLine.__start.x;
-			const crossDeterminant : Number = startToEnd.x * targetStartToEnd.y - startToEnd.y * targetStartToEnd.x;
-			const crossDeterminant2 : Number = __start.x * targetStartToEnd.y - __start.y * targetStartToEnd.x;
+			const currentDeterminant : Number = startToEndVector.x * __start.y - startToEndVector.y * __start.x;
+			const targetDeterminant : Number = targetStartToEndVector.x * targetLine.__start.y - targetStartToEndVector.y * targetLine.__start.x;
+			const crossDeterminant : Number = startToEndVector.x * targetStartToEndVector.y - startToEndVector.y * targetStartToEndVector.x;
+			const crossDeterminant2 : Number = __start.x * targetStartToEndVector.y - __start.y * targetStartToEndVector.x;
 			
 			if(Math.abs(crossDeterminant) < PRECISION) 
 			{
@@ -1099,17 +1098,17 @@ package flash.geom {
 					const linesStartTime : Number = 0;
 					const linesEndTime : Number = 1;					
 					
-					if (Math.abs(startToEnd.x) > PRECISION) 
+					if (Math.abs(startToEndVector.x) > PRECISION) 
 					{
-						currentStartTime = - (__start.x - targetLine.__start.x) / startToEnd.x;
-						currentEndTime = - (__start.x - targetLine.__end.x) / startToEnd.x;
+						currentStartTime = - (__start.x - targetLine.__start.x) / startToEndVector.x;
+						currentEndTime = - (__start.x - targetLine.__end.x) / startToEndVector.x;
 					} 
 					else 
 					{ 
-						if (Math.abs(startToEnd.y) > PRECISION) 
+						if (Math.abs(startToEndVector.y) > PRECISION) 
 						{
-							currentStartTime = (targetLine.__start.y - __start.y) / startToEnd.y;
-							currentEndTime = (targetLine.__end.y - __start.y) / startToEnd.y;
+							currentStartTime = (targetLine.__start.y - __start.y) / startToEndVector.y;
+							currentEndTime = (targetLine.__end.y - __start.y) / startToEndVector.y;
 						}
 						else
 						{
@@ -1136,8 +1135,8 @@ package flash.geom {
 						coincidenceStartTime = currentEndTime;
 						coincidenceEndTime = (linesStartTime - currentStartTime) * (linesStartTime - currentEndTime) <= 0 ? linesStartTime : linesEndTime;
 					}
-					var startPoint : Point = new Point(coincidenceStartTime * startToEnd.x + __start.x, coincidenceStartTime * startToEnd.y + __start.y);
-					var endPoint : Point = new Point(coincidenceEndTime * startToEnd.x + __start.x, coincidenceEndTime * startToEnd.y + __start.y);
+					var startPoint : Point = new Point(coincidenceStartTime * startToEndVector.x + __start.x, coincidenceStartTime * startToEndVector.y + __start.y);
+					var endPoint : Point = new Point(coincidenceEndTime * startToEndVector.x + __start.x, coincidenceEndTime * startToEndVector.y + __start.y);
 					intersection.coincidenceLine = new Line(startPoint, endPoint);
 				}
 				
@@ -1146,19 +1145,19 @@ package flash.geom {
 			else
 			{
 				var solve : Point = new Point();			
-				solve.x = (currentDeterminant * targetStartToEnd.x - targetDeterminant * startToEnd.x) / crossDeterminant;
-				solve.y = (currentDeterminant * targetStartToEnd.y - targetDeterminant * startToEnd.y) / crossDeterminant;
+				solve.x = (currentDeterminant * targetStartToEndVector.x - targetDeterminant * startToEndVector.x) / crossDeterminant;
+				solve.y = (currentDeterminant * targetStartToEndVector.y - targetDeterminant * startToEndVector.y) / crossDeterminant;
 			
 				var time : Number;
-				if (Math.abs(startToEnd.x) > PRECISION)
+				if (Math.abs(startToEndVector.x) > PRECISION)
 				{
-					time = (solve.x - __start.x) / startToEnd.x;
+					time = (solve.x - __start.x) / startToEndVector.x;
 				}
 				else
 				{
-					if (Math.abs(startToEnd.y) > PRECISION)
+					if (Math.abs(startToEndVector.y) > PRECISION)
 					{
-						time = (solve.y - __start.y) / startToEnd.y;
+						time = (solve.y - __start.y) / startToEndVector.y;
 					}
 					else
 					{
@@ -1167,15 +1166,15 @@ package flash.geom {
 				}
 				
 				var targetTime : Number;
-				if (Math.abs(targetStartToEnd.x) > PRECISION)
+				if (Math.abs(targetStartToEndVector.x) > PRECISION)
 				{
-					targetTime = (solve.x - targetLine.__start.x) / targetStartToEnd.x;
+					targetTime = (solve.x - targetLine.__start.x) / targetStartToEndVector.x;
 				}
 				else
 				{
-					if (Math.abs(startToEnd.y) > PRECISION)
+					if (Math.abs(startToEndVector.y) > PRECISION)
 					{
-						targetTime = (solve.y - targetLine.__start.y) / targetStartToEnd.y;
+						targetTime = (solve.y - targetLine.__start.y) / targetStartToEndVector.y;
 					}
 					else
 					{
@@ -1249,18 +1248,18 @@ package flash.geom {
 		 **/
 		public function getClosest(fromPoint : Point) : Number 
 		{
-			const startToEnd : Point = this.startToEnd;
-			const startToEndLength : Number = startToEnd.length;
+			const startToEndVector : Point = this.startToEndVector;
+			const startToEndLength : Number = startToEndVector.length;
 						
 			if( startToEndLength < PRECISION)
 			{
 				return 0;
 			}
 			
-			const selfProjection : Number = - startToEnd.y * __start.x + startToEnd.x * __start.y;
-			const projection : Number = (startToEnd.y * fromPoint.x + startToEnd.x * fromPoint.y + selfProjection) / (startToEndLength * startToEndLength);
-			const point : Point = new Point(fromPoint.x - startToEnd.y * projection, fromPoint.y - startToEnd.x * projection);
-			const time : Number = startToEnd.x ? (__start.x - point.x) / startToEnd.x : (point.y - __start.y) / startToEnd.y;
+			const selfProjection : Number = - startToEndVector.y * __start.x + startToEndVector.x * __start.y;
+			const projection : Number = (startToEndVector.y * fromPoint.x + startToEndVector.x * fromPoint.y + selfProjection) / (startToEndLength * startToEndLength);
+			const point : Point = new Point(fromPoint.x - startToEndVector.y * projection, fromPoint.y - startToEndVector.x * projection);
+			const time : Number = startToEndVector.x ? (__start.x - point.x) / startToEndVector.x : (point.y - __start.y) / startToEndVector.y;
 					
 			if (! __isSegment) 
 			{

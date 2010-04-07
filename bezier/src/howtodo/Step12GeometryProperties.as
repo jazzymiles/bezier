@@ -157,11 +157,11 @@ package howtodo
 						
 			// рисуем основные вектора			
 			graphics.lineStyle(0, 0x00FF00, 0.5);
-			drawLine(new Line(bezier.start, bezier.start.add(bezier.startToEnd)));	
-			drawLine(new Line(bezier.start, bezier.start.add(bezier.startToControl)));	
+			drawLine(new Line(bezier.start, bezier.start.add(bezier.startToEndVector)));	
+			drawLine(new Line(bezier.start, bezier.start.add(bezier.startToControlVector)));	
 			drawLine(new Line(bezier.start, bezier.oppositeControl));	
-			drawLine(new Line(bezier.control, bezier.control.add(bezier.controlToEnd)));	
-			drawLine(new Line(bezier.control, bezier.control.add(bezier.mainDiagonal)));	
+			drawLine(new Line(bezier.control, bezier.control.add(bezier.controlToEndVector)));	
+			drawLine(new Line(bezier.control, bezier.control.add(bezier.diagonalVector)));	
 			drawLine(new Line(bezier.end, bezier.oppositeControl));	
 				
 			// рисуем площадь кривой и равновеликий ей прямоугольник

@@ -134,7 +134,8 @@
  
  
 
-package flash.geom {
+package flash.geom 
+{
 	import flash.math.Equations;	
 
 	/* * 
@@ -315,7 +316,8 @@ package flash.geom {
 	 *
 	 **/
 
-	public class Bezier extends Object implements IParametric {
+	public class Bezier extends Object implements IParametric 
+	{
 
 		protected static const PRECISION : Number = Equations.PRECISION;
 
@@ -397,7 +399,8 @@ package flash.geom {
 		 * @lang eng
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 **/
-		public function Bezier(start : Point = undefined, control : Point = undefined, end : Point = undefined, isSegment : Boolean = true) {
+		public function Bezier(start : Point = undefined, control : Point = undefined, end : Point = undefined, isSegment : Boolean = true) 
+		{
 			initInstance(start, control, end, isSegment);
 		}
 
@@ -405,7 +408,8 @@ package flash.geom {
 		 * Приватный инициализатор для объекта, который можно переопределить. Параметры совпадают с параметрами конструктора.
 		 *
 		 **/ 
-		protected function initInstance(start : Point = undefined, control : Point = undefined, end : Point = undefined, isSegment : Boolean = true) : void {
+		protected function initInstance(start : Point = undefined, control : Point = undefined, end : Point = undefined, isSegment : Boolean = true) : void 
+		{
 			startPoint = (start as Point) || new Point();
 			controlPoint = (control as Point) || new Point();
 			endPoint = (end as Point) || new Point();
@@ -444,11 +448,13 @@ package flash.geom {
 		 **/
 
 		
-		public function get start() : Point {
+		public function get start() : Point 
+		{
 			return startPoint;
 		}
 
-		public function set start(value : Point) : void {
+		public function set start(value : Point) : void 
+		{
 			startPoint = value;
 		}
 
@@ -476,11 +482,13 @@ package flash.geom {
 		 **/
 
 		
-		public function get control() : Point {
+		public function get control() : Point 
+		{
 			return controlPoint;
 		}
 
-		public function set control(value : Point) : void {
+		public function set control(value : Point) : void 
+		{
 			controlPoint = value;
 		}
 
@@ -506,11 +514,13 @@ package flash.geom {
 		 **/
 
 		
-		public function get end() : Point {
+		public function get end() : Point 
+		{
 			return endPoint;
 		}
 
-		public function set end(value : Point) : void {
+		public function set end(value : Point) : void 
+		{
 			endPoint = value;
 		}
 
@@ -575,11 +585,13 @@ package flash.geom {
 
 		
 		
-		public function get isSegment() : Boolean {
+		public function get isSegment() : Boolean 
+		{
 			return __isSegment;
 		}
 
-		public function set isSegment(value : Boolean) : void {
+		public function set isSegment(value : Boolean) : void 
+		{
 			__isSegment = value;
 		}
 
@@ -646,7 +658,8 @@ package flash.geom {
 		 **/
 
 		
-		public function clone() : Bezier {
+		public function clone() : Bezier 
+		{
 			return new Bezier(startPoint.clone(), controlPoint.clone(), endPoint.clone(), __isSegment);
 		}
 
@@ -687,27 +700,39 @@ package flash.geom {
 		 * @lang rus
 		 */
 
-		public function curveAsLine() : Line {
-			var startToControl : Point = this.startToControl;
-			var startToEnd : Point = this.startToEnd;
+		public function curveAsLine() : Line 
+		{
+			var startToControlVector : Point = this.startToControlVector;
+			var startToEndVector : Point = this.startToEndVector;
 			
-			if (startToEnd.length > PRECISION) {
-				var timeOfControl : Number = startToControl.length / startToEnd.length;
-				var isLine : Boolean = (Math.abs(startToControl.x - timeOfControl * startToEnd.x) < PRECISION) && (Math.abs(startToControl.y - timeOfControl * startToEnd.y) < PRECISION);
+			if (startToEndVector.length > PRECISION) 
+			{
+				var timeOfControl : Number = startToControlVector.length / startToEndVector.length;
+				var isLine : Boolean = (Math.abs(startToControlVector.x - timeOfControl * startToEndVector.x) < PRECISION) && (Math.abs(startToControlVector.y - timeOfControl * startToEndVector.y) < PRECISION);
 				
-				if (isLine) {
-					if (timeOfControl < 0) {
+				if (isLine) 
+				{
+					if (timeOfControl < 0) 
+					{
 						return new Line(this.getPoint(this.parabolaVertex), end.clone(), this.isSegment, true);						
-					} else {
-						if (timeOfControl > 1) {
+					} 
+					else 
+					{
+						if (timeOfControl > 1) 
+						{
 							return new Line(this.getPoint(this.parabolaVertex), start.clone(), this.isSegment, true);						
-						} else {
+						} 
+						else 
+						{
 							return new Line(start.clone(), end.clone(), this.isSegment, ((timeOfControl - 0.5) > PRECISION));		
 						}
 					}
 				}
-			} else {
-				if (startToControl.length > PRECISION) {					
+			} 
+			else 
+			{
+				if (startToControlVector.length > PRECISION) 
+				{					
 					return new Line(this.getPoint(this.parabolaVertex), start.clone(), this.isSegment, true);			
 				}
 			}
@@ -743,10 +768,14 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */
-		public function curveAsPoint() : Point {
-			if ((this.startToEnd.length < PRECISION) && (this.startToControl.length < PRECISION)) {
+		public function curveAsPoint() : Point 
+		{
+			if ((this.startToEndVector.length < PRECISION) && (this.startToControlVector.length < PRECISION)) 
+			{
 				return start.clone();				
-			} else {
+			} 
+			else 
+			{
 				return null;
 			}
 		}
@@ -754,9 +783,9 @@ package flash.geom {
 		
 		/**
 		 * Получение вектора из начальной точки кривой Безье в контрольную точку.
-		 * Обратный вектор можно получить методом <a href="#controlToStart">controlToStart</a><BR/> 
+		 * Обратный вектор можно получить методом <a href="#controlToStartVector">controlToStartVector</a><BR/> 
 		 *  
-		 * @see #controlToStart
+		 * @see #controlToStartVector
 		 * 
 		 * @return Point вектор из начальной точки в контрольную
 		 * 
@@ -766,7 +795,7 @@ package flash.geom {
 		 * import flash.geom.Point;
 		 *		
 		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.startToControl;
+		 * var point:Point = bezier.startToControlVector;
 		 * trace(point.x+" "+point.y); //300 -100
 		 *  
 		 * </listing>
@@ -776,15 +805,16 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */		 
-		public function get startToControl() : Point {
+		public function get startToControlVector() : Point 
+		{
 			return new Point(control.x - start.x, control.y - start.y);			
 		}
 
 		/**
 		 * Получение вектора из контрольной точки кривой Безье в начальную точку.
-		 * Обратный вектор можно получить методом <a href="#startToControl">startToControl</a><BR/> 
+		 * Обратный вектор можно получить методом <a href="#startToControlVector">startToControlVector</a><BR/> 
 		 * 
-		 * @see #startToControl
+		 * @see #startToControlVector
 		 * 
 		 * @return Point вектор из контрольной точки в начальную
 		 * 
@@ -794,7 +824,7 @@ package flash.geom {
 		 * import flash.geom.Point;
 		 *		
 		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.controlToStart;
+		 * var point:Point = bezier.controlToStartVector;
 		 * trace(point.x+" "+point.y); //-300 100
 		 *  
 		 * </listing>
@@ -804,16 +834,17 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */		 
-		public function get controlToStart() : Point {
+		public function get controlToStartVector() : Point 
+		{
 			return new Point(start.x - control.x, start.y - control.y);			
 		}
 
 		
 		/**
 		 * Получение вектора из конечной точки кривой Безье в контрольную точку.
-		 * Обратный вектор можно получить методом <a href="#controlToEnd">controlToEnd</a><BR/> 
+		 * Обратный вектор можно получить методом <a href="#controlToEndVector">controlToEndVector</a><BR/> 
 		 *  
-		 * @see #controlToEnd
+		 * @see #controlToEndVector
 		 * 
 		 * @return Point вектор из конечной точки в контрольную
 		 * 
@@ -823,7 +854,7 @@ package flash.geom {
 		 * import flash.geom.Point;
 		 *		
 		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.endToControl;
+		 * var point:Point = bezier.endToControlVector;
 		 * trace(point.x+" "+point.y); //-300 -100
 		 *  
 		 * </listing>
@@ -833,15 +864,16 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */	
-		public function get endToControl() : Point {
+		public function get endToControlVector() : Point 
+		{
 			return new Point(control.x - end.x, control.y - end.y);			
 		}
 
 		/**
 		 * Получение вектора из контрольной точки кривой Безье в конечную точку.
-		 * Обратный вектор можно получить методом <a href="#endToControl">endToControl</a><BR/> 
+		 * Обратный вектор можно получить методом <a href="#endToControlVector">endToControlVector</a><BR/> 
 		 * 
-		 * @see #endToControl
+		 * @see #endToControlVector
 		 * 
 		 * @return Point вектор из контрольной точки в конечную
 		 * 
@@ -851,7 +883,7 @@ package flash.geom {
 		 * import flash.geom.Point;
 		 *		
 		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.controlToEnd;
+		 * var point:Point = bezier.controlToEndVector;
 		 * trace(point.x+" "+point.y); //300 100
 		 *  
 		 * </listing>
@@ -861,15 +893,16 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */	
-		public function get controlToEnd() : Point {
+		public function get controlToEndVector() : Point 
+		{
 			return new Point(end.x - control.x, end.y - control.y);			
 		}
 
 		/**
 		 * Получение вектора из начальной точки кривой Безье в конечную точку.
-		 * Обратный вектор можно получить методом <a href="#endToStart">endToStart</a><BR/> 
+		 * Обратный вектор можно получить методом <a href="#endToStartVector">endToStartVector</a><BR/> 
 		 *  
-		 * @see #endToStart
+		 * @see #endToStartVector
 		 * 
 		 * @return Point вектор из начальной точки в конечную
 		 * 
@@ -879,7 +912,7 @@ package flash.geom {
 		 * import flash.geom.Point;
 		 *		
 		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.startToEnd;
+		 * var point:Point = bezier.startToEndVector;
 		 * trace(point.x+" "+point.y); //600 0
 		 *  
 		 * </listing>
@@ -889,15 +922,16 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */		
-		public function get startToEnd() : Point {
+		public function get startToEndVector() : Point 
+		{
 			return new Point(end.x - start.x, end.y - start.y);			
 		}
 
 		/**
 		 * Получение вектора из конечной точки кривой Безье в начальную точку.
-		 * Обратный вектор можно получить методом <a href="#startToEnd">startToEnd</a><BR/> 
+		 * Обратный вектор можно получить методом <a href="#startToEndVector">startToEndVector</a><BR/> 
 		 *  
-		 * @see #startToEnd
+		 * @see #startToEndVector
 		 * 
 		 * @return Point вектор из конечной точки в начальную
 		 * 
@@ -907,7 +941,7 @@ package flash.geom {
 		 * import flash.geom.Point;
 		 *		
 		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.endToStart;
+		 * var point:Point = bezier.endToStartVector;
 		 * trace(point.x+" "+point.y); //-600 0
 		 *  
 		 * </listing>
@@ -917,15 +951,16 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */	
-		public function get endToStart() : Point {
+		public function get endToStartVector() : Point 
+		{
 			return new Point(start.x - end.x, start.y - end.y);			
 		}
 
 		/**
 		 * Получение вектора диагонали параллелограмма, достроенного на опорных точках кривой Безье, которая опирается на контрольную точку.
-		 * Обратный вектор можно получить методом <a href="#invertedMainDiagonal">invertedMainDiagonal</a><BR/> 
+		 * Обратный вектор можно получить методом <a href="#invertedDiagonalVector">invertedDiagonalVector</a><BR/> 
 		 *  
-		 * @see #invertedMainDiagonal
+		 * @see #invertedDiagonalVector
 		 * 
 		 * @return Point вектор диагонали
 		 * 
@@ -935,7 +970,7 @@ package flash.geom {
 		 * import flash.geom.Point;
 		 *		
 		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.mainDiagonal;
+		 * var point:Point = bezier.diagonalVector;
 		 * trace(point.x+" "+point.y); //0 200
 		 *  
 		 * </listing>
@@ -945,15 +980,16 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */	
-		public function get mainDiagonal() : Point {
+		public function get diagonalVector() : Point 
+		{
 			return new Point(start.x - 2 * control.x + end.x, start.y - 2 * control.y + end.y);			
 		}
 
 		/**
 		 * Получение обратного вектора диагонали параллелограмма, достроенного на опорных точках кривой Безье, которая опирается на контрольную точку.
-		 * Обратный вектор можно получить методом <a href="#mainDiagonal">mainDiagonal</a><BR/> 
+		 * Обратный вектор можно получить методом <a href="#diagonalVector">diagonalVector</a><BR/> 
 		 *  
-		 * @see #mainDiagonal
+		 * @see #diagonalVector
 		 * 
 		 * @return Point обратный вектор диагонали
 		 * 
@@ -963,7 +999,7 @@ package flash.geom {
 		 * import flash.geom.Point;
 		 *		
 		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.invertedMainDiagonal;
+		 * var point:Point = bezier.invertedDiagonalVector;
 		 * trace(point.x+" "+point.y); //0 -200
 		 *  
 		 * </listing>
@@ -973,8 +1009,9 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */	
-		public function get invertedMainDiagonal() : Point {
-			return new Point(-start.x + 2 * control.x - end.x, -start.y + 2 * control.y - end.y);			
+		public function get invertedDiagonalVector() : Point 
+		{
+			return new Point(- start.x + 2 * control.x - end.x, - start.y + 2 * control.y - end.y);			
 		}
 
 		/**
@@ -998,7 +1035,8 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */	
-		public function get oppositeControl() : Point {
+		public function get oppositeControl() : Point 
+		{
 			return new Point(start.x - control.x + end.x, start.y - control.y + end.y);			
 		}
 
@@ -1071,7 +1109,8 @@ package flash.geom {
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
-		public function get length() : Number {
+		public function get length() : Number 
+		{
 			return getSegmentLength(1.0);
 		}
 
@@ -1163,35 +1202,41 @@ package flash.geom {
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
-		public function getSegmentLength(time : Number) : Number {
-			const startToControl : Point = this.startToControl;
-			const diagonal : Point = this.mainDiagonal;
+		public function getSegmentLength(time : Number) : Number 
+		{
+			const startToControlVector : Point = this.startToControlVector;
+			const diagonalVector : Point = this.diagonalVector;
 							
-			const startToControlLenght : Number = startToControl.length;				
+			const startToControlLenght : Number = startToControlVector.length;				
 			const startToControlLenghtPower2 : Number = startToControlLenght * startToControlLenght;				
-			const controlToStartMultiplyMainDiagonal : Number = 2 * (startToControl.x * diagonal.x + startToControl.y * diagonal.y);
-			const diagonalLenght : Number = diagonal.length;
+			const controlToStartMultiplyMainDiagonal : Number = 2 * (startToControlVector.x * diagonalVector.x + startToControlVector.y * diagonalVector.y);
+			const diagonalLenght : Number = diagonalVector.length;
 			const diagonalLenghtPower2 : Number = diagonalLenght * diagonalLenght;
 						
 			var integralValueInTime : Number;
 			var integralValueInZero : Number;
 						
-			if (diagonalLenght == 0) {
+			if (diagonalLenght == 0) 
+			{
 				integralValueInTime = 2 * diagonalLenght * time;
 				integralValueInZero = 0;				
-			} else {
+			} 
+			else 
+			{
 				const integralFrequentPart1 : Number = Math.sqrt(diagonalLenghtPower2 * time * time + controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2);
 				const integralFrequentPart2 : Number = (controlToStartMultiplyMainDiagonal + 2 * diagonalLenghtPower2 * time) / diagonalLenght + 2 * integralFrequentPart1;
 				const integralFrequentPart3 : Number = controlToStartMultiplyMainDiagonal / diagonalLenght + 2 * startToControlLenght;
 				const integralFrequentPart4 : Number = (startToControlLenghtPower2 - 0.25 * controlToStartMultiplyMainDiagonal * controlToStartMultiplyMainDiagonal / diagonalLenghtPower2);
 						
 				integralValueInTime = 0.5 * (2 * diagonalLenghtPower2 * time + controlToStartMultiplyMainDiagonal) * integralFrequentPart1 / diagonalLenghtPower2;
-				if (Math.abs(integralFrequentPart2) >= PRECISION) {					
+				if (Math.abs(integralFrequentPart2) >= PRECISION) 
+				{					
 					integralValueInTime += Math.log(integralFrequentPart2) / diagonalLenght * integralFrequentPart4;
 				}
 				
 				integralValueInZero = 0.5 * (controlToStartMultiplyMainDiagonal) * startToControlLenght / diagonalLenghtPower2;
-				if (Math.abs(integralFrequentPart3) >= PRECISION) {
+				if (Math.abs(integralFrequentPart3) >= PRECISION) 
+				{
 					integralValueInZero += Math.log(integralFrequentPart3) / diagonalLenght * integralFrequentPart4;
 				}
 			}
@@ -1269,7 +1314,8 @@ package flash.geom {
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 *
 		 **/
-		public function get area() : Number {
+		public function get area() : Number 
+		{
 			return this.triangleArea * (2.0 / 3.0);
 		}
 
@@ -1318,7 +1364,8 @@ package flash.geom {
 		 * @lang eng
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 **/	
-		public function get triangleArea() : Number {
+		public function get triangleArea() : Number 
+		{
 			const distanceStartControl : Number = Point.distance(startPoint, controlPoint);
 			const distanceEndControl : Number = Point.distance(endPoint, controlPoint);
 			const distanceStartEnd : Number = Point.distance(startPoint, endPoint);
@@ -1366,7 +1413,8 @@ package flash.geom {
 		 * 
 		 * @return Point
 		 **/
-		public function get internalCentroid() : Point {
+		public function get internalCentroid() : Point 
+		{
 			const x : Number = (startPoint.x + endPoint.x) * 0.4 + controlPoint.x * 0.2;
 			const y : Number = (startPoint.y + endPoint.y) * 0.4 + controlPoint.y * 0.2;
 			return new Point(x, y);
@@ -1409,7 +1457,8 @@ package flash.geom {
 		 * 
 		 * @return Point
 		 **/
-		public function get externalCentroid() : Point {
+		public function get externalCentroid() : Point 
+		{
 			const x : Number = (startPoint.x + endPoint.x) * 0.2 + controlPoint.x * 0.6 ;
 			const y : Number = (startPoint.y + endPoint.y) * 0.2 + controlPoint.y * 0.6;
 			return new Point(x, y);
@@ -1452,7 +1501,8 @@ package flash.geom {
 		 * 
 		 * @return Point
 		 **/
-		public function get triangleCentroid() : Point {
+		public function get triangleCentroid() : Point 
+		{
 			const x : Number = (startPoint.x + endPoint.x + controlPoint.x) / 3 ;
 			const y : Number = (startPoint.y + endPoint.y + controlPoint.y) / 3;
 			return new Point(x, y);
@@ -1498,25 +1548,28 @@ package flash.geom {
 		 *
 		 * @return Rectangle bounds rectangular.
 		 */
-		public function get bounds() : Rectangle {
+		public function get bounds() : Rectangle 
+		{
 			var xMin : Number = Math.min(startPoint.x, endPoint.x);
 			var xMax : Number = Math.max(startPoint.x, endPoint.x);
 			var yMin : Number = Math.min(startPoint.y, endPoint.y);
 			var yMax : Number = Math.max(startPoint.y, endPoint.y);
 			
-			const diagonal : Point = this.mainDiagonal;
-			const controlToStart : Point = this.controlToStart;
+			const controlToStartVector : Point = this.controlToStartVector;
+			const diagonalVector : Point = this.diagonalVector;
 						
-			const extremumTimeX : Number = controlToStart.x / diagonal.x;
-			const extremumTimeY : Number = controlToStart.y / diagonal.y;	
+			const extremumTimeX : Number = controlToStartVector.x / diagonalVector.x;
+			const extremumTimeY : Number = controlToStartVector.y / diagonalVector.y;	
 					
-			if ((!isNaN(extremumTimeX)) && (extremumTimeX > 0) && (extremumTimeX < 1)) {
+			if ((! isNaN(extremumTimeX)) && (extremumTimeX > 0) && (extremumTimeX < 1)) 
+			{
 				const extremumPointX : Point = getPoint(extremumTimeX);
 				xMin = Math.min(extremumPointX.x, xMin);
 				xMax = Math.max(extremumPointX.x, xMax);
 			} 
 												
-			if ((!isNaN(extremumTimeY)) && (extremumTimeY > 0) && (extremumTimeY < 1)) {
+			if ((! isNaN(extremumTimeY)) && (extremumTimeY > 0) && (extremumTimeY < 1)) 
+			{
 				const extemumPointY : Point = getPoint(extremumTimeY);
 				yMin = Math.min(extemumPointY.y, yMin);
 				yMax = Math.max(extemumPointY.y, yMax);
@@ -1594,15 +1647,17 @@ package flash.geom {
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
-		public function get parabolaVertex() : Number {			
-			const controlToStart : Point = this.controlToStart;
-			const diagonal : Point = this.mainDiagonal;							
-			const diagonalLenght : Number = diagonal.length;
+		public function get parabolaVertex() : Number 
+		{			
+			const controlToStartVector : Point = this.controlToStartVector;
+			const diagonalVector : Point = this.diagonalVector;							
+			const diagonalLenght : Number = diagonalVector.length;
 			const diagonalLenghtPower2 : Number = diagonalLenght * diagonalLenght;
 														
 			var vertexTime : Number = 0.5; 
-			if (diagonalLenght > PRECISION) {
-				vertexTime = (diagonal.x * controlToStart.x + diagonal.y * controlToStart.y) / diagonalLenghtPower2;
+			if (diagonalLenght > PRECISION) 
+			{
+				vertexTime = (diagonalVector.x * controlToStartVector.x + diagonalVector.y * controlToStartVector.y) / diagonalLenghtPower2;
 			} 
 			return vertexTime;
 		}
@@ -1650,28 +1705,31 @@ package flash.geom {
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
-		public function get parabolaFocusPoint() : Point {			
-			const diagonal : Point = this.mainDiagonal;
-			const startToControl : Point = this.startToControl;
+		public function get parabolaFocusPoint() : Point 
+		{			
+			const startToControlVector : Point = this.startToControlVector;
+			const diagonalVector : Point = this.diagonalVector;
 							
-			const diagonalLenght : Number = diagonal.length;
+			const diagonalLenght : Number = diagonalVector.length;
 			const diagonalLenghtPower2 : Number = diagonalLenght * diagonalLenght;
 						
-			if (diagonalLenght < PRECISION) {
+			if (diagonalLenght < PRECISION) 
+			{
 				return controlPoint.clone();
 			}
 						
-			const vertexTime : Number = -(diagonal.x * startToControl.x + diagonal.y * startToControl.y) / diagonalLenghtPower2;
+			const vertexTime : Number = - (diagonalVector.x * startToControlVector.x + diagonalVector.y * startToControlVector.y) / diagonalLenghtPower2;
 			const parabolaVertex : Point = getPoint(vertexTime);
-			const parabolaAxisX : Number = 2 * startToControl.x + 2 * vertexTime * diagonal.x;
-			const parabolaAxisY : Number = 2 * startToControl.y + 2 * vertexTime * diagonal.y;
+			const parabolaAxisX : Number = 2 * startToControlVector.x + 2 * vertexTime * diagonalVector.x;
+			const parabolaAxisY : Number = 2 * startToControlVector.y + 2 * vertexTime * diagonalVector.y;
 			
 			var focusX : Number = parabolaVertex.x - parabolaAxisY / (4 * Math.SQRT2);
 			var focusY : Number = parabolaVertex.y + parabolaAxisX / (4 * Math.SQRT2);
 			
 			const parabolaConvexity : Number = (parabolaAxisY * (start.x - parabolaVertex.x) - parabolaAxisX * (start.y - parabolaVertex.y)) * (parabolaAxisY * (focusX - parabolaVertex.x) - parabolaAxisX * (focusY - parabolaVertex.y));
 
-			if (parabolaConvexity < 0) {
+			if (parabolaConvexity < 0) 
+			{
 				focusX = parabolaVertex.x + parabolaAxisY / (4 * Math.SQRT2);
 				focusY = parabolaVertex.y - parabolaAxisX / (4 * Math.SQRT2);
 			}
@@ -1762,8 +1820,10 @@ package flash.geom {
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
-		public function getPoint(time : Number, point : Point = null) : Point {
-			if (isNaN(time)) {
+		public function getPoint(time : Number, point : Point = null) : Point 
+		{
+			if (isNaN(time)) 
+			{
 				return null;
 			}
 			point = point || new Point();
@@ -1784,14 +1844,15 @@ package flash.geom {
 		 * Смысл делать метод для вычисления нескольких значений есть, потому как много общих величин вычисляется предварительно.
 		 */
 
-		protected function getTimesByDistances(distances : Array) : Array {
-			const startToControl : Point = this.startToControl;			
-			const diagonal : Point = this.mainDiagonal;
+		protected function getTimesByDistances(distances : Array) : Array 
+		{
+			const startToControlVector : Point = this.startToControlVector;			
+			const diagonalVector : Point = this.diagonalVector;
 			const curveLength : Number = length;				
-			const startToControlLenght : Number = startToControl.length;				
+			const startToControlLenght : Number = startToControlVector.length;				
 			const startToControlLenghtPower2 : Number = startToControlLenght * startToControlLenght;				
-			const controlToStartMultiplyMainDiagonal : Number = 2 * (startToControl.x * diagonal.x + startToControl.y * diagonal.y);
-			const diagonalLenght : Number = diagonal.length;
+			const controlToStartMultiplyMainDiagonal : Number = 2 * (startToControlVector.x * diagonalVector.x + startToControlVector.y * diagonalVector.y);
+			const diagonalLenght : Number = diagonalVector.length;
 			const diagonalLenghtPower2 : Number = diagonalLenght * diagonalLenght;
 							
 			const integralFrequentPart1 : Number = 4 * startToControlLenghtPower2 - controlToStartMultiplyMainDiagonal * controlToStartMultiplyMainDiagonal / diagonalLenghtPower2;
@@ -1806,38 +1867,50 @@ package flash.geom {
 						
 			var times : Array = new Array();
 						
-			for(var i : int = 0;i < distances.length; i++) {				
+			for(var i : int = 0;i < distances.length; i++) 
+			{				
 				var distance : Number = distances[i];
 				
 				var maxIterations : Number = 20;
 				var time : Number = distance / curveLength;
 		
-				if (diagonalLenght < PRECISION) {
-					if (controlToStartMultiplyMainDiagonal < PRECISION) {
-						do {
+				if (diagonalLenght < PRECISION) 
+				{
+					if (controlToStartMultiplyMainDiagonal < PRECISION) 
+					{
+						do 
+						{
 							arcLength = 2 * startToControlLenght * time;
 							derivativeArcLength = 2 * Math.sqrt(diagonalLenghtPower2 * time * time + controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2) || PRECISION; 
 							time = time - (arcLength - distance) / derivativeArcLength;
 						} while ((Math.abs(arcLength - distance) > PRECISION) && (maxIterations--));
-					} else {
-						do {
+					} 
+					else 
+					{
+						do 
+						{
 							arcLength = (4 / 3) * (controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2) * Math.sqrt(controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2) / controlToStartMultiplyMainDiagonal - (4 / 3) * startToControlLenghtPower2 * startToControlLenght / controlToStartMultiplyMainDiagonal; 
 							derivativeArcLength = 2 * Math.sqrt(diagonalLenghtPower2 * time * time + controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2) || PRECISION;
 							time = time - (arcLength - distance) / derivativeArcLength;
 						} while ((Math.abs(arcLength - distance) > PRECISION) && (maxIterations--));
 					}
-				} else {
-					do {
+				} 
+				else 
+				{
+					do 
+					{
 						integralFrequentPart4 = 2 * Math.sqrt(diagonalLenghtPower2 * time * time + controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2);
 						integralFrequentPart5 = (controlToStartMultiplyMainDiagonal + 2 * diagonalLenghtPower2 * time) / diagonalLenght + integralFrequentPart4;
 					
 						integralValueInTime = 0.25 * (2 * diagonalLenghtPower2 * time + controlToStartMultiplyMainDiagonal) * integralFrequentPart4 / diagonalLenghtPower2;
 						integralValueInZero = integralFrequentPart2;
 					
-						if (integralFrequentPart5 >= PRECISION) {						
+						if (integralFrequentPart5 >= PRECISION) 
+						{						
 							integralValueInTime += 0.25 * Math.log(integralFrequentPart5) / diagonalLenght * integralFrequentPart1;
 						}					
-						if (integralFrequentPart3 >= PRECISION) {
+						if (integralFrequentPart3 >= PRECISION) 
+						{
 							integralValueInZero += 0.25 * Math.log(controlToStartMultiplyMainDiagonal / diagonalLenght + 2 * startToControlLenght) / diagonalLenght * integralFrequentPart1;
 						}
 					
@@ -1892,18 +1965,23 @@ package flash.geom {
 		 * @lang rus
 		 */
 
-		public function getTimeByDistance(distance : Number) : Number {
-			if (isNaN(distance)) {
+		public function getTimeByDistance(distance : Number) : Number 
+		{
+			if (isNaN(distance)) 
+			{
 				return Number.NaN;
 			}
 						
 			const curveLength : Number = this.length;
 						
-			if (__isSegment) {
-				if (distance <= 0) {
+			if (__isSegment) 
+			{
+				if (distance <= 0) 
+				{
 					return 0;
 				}
-				if (distance >= curveLength) {
+				if (distance >= curveLength) 
+				{
 					return 1;
 				}
 			}			
@@ -1963,26 +2041,32 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-		public function getTimesSequence(step : Number, startShift : Number = 0) : Array {
+		public function getTimesSequence(step : Number, startShift : Number = 0) : Array 
+		{
 			step = Math.abs(step);
 						
 			var times : Array = new Array();
 			const curveLength : Number = length;
 			
-			if (startShift > curveLength) {
+			if (startShift > curveLength) 
+			{
 				return times;
 			}
 			
-			if (startShift < 0) {
+			if (startShift < 0) 
+			{
 				startShift = startShift % step + step;
-			} else {
+			} 
+			else 
+			{
 				startShift = startShift % step;
 			}
 			
 			var distance : Number = startShift;
 			var distances : Array = new Array();
 										
-			while (distance <= curveLength) {				
+			while (distance <= curveLength) 
+			{				
 				distances[distances.length] = distance;
 				distance += step;
 			}
@@ -2037,8 +2121,10 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-		public function setPoint(time : Number, newX : Number = undefined, newY : Number = undefined) : void {
-			if ((isNaN(newX) && isNaN(newY))) {
+		public function setPoint(time : Number, newX : Number = undefined, newY : Number = undefined) : void 
+		{
+			if ((isNaN(newX) && isNaN(newY))) 
+			{
 				return;
 			}
 			
@@ -2049,14 +2135,17 @@ package flash.geom {
 			
 			var point : Point = this.getPoint(time);
 			
-			if (isNaN(newX)) {
+			if (isNaN(newX)) 
+			{
 				newX = point.x;
 			}
-			if (isNaN(newY)) {
+			if (isNaN(newY)) 
+			{
 				newY = point.y;
 			}
 			
-			switch (time) {
+			switch (time) 
+			{
 				case 0:
 					startPoint.x = newX;
 					startPoint.y = newY; 
@@ -2099,7 +2188,8 @@ package flash.geom {
 		 *
 		 **/
 
-		public function angleOffset(value : Number, fulcrum : Point = null) : void {
+		public function angleOffset(value : Number, fulcrum : Point = null) : void 
+		{
 			fulcrum = fulcrum || new Point();
 			
 			const startLine : Line = new Line(fulcrum, startPoint);
@@ -2134,7 +2224,8 @@ package flash.geom {
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 *
 		 */
-		public function offset(dX : Number = 0, dY : Number = 0) : void {
+		public function offset(dX : Number = 0, dY : Number = 0) : void 
+		{
 			startPoint.offset(dX, dY);
 			controlPoint.offset(dX, dY);
 			endPoint.offset(dX, dY);
@@ -2153,29 +2244,34 @@ package flash.geom {
 		 * 
 		 * @lang rus
 		 */
-		public function getPointOnCurve(point : Point) : Number {
-			const startToControl : Point = this.startToControl;			
-			const diagonal : Point = this.mainDiagonal;
+		public function getPointOnCurve(point : Point) : Number 
+		{
+			const startToControlVector : Point = this.startToControlVector;			
+			const diagonalVector : Point = this.diagonalVector;
 									
-			var squareCoefficient : Number = diagonal.x;
-			var linearCoefficient : Number = 2 * startToControl.x;
+			var squareCoefficient : Number = diagonalVector.x;
+			var linearCoefficient : Number = 2 * startToControlVector.x;
 			var freeCoefficient : Number = start.x - point.x;
 			var solutions : Array = Equations.solveQuadraticEquation(squareCoefficient, linearCoefficient, freeCoefficient);
 			
-			if (!solutions) {
-				squareCoefficient = diagonal.y;
-				linearCoefficient = 2 * startToControl.y;
+			if (! solutions) 
+			{
+				squareCoefficient = diagonalVector.y;
+				linearCoefficient = 2 * startToControlVector.y;
 				freeCoefficient = start.y - point.y;
 				solutions = Equations.solveQuadraticEquation(squareCoefficient, linearCoefficient, freeCoefficient);
 				
-				if (!solutions) {
+				if (! solutions) 
+				{
 					return Number.NaN;
 				}
 			}
 			
-			for (var i : uint = 0;i < solutions.length; i++) {
+			for (var i : uint = 0;i < solutions.length; i++) 
+			{
 				var foundPoint : Point = getPoint(solutions[i]);
-				if (Point.distance(foundPoint, point) < PRECISION) {
+				if (Point.distance(foundPoint, point) < PRECISION) 
+				{
 					return solutions[i];				
 				}
 			}
@@ -2226,46 +2322,53 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 **/
-		public function getClosest(fromPoint : Point) : Number {
-			if (!fromPoint) {
+		public function getClosest(fromPoint : Point) : Number 
+		{
+			if (! fromPoint) 
+			{
 				return NaN;
 			}
 				
 			var curveAsPoint : Point = this.curveAsPoint();
-			if (curveAsPoint) {						
+			if (curveAsPoint) 
+			{						
 				return 0;				
 			}
 						
-			const startToControl : Point = this.startToControl;			
-			const diagonal : Point = this.mainDiagonal;
-			const fromPointToStart : Point = new Point(startPoint.x - fromPoint.x, startPoint.y - fromPoint.y);	
+			const startToControlVector : Point = this.startToControlVector;			
+			const diagonalVector : Point = this.diagonalVector;
+			const fromPointToStartVector : Point = new Point(startPoint.x - fromPoint.x, startPoint.y - fromPoint.y);	
 										
-			const startToControlLenght : Number = startToControl.length;				
+			const startToControlLenght : Number = startToControlVector.length;				
 			const startToControlLenghtPower2 : Number = startToControlLenght * startToControlLenght;				
-			const controlToStartMultiplyMainDiagonal : Number = startToControl.x * diagonal.x + startToControl.y * diagonal.y;
-			const diagonalLenght : Number = diagonal.length;
+			const controlToStartMultiplyMainDiagonal : Number = startToControlVector.x * diagonalVector.x + startToControlVector.y * diagonalVector.y;
+			const diagonalLenght : Number = diagonalVector.length;
 			const diagonalLenghtPower2 : Number = diagonalLenght * diagonalLenght;
-			const fromPointToStartMultiplyMainDiagonal : Number = fromPointToStart.x * diagonal.x + fromPointToStart.y * diagonal.y;
-			const fromPointToStartMultiplyStartToControl : Number = startToControl.x * fromPointToStart.x + startToControl.y * fromPointToStart.y;
+			const fromPointToStartMultiplyMainDiagonal : Number = fromPointToStartVector.x * diagonalVector.x + fromPointToStartVector.y * diagonalVector.y;
+			const fromPointToStartMultiplyStartToControl : Number = startToControlVector.x * fromPointToStartVector.x + startToControlVector.y * fromPointToStartVector.y;
 								
 			var extremumTimes : Array;
 			var cubicCoefficient : Number, squareCoefficient : Number, linearCoefficient : Number, freeCoefficient : Number;
 			
-			if(diagonalLenght > PRECISION) {
+			if(diagonalLenght > PRECISION) 
+			{
 				cubicCoefficient = 1;
 				squareCoefficient = 3 * controlToStartMultiplyMainDiagonal / diagonalLenghtPower2;
 				linearCoefficient = (2 * startToControlLenghtPower2 + fromPointToStartMultiplyMainDiagonal) / diagonalLenghtPower2;
 				freeCoefficient = fromPointToStartMultiplyStartToControl / diagonalLenghtPower2;
 			
 				extremumTimes = Equations.solveCubicEquation(cubicCoefficient, squareCoefficient, linearCoefficient, freeCoefficient);
-			} else {				
+			} 
+			else 
+			{				
 				linearCoefficient = 2 * startToControlLenghtPower2 + fromPointToStartMultiplyMainDiagonal;
 				freeCoefficient = fromPointToStartMultiplyStartToControl;
 								
 				extremumTimes = Equations.solveLinearEquation(linearCoefficient, freeCoefficient);
 			}
 			
-			if (__isSegment) {
+			if (__isSegment) 
+			{
 				extremumTimes.push(0);
 				extremumTimes.push(1);
 			}
@@ -2279,7 +2382,8 @@ package flash.geom {
 			
 			var isInside : Boolean;
 						
-			for (var i : uint = 0;i < extremumTimes.length; i++) {
+			for (var i : uint = 0;i < extremumTimes.length; i++) 
+			{
 				extremumTime = extremumTimes[i];
 				extremumPoint = getPoint(extremumTime);
 				
@@ -2287,16 +2391,20 @@ package flash.geom {
 				
 				isInside = (extremumTime >= 0) && (extremumTime <= 1);
 				
-				if (isNaN(closestPointTime)) {
-					if (!__isSegment || isInside) {
+				if (isNaN(closestPointTime)) 
+				{
+					if (! __isSegment || isInside) 
+					{
 						closestPointTime = extremumTime;
 						closestDistance = extremumDistance;
 					}
 					continue;
 				}
 				
-				if (extremumDistance < closestDistance) {
-					if (!__isSegment || isInside) {
+				if (extremumDistance < closestDistance) 
+				{
+					if (! __isSegment || isInside) 
+					{
 						closestPointTime = extremumTime;
 						closestDistance = extremumDistance;
 					}
@@ -2343,7 +2451,8 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-		public function getSegment(fromTime : Number = 0, toTime : Number = 1) : Bezier {
+		public function getSegment(fromTime : Number = 0, toTime : Number = 1) : Bezier 
+		{
 			const segmentStart : Point = getPoint(fromTime);
 			const segmentEnd : Point = getPoint(toTime);
 			const segmentVertex : Point = getPoint((fromTime + toTime) / 2);
@@ -2412,12 +2521,13 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 */
-		public function getTangentAngle(time : Number = 0) : Number {
-			const startToControl : Point = this.startToControl;			
-			const diagonal : Point = this.mainDiagonal;
+		public function getTangentAngle(time : Number = 0) : Number 
+		{
+			const startToControlVector : Point = this.startToControlVector;			
+			const diagonalVector : Point = this.diagonalVector;
 						
-			const tangentX : Number = startToControl.x + diagonal.x * time;
-			const tangentY : Number = startToControl.y + diagonal.y * time;
+			const tangentX : Number = startToControlVector.x + diagonalVector.x * time;
+			const tangentY : Number = startToControlVector.y + diagonalVector.y * time;
 			return Math.atan2(tangentY, tangentX);
 		}
 
@@ -2456,13 +2566,15 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-		public function intersectionPoint(target : Point) : Intersection {
+		public function intersectionPoint(target : Point) : Intersection 
+		{
 			var intersection : Intersection = new Intersection();
 			
 			var closestTime : Number = this.getClosest(target);
 			var closestPoint : Point = this.getPoint(closestTime);
 						
-			if (Point.distance(target, closestPoint) < PRECISION) {
+			if (Point.distance(target, closestPoint) < PRECISION) 
+			{
 				intersection.addIntersection(closestTime, 0, this.isSegment, false);	
 			}
 
@@ -2514,22 +2626,26 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus 
 		 */
-		public function intersectionLine(target : Line) : Intersection {			
+		public function intersectionLine(target : Line) : Intersection 
+		{			
 			var intersection : Intersection = new Intersection();
 			var i : int;
 						
 			var curveAsPoint : Point = this.curveAsPoint();
-			if (curveAsPoint) {				
+			if (curveAsPoint) 
+			{				
 				intersection = target.intersectionPoint(curveAsPoint);
 				intersection.switchCurrentAndTarget();
 				return intersection;				
 			}
 			
 			var curveAsLine : Line = this.curveAsLine();			
-			if (curveAsLine) {
+			if (curveAsLine) 
+			{
 				intersection = target.intersectionLine(curveAsLine);
 				intersection.switchCurrentAndTarget();
-				for (i = 0;i < intersection.currentTimes.length; i++) {
+				for (i = 0;i < intersection.currentTimes.length; i++) 
+				{
 					var point : Point = curveAsLine.getPoint(intersection.currentTimes[i]);
 					intersection.currentTimes[i] = this.getPointOnCurve(point);
 				}
@@ -2537,7 +2653,8 @@ package flash.geom {
 			}
 				
 			var targetAsPoint : Point = target.lineAsPoint();
-			if (targetAsPoint) {				
+			if (targetAsPoint) 
+			{				
 				intersection = this.intersectionPoint(targetAsPoint);
 				return intersection;				
 			}
@@ -2545,9 +2662,10 @@ package flash.geom {
 			// если ни одна из проверок не прошла, значит у нас настоящая кривая и настоящая прямая. 
 			// решаем чистый случай!	
 
-			const diagonal : Point = this.mainDiagonal;
-			const startToControl : Point = this.startToControl;			
-			const lineVector : Point = target.endToStart;
+			const startToControlVector : Point = this.startToControlVector;			
+			const diagonalVector : Point = this.diagonalVector;
+			
+			const lineVector : Point = target.endToStartVector;
 			const deltaStarts : Point = new Point(start.x - target.start.x, start.y - target.start.y);
 			
 			var coefficientInPower2 : Number, coefficientInPower1 : Number, coefficientInPower0 : Number;
@@ -2563,64 +2681,78 @@ package flash.geom {
 			 * Пары решений (t1,t2) соответствуют одной и той же точке.
 			 */
 
-			if (Math.abs(lineVector.x) < PRECISION) {
+			if (Math.abs(lineVector.x) < PRECISION) 
+			{
 				//прямая вертикальна. Уравнение по X имеет только переменную t2. Решаем относительно нее, подставляем во второе уравнение.
 
-				coefficientInPower2 = diagonal.x;
-				coefficientInPower1 = 2 * startToControl.x;
+				coefficientInPower2 = diagonalVector.x;
+				coefficientInPower1 = 2 * startToControlVector.x;
 				coefficientInPower0 = deltaStarts.x;
 						
 				solutionsForCurve = Equations.solveQuadraticEquation(coefficientInPower2, coefficientInPower1, coefficientInPower0);
 					
-				if (!solutionsForCurve) {		
+				if (! solutionsForCurve) 
+				{		
 					// вообще, такого быть не может - если кривая совпала с прямой, то она сама прямая, и это обработалось в начале метода			
 					return null;										
 				}
 				
-				if (Math.abs(lineVector.y) < PRECISION) {	
+				if (Math.abs(lineVector.y) < PRECISION) 
+				{	
 					// вообще, такого быть не может - если прямая вырождена в точку, то это обработалось в начале метода
 					// но все же, решение найти можно 
-					for (i = 0;i < solutionsForCurve.length; i++) {		
+					for (i = 0;i < solutionsForCurve.length; i++) 
+					{		
 						solutionForCurve = solutionsForCurve[i];
 						solutionForLine = 0;
 						
 						intersection.addIntersection(solutionForCurve, solutionForLine, this.isSegment, target.isSegment);
 					}						
-				} else {
-					for (i = 0;i < solutionsForCurve.length; i++) {						
+				} 
+				else 
+				{
+					for (i = 0;i < solutionsForCurve.length; i++) 
+					{						
 						solutionForCurve = solutionsForCurve[i];
-						solutionForLine = -(diagonal.y * Math.pow(solutionForCurve, 2) + 2 * startToControl.y * solutionForCurve + deltaStarts.y) / lineVector.y;
+						solutionForLine = - (diagonalVector.y * Math.pow(solutionForCurve, 2) + 2 * startToControlVector.y * solutionForCurve + deltaStarts.y) / lineVector.y;
 							
 						intersection.addIntersection(solutionForCurve, solutionForLine, this.isSegment, target.isSegment);
 					}
 				}
-			} else {
-				if (Math.abs(lineVector.y) < PRECISION) {
+			} 
+			else 
+			{
+				if (Math.abs(lineVector.y) < PRECISION) 
+				{
 					//прямая горизонтальна. Уравнение по Y имеет только переменную t2. Решаем относительно нее, подставляем в первое уравнение.
 
-					coefficientInPower2 = diagonal.y;
-					coefficientInPower1 = 2 * startToControl.y;
+					coefficientInPower2 = diagonalVector.y;
+					coefficientInPower1 = 2 * startToControlVector.y;
 					coefficientInPower0 = deltaStarts.y;						
-				} else {					
+				} 
+				else 
+				{					
 					//прямая имеет обе ненулевых координаты, нормируем одну по другой, и собираем одно квадратное уравнение относительно t2.
 
 					const normalizationCoefficient : Number = lineVector.y / lineVector.x;
 					
-					coefficientInPower2 = diagonal.x * normalizationCoefficient - diagonal.y;
-					coefficientInPower1 = 2 * (startToControl.x * normalizationCoefficient - startToControl.y);
+					coefficientInPower2 = diagonalVector.x * normalizationCoefficient - diagonalVector.y;
+					coefficientInPower1 = 2 * (startToControlVector.x * normalizationCoefficient - startToControlVector.y);
 					coefficientInPower0 = deltaStarts.x * normalizationCoefficient - deltaStarts.y;
 				}
 				
 				solutionsForCurve = Equations.solveQuadraticEquation(coefficientInPower2, coefficientInPower1, coefficientInPower0);
 					
-				if (!solutionsForCurve) {
+				if (! solutionsForCurve) 
+				{
 					// вообще, такого быть не может - если кривая совпала с прямой, то она сама прямая, и это обработалось в начале метода			
 					return null;								
 				}
 				
-				for (i = 0;i < solutionsForCurve.length; i++) {						
+				for (i = 0;i < solutionsForCurve.length; i++) 
+				{						
 					solutionForCurve = solutionsForCurve[i];
-					solutionForLine = -(diagonal.x * Math.pow(solutionForCurve, 2) + 2 * startToControl.x * solutionForCurve + deltaStarts.x) / lineVector.x;
+					solutionForLine = - (diagonalVector.x * Math.pow(solutionForCurve, 2) + 2 * startToControlVector.x * solutionForCurve + deltaStarts.x) / lineVector.x;
 						
 					intersection.addIntersection(solutionForCurve, solutionForLine, this.isSegment, target.isSegment);
 				}
@@ -2667,23 +2799,27 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */		
-		public function intersectionBezier(target : Bezier) : Intersection {
+		public function intersectionBezier(target : Bezier) : Intersection 
+		{
 			var intersection : Intersection = null;
 			var i : int;
 			var point : Point;
 						
 			var curveAsPoint : Point = this.curveAsPoint();
-			if (curveAsPoint) {				
+			if (curveAsPoint) 
+			{				
 				intersection = target.intersectionPoint(curveAsPoint);
 				intersection.switchCurrentAndTarget();				
 				return intersection;				
 			}
 			
 			var curveAsLine : Line = this.curveAsLine();			
-			if (curveAsLine) {
+			if (curveAsLine) 
+			{
 				intersection = target.intersectionLine(curveAsLine);
 				intersection.switchCurrentAndTarget();
-				for (i = 0;i < intersection.currentTimes.length; i++) {
+				for (i = 0;i < intersection.currentTimes.length; i++) 
+				{
 					point = curveAsLine.getPoint(intersection.currentTimes[i]);
 					intersection.currentTimes[i] = this.getPointOnCurve(point);
 				}
@@ -2691,15 +2827,18 @@ package flash.geom {
 			}
 			
 			var targetAsPoint : Point = target.curveAsPoint();
-			if (targetAsPoint) {				
+			if (targetAsPoint) 
+			{				
 				intersection = this.intersectionPoint(targetAsPoint);
 				return intersection;				
 			}
 			
 			var targetAsLine : Line = target.curveAsLine();			
-			if (targetAsLine) {
+			if (targetAsLine) 
+			{
 				intersection = this.intersectionLine(targetAsLine);
-				for (i = 0;i < intersection.currentTimes.length; i++) {
+				for (i = 0;i < intersection.currentTimes.length; i++) 
+				{
 					point = targetAsLine.getPoint(intersection.targetTimes[i]);
 					intersection.targetTimes[i] = target.getPointOnCurve(point);
 				}
@@ -2709,26 +2848,26 @@ package flash.geom {
 			// если ни одна из проверок не прошла, значит у нас две настоящих невырожденных кривых 
 			// решаем чистый случай!
 
-			const diagonal : Point = this.mainDiagonal;
-			const startToControl : Point = this.startToControl;			
-			const targetDiagonal : Point = target.mainDiagonal;
-			const targetStartToControl : Point = target.startToControl;			
+			const startToControlVector : Point = this.startToControlVector;			
+			const diagonalVector : Point = this.diagonalVector;
+			const targetStartToControlVector : Point = target.startToControlVector;			
+			const targetDiagonalVector : Point = target.diagonalVector;
 			
 						
-			const ax1 : Number = diagonal.x,
-                  ay1 : Number = diagonal.y,
+			const ax1 : Number = diagonalVector.x,
+                  ay1 : Number = diagonalVector.y,
                   
-                  bx1 : Number = 2 * startToControl.x,
-                  by1 : Number = 2 * startToControl.y,
+                  bx1 : Number = 2 * startToControlVector.x,
+                  by1 : Number = 2 * startToControlVector.y,
                   
                   cx1 : Number = startPoint.x,
                   cy1 : Number = startPoint.y,
                   
-                  ax2 : Number = targetDiagonal.x,
-                  ay2 : Number = targetDiagonal.y,
+                  ax2 : Number = targetDiagonalVector.x,
+                  ay2 : Number = targetDiagonalVector.y,
                   
-                  bx2 : Number = 2 * targetStartToControl.x,
-                  by2 : Number = 2 * targetStartToControl.y,
+                  bx2 : Number = 2 * targetStartToControlVector.x,
+                  by2 : Number = 2 * targetStartToControlVector.y,
                   
                   cx2 : Number = target.startPoint.x,
                   cy2 : Number = target.startPoint.y,
@@ -2739,7 +2878,7 @@ package flash.geom {
 			
 			// решение «в лоб»		
 			const	part1 : Number = (ax2 * ay1 - ax1 * ay2),
-					part2 : Number = (-ay2 * bx1 + ax2 * by1),
+					part2 : Number = (- ay2 * bx1 + ax2 * by1),
 					part3 : Number = (bx1 * bx1 + 2 * ax1 * cx),
 					part4 : Number = (ay1 * bx2 - ax1 * by2),
 					part5 : Number = (by1 * by1 + 2 * ay1 * cy),
@@ -2747,62 +2886,80 @@ package flash.geom {
 					part7 : Number = (bx1 * by1 + ax1 * cy),
 					part8 : Number = (bx2 * by1 - bx1 * by2),
 					part9 : Number = (by1 * cx + bx1 * cy),
-					part10 : Number = (-bx2 * by1 + bx1 * by2),
-					part11 : Number = (-by2 * cx + bx2 * cy),
-					part12 : Number = (-by2 * cx + bx2 * cy);
+					part10 : Number = (- bx2 * by1 + bx1 * by2),
+					part11 : Number = (- by2 * cx + bx2 * cy),
+					part12 : Number = (- by2 * cx + bx2 * cy);
 						
-			const   A : Number = -part1 * part1,
-                    B : Number = -2 * part1 * part2,
-                    C : Number = -ay2 * ay2 * part3 - ax2 * (by2 * part4 + ax2 * part5) + ay2 * (-ax1 * bx2 * by2 + ay1 * part6 + 2 * ax2 * part7),
-                    D : Number = -2 * ay2 * ay2 * bx1 * cx + ay2 * (bx2 * part8 + 2 * ax2 * part9) + ax2 * (part10 * by2 - 2 * ax2 * by1 * cy),
-                    E : Number = -ay2 * ay2 * cx * cx + ay2 * (bx2 * part11 + 2 * ax2 * cx * cy) - ax2 * (part12 * by2 + ax2 * cy * cy);
+			const   A : Number = - part1 * part1,
+                    B : Number = - 2 * part1 * part2,
+                    C : Number = - ay2 * ay2 * part3 - ax2 * (by2 * part4 + ax2 * part5) + ay2 * (- ax1 * bx2 * by2 + ay1 * part6 + 2 * ax2 * part7),
+                    D : Number = - 2 * ay2 * ay2 * bx1 * cx + ay2 * (bx2 * part8 + 2 * ax2 * part9) + ax2 * (part10 * by2 - 2 * ax2 * by1 * cy),
+                    E : Number = - ay2 * ay2 * cx * cx + ay2 * (bx2 * part11 + 2 * ax2 * cx * cy) - ax2 * (part12 * by2 + ax2 * cy * cy);
                         		
 			const solutionsForCurve : Array = Equations.solveEquation(A, B, C, D, E);
 			
 			intersection = new Intersection();
 						
 			//поворачиваем кривую в вертикальное положение. Решение будет одно и только одно.
-			const	tga : Number = ay2 ? -ax2 / ay2 : null,
-					sina : Number = ay2 ? tga / Math.sqrt(1 + tga * tga) : sign(-ax2),
-					cosa : Number = ay2 ? 1 / Math.sqrt(1 + tga * tga) : 0;
+			var	tga : Number, sina : Number, cosa : Number;
 					
+			if (Math.abs(ay2) > PRECISION)
+			{
+				tga = - ax2 / ay2;	
+				sina = tga / Math.sqrt(1 + tga * tga);				
+				cosa = 1 / Math.sqrt(1 + tga * tga);			
+			}			
+			else
+			{
+				tga = 0;
+				sina = (- ax2 > PRECISION) ? 1 : (- ax2) < - PRECISION ? - 1 : 0;
+				cosa = 0;
+			}
+								
 			const	bxn : Number = bx2 * cosa + by2 * sina,
 					cxn : Number = cx2 * cosa + cy2 * sina;
 					
-			var	pSolve : Point;
+			var	pointSolve : Point;
 			
 			// бесконечное множество решений. То есть есть совпадение кривых
-			if ((Math.abs(A) < PRECISION) && (Math.abs(B) < PRECISION) && (Math.abs(C) < PRECISION) && (Math.abs(D) < PRECISION) && (Math.abs(E) < PRECISION)) {
+			if ((Math.abs(A) < PRECISION) && (Math.abs(B) < PRECISION) && (Math.abs(C) < PRECISION) && (Math.abs(D) < PRECISION) && (Math.abs(E) < PRECISION)) 
+			{
 				var	time1 : Number,
 					time2 : Number,
 					
 					rt1 : Number,
 					rt2 : Number;
 
-				pSolve = getPoint(0);
-				time1 = (pSolve.x * cosa + pSolve.y * sina - cxn) / bxn;
-				pSolve = getPoint(1);
-				time2 = (pSolve.x * cosa + pSolve.y * sina - cxn) / bxn;
+				pointSolve = getPoint(0);
+				time1 = (pointSolve.x * cosa + pointSolve.y * sina - cxn) / bxn;
+				pointSolve = getPoint(1);
+				time2 = (pointSolve.x * cosa + pointSolve.y * sina - cxn) / bxn;
 				
-				if (time1 * (time1 - 1) <= 0 && time2 * (time2 - 1) <= 0) {
+				if (time1 * (time1 - 1) <= 0 && time2 * (time2 - 1) <= 0) 
+				{
 					rt2 = time2;
 					rt1 = time1; 
 				} 
 				else 
-				if ( time1 * time2 <= 0 && (1 - time1) * (1 - time2) <= 0) {
+				if ( time1 * time2 <= 0 && (1 - time1) * (1 - time2) <= 0) 
+				{
 					rt2 = 1;
 					rt1 = 0; 
 				} 
 				else 
-				if ( time1 * time2 <= 0 && (1 - time1) * (1 - time2) >= 0) {
+				if ( time1 * time2 <= 0 && (1 - time1) * (1 - time2) >= 0) 
+				{
 					rt1 = 0;
 					rt2 = time1 * (time1 - 1) <= 0 ? time1 : time2;
 				} 
 				else 
-				if (time1 * time2 >= 0 && (1 - time1) * (1 - time2) <= 0) {
+				if (time1 * time2 >= 0 && (1 - time1) * (1 - time2) <= 0) 
+				{
 					rt1 = 1;
 					rt2 = time1 * (time1 - 1) <= 0 ? time1 : time2;
-				} else {
+				} 
+				else 
+				{
 					// нет пересечений
 					return intersection;
 				}				
@@ -2813,12 +2970,13 @@ package flash.geom {
 			}
 			
 			
-			for(i = 0 ;i < solutionsForCurve.length; i++) {
+			for(i = 0 ;i < solutionsForCurve.length; i++) 
+			{
 				var solutionForCurve : Number = solutionsForCurve[i];
 				var solutionForTarget : Number;			
 								
-				pSolve = getPoint(solutionForCurve);
-				var ox : Number = pSolve.x * cosa + pSolve.y * sina;
+				pointSolve = getPoint(solutionForCurve);
+				var ox : Number = pointSolve.x * cosa + pointSolve.y * sina;
 				solutionForTarget = bxn ? (ox - cxn) / bxn : 0.5;
 								
 				intersection.addIntersection(solutionForCurve, solutionForTarget, this.isSegment, target.isSegment);
@@ -2839,25 +2997,9 @@ package flash.geom {
 		 * @return String описание объекта
 		 * 
 		 */
-		public function toString() : String {
+		public function toString() : String 
+		{
 			return 	"(start:" + startPoint + ", control:" + controlPoint + ", end:" + endPoint + ")";
-		}
-
-		//**************************************************
-		//				PRIVATE 
-		//**************************************************
-		
-		/**
-		 * Возвращает знак числа: 1, если число положительное, -1, если число отрицательное, и 0 иначе.
-		 * 
-		 * @param value:Number число
-		 * 
-		 * @return Number знак числа
-		 * 
-		 */
-		private function sign(value : Number) : Number {
-			//внимание! медитативный код!
-			return value > PRECISION ? 1 : value < PRECISION ? -1 : 0;
 		}
 	}
 }
