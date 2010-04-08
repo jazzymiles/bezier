@@ -8,6 +8,7 @@ package flash.geom {
 	 * Класс Line представляет линию в параметрическом представлении, 
 	 * задаваемую точками на плоскости <code>start</code> и <code>end</code>
 	 * и реализован в поддержку встроенного метода <code>lineTo()</code>.<BR/>
+	 * 
 	 * В классе реализованы свойства и методы, предоставляющие доступ к основным 
 	 * геометрическим свойствам линии.<BR/>
 	 * Точки, принадлежащие линии определяются их time-итератором. 
@@ -17,7 +18,7 @@ package flash.geom {
 	 * <BR/>
 	 * <a name="formula1"></a><h2><code>P<sub>t</sub>&nbsp;=&nbsp;(E-S)&#42;t</code>&nbsp;&nbsp;&nbsp;&nbsp;(1)</h2><BR/>
 	 * <BR/>
-	 * Многие методы класса Line унифицированы по названию и параметрам с аналогичными методами класса Bezier.
+	 * Класс Line, как и класс Bezier, имплементирует интерфейс IParametric.
 	 * 
 	 * @langversion 3.0
 	 * @playerversion Flash 9.0
@@ -82,7 +83,7 @@ package flash.geom {
 		 * function randomLine():Line {
 		 * 	return new Line(randomPoint(), randomPoint());
 		 * }
-		 *	
+		 *
 		 * const line:Line = randomLine();
 		 * trace("random line: "+line);
 		 * </listing>
