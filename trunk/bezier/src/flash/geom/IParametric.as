@@ -1,5 +1,4 @@
 // UTF-8
-// translator: Flastar http://flastar.110mb.com
 
 package flash.geom {
 
@@ -11,7 +10,7 @@ package flash.geom {
 		 **/
 		 
 		/**
-		 * Regime of line constraint.
+		 * Line constraint mode.
 		 * @default true   
 		 **/
 		function get isSegment():Boolean;
@@ -19,7 +18,7 @@ package flash.geom {
 		function set isSegment(value:Boolean):void;
 
 		/**
-		 * First control point of figure
+		 * First control point of a figure. 
 		 * @default (0,0)
 		 **/
 		function get start():Point;
@@ -27,7 +26,7 @@ package flash.geom {
 		function set start(value:Point):void;
 
 		/**
-		 * Last point of figure
+		 * Last control point of a figure.
 		 * @default (0,0)
 		 **/
 		function get end():Point;
@@ -45,7 +44,7 @@ package flash.geom {
 		 * @return Point;
 		 **/
 		/**
-		 * Calculate and return 2-dimentional point by time-interator.
+		 * Calculates and returns Point by time-iterator.
 		 * @return Point;
 		 **/
 		function getPoint(time:Number, point:Point=null):Point;
@@ -56,7 +55,7 @@ package flash.geom {
 		 **/
 		 
 		/**
-		 * Calculate and return time-interator of point at distance from <code>start</code>.
+		 * Calculates and returns time-iterator of a Point by the distance from <code>start</code>.
 		 * @return Number;
 		 **/		 
 		function getTimeByDistance(distance:Number):Number;
@@ -67,14 +66,14 @@ package flash.geom {
 		 **/
 		 
 		/**
-		 * Calculate and return array of time-interators of points with given step.
+		 * Calculates and returns the array of time-iterators of points with defined step.
 		 * @return Array;
 		 **/
 		 
 		function getTimesSequence(step:Number, startShift:Number = 0):Array;
 
 		/**
-		 * Calculate and return bounds rectangle.
+		 * Calculates and returns bounds rectangle.
 		 * @return Rectangle;
 		 **/
 		 
@@ -87,8 +86,8 @@ package flash.geom {
 		 * @return void 
 		 **/
 		/**
-		 * Change object, that point with given interator
-		 * apply coordinates, definite by parameters.
+		 * Changes the object so that the Point with a given iterator takes coordinates, defined by parameters.
+		 * 
 		 * @return void 
 		 **/
 		 
@@ -100,7 +99,7 @@ package flash.geom {
 		 **/
 		 
 		/**
-		 * Move object at given distance by X Y
+		 * Moves the object to the specified distance by X and Y axes
 		 * @return void 
 		 **/
 		 
@@ -114,7 +113,7 @@ package flash.geom {
 		function angleOffset(value:Number, fulcrum:Point = null):void;
 
 		/**
-		 * Calculate and return time-interator of point, nearer to given. 
+		 * Calculates and returns a time-iterator of Point nearer to given. 
 		 * @return Number
 		 **/
 		function getClosest(fromPoint:Point):Number;
@@ -123,8 +122,8 @@ package flash.geom {
 		//		function getSegment (fromTime:Number=0, toTime:Number=1):IParametric;
 		
 		/**
-		 * Calculate and return length of segment from point <code>start</code>
-		 * at point, given by parameter <code>time</code>;
+		 * Calculates and returns the length of a segment from Point <code>start</code> to the Point, given by parameter <code>time</code>
+		 * 
 		 * @return Number
 		 **/
 		 
@@ -132,20 +131,20 @@ package flash.geom {
 
 		// == intersections ==
 		/**
-		 * Calcilate and return intersection with Line
+		 * Calculates and returns the intersection with Line
 		 * @return Intersection
 		 **/
 		function intersectionLine(line:Line):Intersection;
 
 		/**
-		 * Calcilate and return intersection with Bezier curve
+		 * Calculates and returns the intersection with Bezier curve
 		 * @return Intersection
 		 **/
 		function intersectionBezier(target:Bezier):Intersection;
 
 		
 		/**
-		 * Calculate and return string presentation of object
+		 * Calculates and returns the string presentation of object
 		 * @return String
 		 **/
 		 
