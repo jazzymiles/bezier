@@ -106,7 +106,8 @@ package flash.geom {
 		function offset(dX : Number = 0, dY : Number = 0):void;
 
 		/**
-		 * 
+		 * Rotate a figure concerning to a point <code>fulcrum</code> on the <code>value</code> angle
+		 * If point <code>fulcrum</code> is not set, used (0,0)
 		 * @return void 
 		 **/
 		 
