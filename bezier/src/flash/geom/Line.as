@@ -3,7 +3,7 @@
 
 package flash.geom {
 	import flash.math.Equations;	
-	
+
 	/* *
 	 * Класс Line представляет линию в параметрическом представлении, 
 	 * задаваемую точками на плоскости <code>start</code> и <code>end</code>
@@ -52,8 +52,7 @@ package flash.geom {
 	 * @see Intersection
 	 */
 
-	public class Line extends Object implements IParametric 
-	{
+	public class Line extends Object implements IParametric {
 
 		
 		protected static const PRECISION : Number = Equations.PRECISION;
@@ -131,8 +130,7 @@ package flash.geom {
 		 * @lang rus
 		 **/		
 
-		public function Line(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true, isRay : Boolean = false) 
-		{
+		public function Line(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true, isRay : Boolean = false) {
 			initInstance(start, end, isSegment, isRay);
 		}
 
@@ -147,9 +145,8 @@ package flash.geom {
 		 * Private initializer for an object that can be redefined. 
 		 * Parameters coincide with the parameters of the constructor.
 		 **/ 
-		 
-		protected function initInstance(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true, isRay : Boolean = false) : void 
-		{
+
+		protected function initInstance(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true, isRay : Boolean = false) : void {
 			__start = (start as Point) || new Point();
 			__end = (end as Point) || new Point();
 			__isSegment = Boolean(isSegment);
@@ -193,13 +190,11 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 **/		
-		public function get start() : Point 
-		{
+		public function get start() : Point {
 			return __start;
 		}
 
-		public function set start(value : Point) : void 
-		{
+		public function set start(value : Point) : void {
 			__start = value;
 		}
 
@@ -225,13 +220,11 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 **/
 
-		public function get end() : Point 
-		{
+		public function get end() : Point {
 			return __end;
 		}
 
-		public function set end(value : Point) : void 
-		{
+		public function set end(value : Point) : void {
 			__end = value;
 		}
 
@@ -277,13 +270,11 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 **/
-		public function get isSegment() : Boolean 
-		{
+		public function get isSegment() : Boolean {
 			return __isSegment;
 		}
 
-		public function set isSegment(value : Boolean) : void 
-		{
+		public function set isSegment(value : Boolean) : void {
 			__isSegment = Boolean(value);
 		}
 
@@ -326,14 +317,12 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 **/
-		 
-		public function get isRay() : Boolean 
-		{
+
+		public function get isRay() : Boolean {
 			return __isRay;
 		}
 
-		public function set isRay(value : Boolean) : void 
-		{
+		public function set isRay(value : Boolean) : void {
 			__isRay = Boolean(value);
 		}
 
@@ -400,9 +389,8 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 **/
-		 	
-		public function clone() : Line 
-		{
+
+		public function clone() : Line {
 			return new Line(__start.clone(), __end.clone(), __isSegment);
 		}
 
@@ -456,8 +444,7 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 */		
-		public function get startToEndVector() : Point
-		{
+		public function get startToEndVector() : Point {
 			return new Point(end.x - start.x, end.y - start.y);			
 		}
 
@@ -508,8 +495,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 */		
-		public function get endToStartVector() : Point
-		{
+		public function get endToStartVector() : Point {
 			return new Point(start.x - end.x, start.y - end.y);			
 		}
 
@@ -519,8 +505,6 @@ package flash.geom {
 		 * Если прямая вырождена в точку, то возвращается объект класса Point с координатой точки, в которую вырождена прямая.
 		 * В других случаях, если прямая протяженная, возвращается null.
 		 * 
-		 * @private Логика работы метода - проверка, что опорные точки прямой совпадают, с учетом допуска.
-		 *  
 		 * @return Point точка, в которую вырождена прямая
 		 * 
 		 * @example В этом примере создается прямая, и проверяется ее вырожденность в точку.
@@ -544,15 +528,15 @@ package flash.geom {
 		 */
 		 
 		/**
-		 * Проверка вырожденности прямой в точку.
-		 * Если прямая вырождена в точку, то возвращается объект класса Point с координатой точки, в которую вырождена прямая.
-		 * В других случаях, если прямая протяженная, возвращается null.
+		 * Check for line degeneration into the point.
+		 * If the line is degenerated to the point, so returned is the object of the Point class with the coordinates of degenerate point.
+		 * In other cases, if the line is extended, returns null.
 		 * 
-		 * @private Логика работы метода - проверка, что опорные точки прямой совпадают, с учетом допуска.
-		 *  
-		 * @return Point точка, в которую вырождена прямая
+		 * @private The logic of the method - tolerance check that the control points of the line match.
 		 * 
-		 * @example В этом примере создается прямая, и проверяется ее вырожденность в точку.
+		 * @return Point the point to which the line is degenerated
+		 * 
+		 * @example This example creates a line and checks its degeneration to a point.
 		 * <listing version="3.0">
 		 * import flash.geom.Line;
 		 * import flash.geom.Point;
@@ -570,18 +554,15 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 */
-		public function lineAsPoint() : Point
-		{
-			if (this.startToEndVector.length < PRECISION)
-			{
+		 
+		// Логика работы метода - проверка, что опорные точки прямой совпадают, с учетом допуска.
+		public function lineAsPoint() : Point {
+			if (this.startToEndVector.length < PRECISION) {
 				return start.clone();				
-			}
-			else
-			{
+			} else {
 				return null;
 			}
 		}
-
 		
 		/* *
 		 * Угол наклона прямой.
@@ -597,24 +578,22 @@ package flash.geom {
 		 **/
 		 
 		/**
-		 * Угол наклона прямой.
-		 * Измеряется в радианах, от положительного направления оси X к положительному направлению оси Y (стандартная схема).
-		 * Возвращаемое значение находится в пределах от отрицательного PI до положительного PI.
+		 * Inclination of line.
+		 * It is measured in radians, from the positive direction of the X-axis to the positive direction of axis Y (the standard scheme).
+		 * The return value is in the range from negative PI to positive PI.
 		 * 
-		 * @return Number угол наклона прямой
+		 * @return Number inclination of line
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
 		 **/
-		 
-		public function get angle() : Number 
-		{
+
+		public function get angle() : Number {
 			return Math.atan2(__end.y - __start.y, __end.x - __start.x);
 		}
 
-		public function set angle(rad : Number) : void 
-		{
+		public function set angle(rad : Number) : void {
 			const distance : Number = Point.distance(__start, __end);
 			const polar : Point = Point.polar(distance, rad);
 			__end.x = __start.x + polar.x;
@@ -635,15 +614,19 @@ package flash.geom {
 		 */
 		 
 		/**
-		 * Rotate line respection at point <code>fulcrum</code> at current angle.
-		 * If point <code>fulcrum</code> undefined, then automatically use (0,0);
-		 * @param value:Number angle(radian)
-		 * @param fulcrum:Point center of rotation. 
-		 * If variable undefined, center of rotation is point <code>start</code>
+		 * Rotates the line with respect to a point <code>fulcrum</code> to a selected angle.
+		 * If the point <code>fulcrum</code> was not given, the coordinates (0,0) are used;
+		 * 
+		 * @param value:Number angle of rotation in radians
+		 * @param fulcrum:Point center of rotation.
+		 *  
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 */
 
-		public function angleOffset(value : Number, fulcrum : Point = null) : void 
-		{
+		
+		public function angleOffset(value : Number, fulcrum : Point = null) : void {
 			fulcrum = fulcrum || new Point();
 			const startLine : Line = new Line(fulcrum, __start);
 			startLine.angle += value;
@@ -658,19 +641,23 @@ package flash.geom {
 		 * @param dy:Number величина смещения по оси Y
 		 * 
 		 * @langversion 3.0
-		 * @playerversion Flash 9.0 
+		 * @playerversion Flash 9.0
+		 *  
 		 * @lang rus
 		 */
 		 
 		/**
-		 * Move line at given distance at axes X and Y.  
+		 * Moves the object to the specified distance by X and Y axes.
 		 * 
-		 * @param dx:Number variable of moving at axe X
-		 * @param dy:Number variable of moving at axe Y
+		 * @param dx:Number X axial displacement
+		 * @param dy:Number Y axial displacement
 		 * 
-		 */		 		
-		public function offset(dX : Number = 0, dY : Number = 0) : void 
-		{
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 *  
+		 */
+
+		public function offset(dX : Number = 0, dY : Number = 0) : void {
 			__start.offset(dX, dY);
 			__end.offset(dX, dY);
 		}
@@ -683,23 +670,31 @@ package flash.geom {
 		 * 
 		 * @return Number длина отрезка
 		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 *  
+		 * @lang rus
 		 **/
+		 
 		/**
-		 * Calculate and return length of piece of line <code>start</code>-<code>end</code>.
-		 * Return number only positively; 
-		 * @return Number;
+		 * Length of line segment <code>start</code>-<code>end</code>.
+		 * Return value is always positive.
+		 * When specifying the properties of length, negative values may be used too, but not zero.
+		 * The change of length does not change the inclination of line, but only moves the end point along the line.
+		 * 
+		 * @return Number length of line segment
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 **/
 
-		public function get length() : Number 
-		{
+		public function get length() : Number {
 			return Point.distance(__start, __end); 
 		}
 
-		public function set length(value : Number) : void 
-		{
+		public function set length(value : Number) : void {
 			var lastLength : Number = this.length;
-			if (lastLength > PRECISION)
-			{
+			if (lastLength > PRECISION) {
 				var newEndX : Number = __start.x + value * (__end.x - __start.x) / lastLength;
 				var newEndY : Number = __start.y + value * (__end.y - __start.y) / lastLength;			
 				__end.x = newEndX;
@@ -711,7 +706,9 @@ package flash.geom {
 		 * Вычисляет и возвращает объект Point, представляющий точку на прямой, заданную параметром <code>time</code>.
 		 * 
 		 * @param time:Number итератор точки прямой
-		 * @param point:Point=null необязательный параметр, объект Point, в который записать координаты
+		 * @param point:Point=null необязательный параметр, объект Point. 
+		 * При передаче объекта Point в качестве аргумента, ему будут присвоены координаты точки и он же будет возвращен функцией.
+		 * В противном случае будет создан и возвращен новый объект Point с координатами точки.
 		 * 
 		 * @return Point точка на прямой
 		 * <I>
@@ -742,15 +739,47 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
-		 */	
-		/**
-		 * Calculate and return point on line, given by time-iterator.
-		 * @param time time-итератор
-		 * @return Point point on line
-		 * 
 		 */
-		public function getPoint(time : Number, point : Point = null) : Point 
-		{
+		 	
+		/**
+		 * Calculates and returns an object Point, representing a point of line, given by parameter <code>time</code>.
+		 * 
+		 * @param time:Number iterator of a point of line
+		 * @param point:Point=null optional parameter, object Point
+		 * 
+		 * @return Point point of line
+		 * 
+		 * <I>
+		 * If the given parameter time equals 0 or 1, so the objects Point equal to <code>start</code> and 
+		 * <code>end</code> will be returned, but not the objects <code>start</code> and <code>end</code> itself.
+		 * </I>
+		 * 
+		 * @example <listing version="3.0">
+		 * 
+		 *	import flash.geom.Line;
+		 *	import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomLine():Line {
+		 *		return new Line(randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const line:Line = randomLine();	
+		 *	const time:Number = Math.random();
+		 *	const point:Point = line.getPoint(Math.random());
+		 *	trace(point);
+		 *	
+		 * </listing>
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
+		 */	
+
+		public function getPoint(time : Number, point : Point = null) : Point {
 			point = (point as Point) || new Point();
 			point.x = __start.x + (__end.x - __start.x) * time;
 			point.y = __start.y + (__end.y - __start.y) * time;
@@ -758,12 +787,6 @@ package flash.geom {
 		}
 
 		/* *
-		 * Вычисляет и возвращает time-итератор точки находящейся на заданной дистанции по линии от точки start. 
-		 * @param distance:Number
-		 * @return Number
-		 * 
-		 */
-		/**
 		 * Вычисляет time-итератор точки, находящейся на заданной дистанции 
 		 * по прямой от точки <code>start</code><BR/>
 		 *  
@@ -793,42 +816,52 @@ package flash.geom {
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
-		 * @lang rus
-		 */ 
-		/**
-		 * Calculate and return time-iterator of point that can be found at given distance on line from point start. 
-		 * @param distance:Number
-		 * @return Number
 		 * 
+		 * @lang rus
 		 */
-		public function getTimeByDistance(distance : Number) : Number 
-		{
+		  
+		/**
+		 * Calculates time-iterator of the point, located at a given distance along the straight line from point <code>start</code>
+		 * 
+		 * @param distance:Number distance along the straight line to the desired point.
+		 * @return Number time-iterator of the desired point
+		 * 
+		 * @example <listing version="3.0">
+		 * 
+		 *	import flash.geom.Line;
+		 *	import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomLine():Line {
+		 *		return new Line(randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const line:Line = randomLine();	
+		 * 
+		 *	trace(line.getTimeByDistance(-10); // negative value
+		 *	trace(line.getTimeByDistance(line.length/2); // value between 0 and 1
+		 * </listing>
+		 * 
+		 * @see #getPoint 
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 */ 
+		 
+		public function getTimeByDistance(distance : Number) : Number {
 			var lineLength : Number = this.length;
 			
-			if (lineLength > PRECISION)
-			{
+			if (lineLength > PRECISION) {
 				return distance / lineLength;
-			}
-			else
-			{
+			} else {
 				return Number.NaN;
 			}
 		}
 
 		/* *
-		 * Изменяет позицию точки <code>end</code> таким образром, 
-		 * что точка <code>P<sub>time</sub></code> станет в координаты,
-		 * заданные параметрами <code>x</code> и <code>y</code>.
-		 * Если параметр <code>x</code> или <code>y</code> не определен,
-		 * значение соответствующей координаты точки <code>P<sub>time</sub></code>
-		 * не изменится. 
-		 * @param time
-		 * @param x
-		 * @param y
-		 * 
-		 */	
-		
-		/**
 		 * Изменяет позицию точки <code>end</code> таким образром, 
 		 * что точка <code>P<sub>time</sub></code> станет в координаты,
 		 * заданные параметрами <code>x</code> и <code>y</code>.
@@ -855,12 +888,58 @@ package flash.geom {
 		 *	
 		 *	const line:Line = randomLine();	
 		 *	trace(line);
-		 *	
+		 *	 
 		 *	line.setPoint(0, 0, 0);
-		 *	line.setPoint(0.5, 100, 100);
+		 *	trace(line);
+		 *	 
 		 *	line.setPoint(1, 200, 0);
+		 *	trace(line);
+		 *	 
+		 *	line.setPoint(0.5, 100, 100);
+		 *	trace(line);
 		 *	
-		 *	trace(line); 
+		 * </listing>
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * @lang rus
+		 */
+		 
+		/**
+		 * Changes the location of the point <code>end</code> so that the point <code>P<sub>time</sub></code> 
+		 * moves to the coordinates, given by parameters <code>x</code> and <code>y</code>.
+		 * If the parameter <code>x</code> and <code>y</code> is not determined, the value of the corresponding 
+		 * coordinates of the point <code>P<sub>time</sub></code> will not change.
+		 * 
+		 * @param time:Number time-iterator of the point of a curve.
+		 * @param x:Number new value of the position of a point on the axis X.
+		 * @param y:Number new value of the position of a point on the axis Y.
+		 * 
+		 * @example 
+		 * <listing version="3.0">
+		 * 
+		 *	import flash.geom.Line;
+		 *	import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomLine():Line {
+		 *		return new Line(randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const line:Line = randomLine();	
+		 *	trace(line);
+		 *	 
+		 *	line.setPoint(0, 0, 0);
+		 *	trace(line);
+		 *	 
+		 *	line.setPoint(1, 200, 0);
+		 *	trace(line);
+		 *	 
+		 *	line.setPoint(0.5, 100, 100);
+		 *	trace(line);
+		 *	
 		 * </listing>
 		 * 
 		 * @langversion 3.0
@@ -868,31 +947,15 @@ package flash.geom {
 		 * @lang rus
 		 */
 		 	
-		/**
-		 * Change position of point <code>end</code>, 
-		 * that point <code>P<sub>time</sub></code> take coordinates,
-		 * given by parameters <code>x</code> and <code>y</code>.
-		 * If parameter <code>x</code> or <code>y</code> undefined,
-		 * correspond variable <code>P<sub>time</sub></code>
-		 * don't change. 
-		 * @param time 
-		 * @param x
-		 * @param y
-		 * 
-		 */
-		public function setPoint(time : Number, x : Number = undefined, y : Number = undefined) : void 
-		{
-			if (isNaN(x) && isNaN(y)) 
-			{
+		public function setPoint(time : Number, x : Number = undefined, y : Number = undefined) : void {
+			if (isNaN(x) && isNaN(y)) {
 				return;
 			}
 			const point : Point = getPoint(time);
-			if (! isNaN(x)) 
-			{
+			if (!isNaN(x)) {
 				point.x = x;
 			}
-			if (! isNaN(y)) 
-			{
+			if (!isNaN(y)) {
 				point.y = y;
 			}
 			__end.x = point.x + (point.x - __start.x) * ((1 - time) / time);
@@ -929,31 +992,49 @@ package flash.geom {
 		 * @lang rus
 		 */
 		 
-		 
 		/**
-		 * Return overall rectangle of object. 
-		 **/
-		public function get bounds() : Rectangle 
-		{
-			if (__start.x > __end.x) 
-			{
-				if (__start.y > __end.y) 
-				{
+		 * Calculates and returns the bounding box of the line segment between the start and end points.
+		 * If the property isSegment=false, it is ignored, does not affect the results of the calculation.
+		 * 
+		 * @return Rectangle bounding box
+		 * 
+		 * @example This example creates random Bezier curve, and obtains the gravity center of the bounding triangle. 
+		 * <listing version="3.0">
+		 * import flash.geom.Line;
+		 * import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomLine():Line {
+		 *		return new Line(randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 * const line:Line = randomLine();	
+		 * var boundBox:Rectangle = line.bounds;
+		 * trace(boundBox.x+" "+boundBox.y+" "+boundBox.width+" "+boundBox.height); 
+		 *  
+		 * </listing>
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 */
+		 
+		public function get bounds() : Rectangle {
+			if (__start.x > __end.x) {
+				if (__start.y > __end.y) {
 					return new Rectangle(__end.x, __end.y, __start.x - __end.x, __start.y - __end.y);
-				} 
-				else 
-				{
+				} else {
 					return new Rectangle(__end.x, __start.y, __start.x - __end.x, __end.y - __start.y);
 				}
 			}
-			if (__start.y > __end.y) 
-			{
+			if (__start.y > __end.y) {
 				return new Rectangle(__start.x, __end.y, __end.x - __start.x, __start.y - __end.y);
 			} 
 			return new Rectangle(__start.x, __start.y, __end.x - __start.x, __end.y - __start.y);
 		}
 
-		/**
+		/* *
 		 * Возвращает отрезок - сегмент линии, заданный начальным и конечным итераторами.
 		 * 
 		 * @param fromTime:Number time-итератор начальной точки сегмента
@@ -983,18 +1064,39 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-		 	
+		 
 		/**
-		 * Return piece of line - segment of line, given by beginning and ending interators.
+		 * Returns the line segment, given by the initial and finite iterators.
 		 * 
-		 * @param fromTime:Number time-iterator first point of segment
-		 * @param toTime:Number time-iterator end point of segment of curve
+		 * @param fromTime:Number time-iterator of the initial point of the curve segment
+		 * @param toTime:Number time-iterator of the end point of the curve segment
 		 * 
-		 * @return Line 
+		 * @return Line;
 		 * 
+		 * @example 
+		 * <listing version="3.0">
+		 * import flash.geom.Line;
+		 * import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomLine():Line {
+		 *		return new Line(randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 * const line:Line = randomLine();	
+		 * const segment1:Line = line.getSegment(1/3, 2/3);
+		 * const segment2:Line = line.getSegment(-1, 2);
+		 * 
+		 * </listing>
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * @lang rus
 		 */
-		public function getSegment(fromTime : Number = 0, toTime : Number = 1) : Line 
-		{
+		 	
+		public function getSegment(fromTime : Number = 0, toTime : Number = 1) : Line {
 			return new Line(getPoint(fromTime), getPoint(toTime));
 		}
 
@@ -1043,16 +1145,48 @@ package flash.geom {
 		 **/
 		 
 		/**
-		 * Return length of segment of line from point <code>start</code> 
-		 * at point on line, given by time-iterator.
-		 *  
-		 * @param time - iterator of point.
+		 * Returns the length of the line segment from the point <code>start</code> to 
+		 * a point on the line, given by time-iterator.
 		 * 
-		 * @return Number 
+		 * @param time:Number time parameter of the segments end point.
 		 * 
-		 */
-		public function getSegmentLength(time : Number) : Number 
-		{
+		 * @return Number length of a line segment
+		 * 
+		 * @example This example creates random line, calculates time-iterator of 
+		 * the middle point of a line, and then obtains the values of half of length 
+		 * of a line and length of a line segment to the middle point - they must be equal. 
+		 * 
+		 * <listing version="3.0">
+		 * import flash.geom.Line;
+		 * import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomLine():Line {
+		 *		return new Line(randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 * const line:Line = randomLine();	
+		 *	
+		 *	const middleDistance:Number = line.length/2;
+		 *	const middleTime:Number = line.getTimeByDistance(middleDistance);
+		 *	const segmentLength:Number = line.getSegmentLength(middleTime);
+		 *	
+		 *	trace(middleDistance);
+		 *	trace(segmentLength);
+		 *	
+		 *</listing> 
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @see #length
+		 * 
+		 * @lang rus
+		 **/
+		 
+		public function getSegmentLength(time : Number) : Number {
 			return Point.distance(__start, getPoint(time));
 		}
 
@@ -1135,22 +1269,19 @@ package flash.geom {
 		 * 
 		 */
 
-		public function getTimesSequence(step : Number, startShift : Number = 0) : Array 
-		{
+		public function getTimesSequence(step : Number, startShift : Number = 0) : Array {
 			step = Math.abs(step);
 			const distance : Number = (startShift % step + step) % step;
 			
 			const times : Array = new Array();
 			const lineLength : Number = Point.distance(__start, __end);
-			if (distance > lineLength) 
-			{
+			if (distance > lineLength) {
 				return times;
 			}
 			const timeStep : Number = step / lineLength;
 			var time : Number = getTimeByDistance(distance);
 			
-			while (time <= 1) 
-			{
+			while (time <= 1) {
 				times[times.length] = time;
 				time += timeStep;
 			}
@@ -1190,15 +1321,13 @@ package flash.geom {
 		 */
 
 		
-		public function intersectionPoint(target : Point) : Intersection 
-		{
+		public function intersectionPoint(target : Point) : Intersection {
 			var intersection : Intersection = new Intersection();
 			
 			var closestTime : Number = this.getClosest(target);
 			var closestPoint : Point = this.getPoint(closestTime);
 						
-			if (Point.distance(target, closestPoint) < PRECISION)
-			{
+			if (Point.distance(target, closestPoint) < PRECISION) {
 				intersection.addIntersection(closestTime, 0, this.isSegment, false);	
 			}
 
@@ -1250,17 +1379,14 @@ package flash.geom {
 		 * @lang rus 
 		 */
 
-		public function intersectionLine(targetLine : Line) : Intersection 
-		{
+		public function intersectionLine(targetLine : Line) : Intersection {
 			var intersection : Intersection = new Intersection();
 			
-			if (__isSegment && targetLine.__isSegment) 
-			{
+			if (__isSegment && targetLine.__isSegment) {
 				var currentBoundBox : Rectangle = this.bounds;
 				var targetBoundBox : Rectangle = targetLine.bounds;
 						
-				if (currentBoundBox.right < targetBoundBox.left || targetBoundBox.right < currentBoundBox.left || currentBoundBox.top < targetBoundBox.bottom || targetBoundBox.top < currentBoundBox.bottom) 
-				{ 
+				if (currentBoundBox.right < targetBoundBox.left || targetBoundBox.right < currentBoundBox.left || currentBoundBox.top < targetBoundBox.bottom || targetBoundBox.top < currentBoundBox.bottom) { 
 					return intersection;  
 				} 
 			}
@@ -1273,10 +1399,8 @@ package flash.geom {
 			const crossDeterminant : Number = startToEndVector.x * targetStartToEndVector.y - startToEndVector.y * targetStartToEndVector.x;
 			const crossDeterminant2 : Number = __start.x * targetStartToEndVector.y - __start.y * targetStartToEndVector.x;
 			
-			if(Math.abs(crossDeterminant) < PRECISION) 
-			{
-				if(Math.abs(crossDeterminant2 + targetDeterminant) < PRECISION) 
-				{
+			if(Math.abs(crossDeterminant) < PRECISION) {
+				if(Math.abs(crossDeterminant2 + targetDeterminant) < PRECISION) {
 					intersection.isCoincidence = true;
 										
 					var coincidenceStartTime : Number;
@@ -1288,40 +1412,30 @@ package flash.geom {
 					const linesStartTime : Number = 0;
 					const linesEndTime : Number = 1;					
 					
-					if (Math.abs(startToEndVector.x) > PRECISION) 
-					{
-						currentStartTime = - (__start.x - targetLine.__start.x) / startToEndVector.x;
-						currentEndTime = - (__start.x - targetLine.__end.x) / startToEndVector.x;
-					} 
-					else 
-					{ 
-						if (Math.abs(startToEndVector.y) > PRECISION) 
-						{
+					if (Math.abs(startToEndVector.x) > PRECISION) {
+						currentStartTime = -(__start.x - targetLine.__start.x) / startToEndVector.x;
+						currentEndTime = -(__start.x - targetLine.__end.x) / startToEndVector.x;
+					} else { 
+						if (Math.abs(startToEndVector.y) > PRECISION) {
 							currentStartTime = (targetLine.__start.y - __start.y) / startToEndVector.y;
 							currentEndTime = (targetLine.__end.y - __start.y) / startToEndVector.y;
-						}
-						else
-						{
+						} else {
 							currentStartTime = 0;
 							currentEndTime = 0;
 						}
 					}
 					
-					if ((linesStartTime - currentStartTime) * (linesStartTime - currentEndTime) <= 0 && (linesEndTime - currentStartTime) * (linesEndTime - currentEndTime) <= 0) 
-					{
+					if ((linesStartTime - currentStartTime) * (linesStartTime - currentEndTime) <= 0 && (linesEndTime - currentStartTime) * (linesEndTime - currentEndTime) <= 0) {
 						coincidenceEndTime = linesEndTime;
 						coincidenceStartTime = linesStartTime; 
 					} 
-					else if ((currentStartTime - linesStartTime) * (currentStartTime - linesEndTime) <= 0 && (currentEndTime - linesStartTime) * (currentEndTime - linesEndTime) <= 0) 
-					{
+					else if ((currentStartTime - linesStartTime) * (currentStartTime - linesEndTime) <= 0 && (currentEndTime - linesStartTime) * (currentEndTime - linesEndTime) <= 0) {
 						coincidenceEndTime = currentEndTime;
 						coincidenceStartTime = currentStartTime; 
-					} else if ((currentStartTime - linesStartTime) * (currentStartTime - linesEndTime) <= 0 && (currentEndTime - linesStartTime) * (currentEndTime - linesEndTime) >= 0) 
-					{
+					} else if ((currentStartTime - linesStartTime) * (currentStartTime - linesEndTime) <= 0 && (currentEndTime - linesStartTime) * (currentEndTime - linesEndTime) >= 0) {
 						coincidenceStartTime = currentStartTime;
 						coincidenceEndTime = (linesStartTime - currentStartTime) * (linesStartTime - currentEndTime) <= 0 ? linesStartTime : linesEndTime;
-					} else if ((currentStartTime - linesStartTime) * (currentStartTime - linesEndTime) >= 0 && (currentEndTime - linesStartTime) * (currentEndTime - linesEndTime) <= 0) 
-					{
+					} else if ((currentStartTime - linesStartTime) * (currentStartTime - linesEndTime) >= 0 && (currentEndTime - linesStartTime) * (currentEndTime - linesEndTime) <= 0) {
 						coincidenceStartTime = currentEndTime;
 						coincidenceEndTime = (linesStartTime - currentStartTime) * (linesStartTime - currentEndTime) <= 0 ? linesStartTime : linesEndTime;
 					}
@@ -1331,48 +1445,33 @@ package flash.geom {
 				}
 				
 				return intersection;
-			}
-			else
-			{
+			} else {
 				var solve : Point = new Point();			
 				solve.x = (currentDeterminant * targetStartToEndVector.x - targetDeterminant * startToEndVector.x) / crossDeterminant;
 				solve.y = (currentDeterminant * targetStartToEndVector.y - targetDeterminant * startToEndVector.y) / crossDeterminant;
 			
 				var time : Number;
-				if (Math.abs(startToEndVector.x) > PRECISION)
-				{
+				if (Math.abs(startToEndVector.x) > PRECISION) {
 					time = (solve.x - __start.x) / startToEndVector.x;
-				}
-				else
-				{
-					if (Math.abs(startToEndVector.y) > PRECISION)
-					{
+				} else {
+					if (Math.abs(startToEndVector.y) > PRECISION) {
 						time = (solve.y - __start.y) / startToEndVector.y;
-					}
-					else
-					{
+					} else {
 						time = Number.NaN;
 					}
 				}
 				
 				var targetTime : Number;
-				if (Math.abs(targetStartToEndVector.x) > PRECISION)
-				{
+				if (Math.abs(targetStartToEndVector.x) > PRECISION) {
 					targetTime = (solve.x - targetLine.__start.x) / targetStartToEndVector.x;
-				}
-				else
-				{
-					if (Math.abs(startToEndVector.y) > PRECISION)
-					{
+				} else {
+					if (Math.abs(startToEndVector.y) > PRECISION) {
 						targetTime = (solve.y - targetLine.__start.y) / targetStartToEndVector.y;
-					}
-					else
-					{
+					} else {
 						targetTime = Number.NaN;
 					}
 				}
-				if ((! isSegment || (time >= 0 && time <= 1)) && (! targetLine.isSegment || (targetTime >= 0 && targetTime <= 1)))
-				{								
+				if ((!isSegment || (time >= 0 && time <= 1)) && (!targetLine.isSegment || (targetTime >= 0 && targetTime <= 1))) {								
 					intersection.currentTimes.push(time);
 					intersection.targetTimes.push(targetTime);
 				}
@@ -1389,8 +1488,7 @@ package flash.geom {
 		 * @return Intersection объект с описанием пересечения
 		 *   	
 		 */		   		
-		public function intersectionBezier(target : Bezier) : Intersection 
-		{
+		public function intersectionBezier(target : Bezier) : Intersection {
 			var intersection : Intersection = target.intersectionLine(this);
 			intersection.switchCurrentAndTarget();
 			return intersection;
@@ -1436,31 +1534,26 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 **/
-		public function getClosest(fromPoint : Point) : Number 
-		{
+		public function getClosest(fromPoint : Point) : Number {
 			const startToEndVector : Point = this.startToEndVector;
 			const startToEndLength : Number = startToEndVector.length;
 						
-			if( startToEndLength < PRECISION)
-			{
+			if( startToEndLength < PRECISION) {
 				return 0;
 			}
 			
-			const selfProjection : Number = - startToEndVector.y * __start.x + startToEndVector.x * __start.y;
+			const selfProjection : Number = -startToEndVector.y * __start.x + startToEndVector.x * __start.y;
 			const projection : Number = (startToEndVector.y * fromPoint.x + startToEndVector.x * fromPoint.y + selfProjection) / (startToEndLength * startToEndLength);
 			const point : Point = new Point(fromPoint.x - startToEndVector.y * projection, fromPoint.y - startToEndVector.x * projection);
 			const time : Number = startToEndVector.x ? (__start.x - point.x) / startToEndVector.x : (point.y - __start.y) / startToEndVector.y;
 					
-			if (! __isSegment) 
-			{
+			if (!__isSegment) {
 				return time;
 			}
-			if(time < 0) 
-			{
+			if(time < 0) {
 				return 0;
 			}
-			if (time > 1) 
-			{
+			if (time > 1) {
 				return 1;
 			}
 			return time;
@@ -1477,8 +1570,7 @@ package flash.geom {
 		 * @return String описание объекта
 		 * 
 		 */
-		public function toString() : String 
-		{
+		public function toString() : String {
 			return 	"(start:" + __start + ", end:" + __end + ")";
 		}
 	}
