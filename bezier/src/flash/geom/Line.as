@@ -25,20 +25,25 @@ package flash.geom {
 	 * 
 	 * @see Bezier
 	 * @see Intersection
+	 * 
+	 * @lang rus
 	 */
 	 
 	/**
-	 * Class Line introdaction line at parametrical introduction, 
-	 * given by points on plane <code>start</code> and <code>end</code>
-	 * and realized to support internal method <code>lineTo()</code>.<BR/>
-	 * At class realized properties and methods, they help you take access to basic 
-	 * geometry properties of line.<BR/>
-	 * Points, belongs to line defines by time-iterator. 
-	 * Interator <code>t</code> points on line <code>P<sub>t</sub></code> equally bearing 
-	 * distance from point <code>P<sub>t</sub></code> at start point <code>S</code> 
-	 * with distace from end point <code>E</code> at start point <code>S</code>.  
+	 * The Line class introduces a line in parametric representation, given by <code>start</code> and <code>end</code> 
+	 * points in a plane, and is implemented to support internal method <code>lineTo()</code>.<BR/>
+	 * In this class implemented are the properties and methods, that provide an access 
+	 * to the basic geometrical properties of line.<BR/>
+	 * <BR/>
+	 * Points of the line are determined by their time-iterator.<BR/>  
+	 * 
+	 * Iterator <code>t</code> of the <code>P<sub>t</sub></code>point on a line is the ratio of the distance 
+	 * from the point <code>P<sub>t</sub></code> to the start point <code>S</code> to the distance from 
+	 * the end point <code>E</code> to the start point <code>S</code>.<BR/>
 	 * <BR/>
 	 * <a name="formula1"></a><h2><code>P<sub>t</sub>&nbsp;=&nbsp;(E-S)&#42;t</code>&nbsp;&nbsp;&nbsp;&nbsp;(1)</h2><BR/>
+	 * <BR/>
+	 * Line class implements IParametric interface, same as Bezier class. 
 	 * 
 	 * @langversion 3.0
 	 * @playerversion Flash 9.0
@@ -92,6 +97,38 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
+		 **/
+		 		
+		/**
+		 * 
+		 * Creates new object Line. 
+		 * If the parameters were not given, all control points are created in the coordinates 0,0  
+		 * 
+		 * @param start:Point initial point of a line or a segment.
+		 * @param end:Point end point of a line or a segment
+		 * @param isSegment:Boolean limitation flag
+		 * @param isRay:Boolean flag of the ray type of line
+		 * 
+		 * @example This example creates a line in random coordinates. 
+		 * <listing version="3.0">
+		 * import flash.geom.Line;
+		 * import flash.geom.Point;
+		 *	
+		 * function randomPoint():Point {
+		 * 	return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomLine():Line {
+		 * 	return new Line(randomPoint(), randomPoint());
+		 * }
+		 *
+		 * const line:Line = randomLine();
+		 * trace("random line: "+line);
+		 * </listing>
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
 		 **/		
 
 		public function Line(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true, isRay : Boolean = false) 
@@ -100,9 +137,17 @@ package flash.geom {
 		}
 
 		/* *
-		 * Приватный инициализатор для объекта, который можно переопределить. Параметры совпадают с параметрами конструктора.
-		 *
+		 * Приватный инициализатор для объекта, который можно переопределить. 
+		 * Параметры совпадают с параметрами конструктора.
+		 * 
+		 * @lang rus
+		 **/
+		  
+		/**
+		 * Private initializer for an object that can be redefined. 
+		 * Parameters coincide with the parameters of the constructor.
 		 **/ 
+		 
 		protected function initInstance(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true, isRay : Boolean = false) : void 
 		{
 			__start = (start as Point) || new Point();
@@ -114,11 +159,13 @@ package flash.geom {
 		/*
 		 * Поскольку публичные переменные нельзя нельзя переопределять в дочерних классах, 
 		 * start, end и isSegment реализованы как get-set методы, а не как публичные переменные.
+		 * 
+		 * @lang rus
 		 */
 
 		/*
-		 * As public variables impossible to redefine in daughter classes, 
-		 * start, end and isSegment realized how get-set methods, not how public variables.
+		 * As far as the public variables can not be redefined in child classes, start, end and 
+		 * isSegment are implemented as get-set methods, and not as public variables 
 		 */
 		 
 		 
@@ -135,8 +182,13 @@ package flash.geom {
 		 * @lang rus
 		 * 
 		 **/
+		 
 		/**
-		 * First anchor point of piece of line. Interator <code>time</code> equally 0.
+		 * Initial control point of a line. Iterator <code>time</code> is equal to zero.
+		 * 
+		 * @return Point initial point of a line
+		 * 
+		 * @default Point(0, 0)
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
@@ -160,10 +212,14 @@ package flash.geom {
 		 *  
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
 		 **/
 		 
 		/**
-		 * Final bearing(anchor) point of piece of line. Interator <code>time</code> equally 1.
+		 * End control point of a line. Iterator <code>time</code> is equal to 1.
+		 * 
+		 * @return Point end point of a line
 		 *  
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
@@ -198,14 +254,15 @@ package flash.geom {
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
 		 **/
 		 
 		/**
-		 * Defined, is line infinite in both side
-		 * or limited in borders of interators 0-1.<BR/>
+		 * Determines whether a line infinite in both directions, or restricted within the iterators from 0 to 1.
 		 * <BR/>
 		 * <BR/>
-		 * Current variable isSegment influense at results of methods:<BR/>
+		 * Current value of isSegment affects the results of methods:<BR/>
 		 * <a href="#intersectionBezier">intersectionBezier</a><BR/>
 		 * <a href="#intersectionLine">intersectionLine</a><BR/>
 		 * <a href="#getClosest">getClosest</a><BR/>
@@ -247,7 +304,29 @@ package flash.geom {
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
 		 **/
+		 
+		/**
+		 * Determines whether a line is a ray, i.e. it is infinite only in the direction from start to end.
+		 * <BR/>
+		 * Current value of isRay affects the results of methods:
+		 * <a href="#intersectionBezier">intersectionBezier</a><BR/>
+		 * <a href="#intersectionLine">intersectionLine</a><BR/>
+		 * <a href="#getClosest">getClosest</a><BR/>
+		 * <a href="Bezier.html#intersectionLine">Bezier.intersectionLine</a><BR/>
+		 * 
+		 * @see #intersectionBezier
+		 * @see #intersectionLine
+		 * @see #getClosest
+		 * 
+		 * @default true
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 **/
+		 
 		public function get isRay() : Boolean 
 		{
 			return __isRay;
@@ -289,19 +368,46 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
-		 **/	
+		 **/
+		 	
 		/**
+		 * Creates and returns a copy of the current object Line.<BR/>
+		 * Please note that copies of the control points are copied as well, and they are new objects.
 		 * 
-		 * @return Line copy of current object Line.  
-		 */
-
+		 * @return Line a copy of the line
+		 * 
+		 * @example This example creates a random line and its copy.
+		 * <listing version="3.0">
+		 * import flash.geom.Line;
+		 * import flash.geom.Point;
+		 *	
+		 * function randomPoint():Point {
+		 * 	return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomLine():Line {
+		 * 	return new Line(randomPoint(), randomPoint());
+		 * }
+		 *	
+		 * const line:Line = randomLine();
+		 * const clone:Line = line.clone();
+		 * trace("random line: " + line);
+		 * trace("clone line: " + clone);
+		 * trace(line == clone); //false
+		 * 
+		 * </listing>
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 **/
+		 	
 		public function clone() : Line 
 		{
 			return new Line(__start.clone(), __end.clone(), __isSegment);
 		}
 
 		
-		/**
+		/* *
 		 * Получение вектора из начальной точки прямой в конечную точку.
 		 * Обратный вектор можно получить методом <a href="#endToStartVector">endToStartVector</a><BR/> 
 		 *  
@@ -314,8 +420,8 @@ package flash.geom {
 		 * import flash.geom.Line;
 		 * import flash.geom.Point;
 		 *		
-		 * const line:Line = Line( new Point(100, 300), new Point(400, 200));
-		 * var point:Point = line.startToEndVector;
+		 * const line:Line = new Line( new Point(100, 300), new Point(400, 200));
+		 * const point:Point = line.startToEndVector;
 		 * trace(point.x+" "+point.y); //300 -100
 		 *  
 		 * </listing>
@@ -324,13 +430,38 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
+		 */
+		 		
+		/**
+		 * Obtaining a vector from the initial point of a line to the end point.
+		 * Vector can be obtained by the method a href="#endToStartVector">endToStartVector</a><BR/>
+		 * 
+		 * @see #endToStartVector
+		 * 
+		 * @return Point vector from the initial point to the end point
+		 * 
+		 * @example This example creates a line and draws a vector from the initial point to the end point
+		 * 
+		 * <listing version="3.0">
+		 * import flash.geom.Line;
+		 * import flash.geom.Point;
+		 *		
+		 * const line:Line = new Line( new Point(100, 300), new Point(400, 200));
+		 * const point:Point = line.startToEndVector;
+		 * trace(point.x + " " + point.y); //300 -100
+		 *  
+		 * </listing>
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 */		
 		public function get startToEndVector() : Point
 		{
 			return new Point(end.x - start.x, end.y - start.y);			
 		}
 
-		/**
+		/* *
 		 * Получение вектора из конечной точки прямой в начальную точку.
 		 * Обратный вектор можно получить методом <a href="#endToStartVector">startToEndVector</a><BR/> 
 		 *  
@@ -343,16 +474,39 @@ package flash.geom {
 		 * import flash.geom.Line;
 		 * import flash.geom.Point;
 		 *		
-		 * const line:Line = Line( new Point(100, 300), new Point(400, 200));
+		 * const line:Line = new Line( new Point(100, 300), new Point(400, 200));
 		 * var point:Point = line.endToStartVector;
-		 * trace(point.x+" "+point.y); //-300 100
-		 *  
+		 * trace(point.x + " " + point.y); //-300 100
+		 * 
 		 * </listing>
 		 *
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
+		 */
+		 		
+		/**
+		 * Obtaining a vector from the end point of a line to the initial point.
+		 * Reverse vector can be obtained by the method <a href="#endToStartVector">startToEndVector</a><BR/>
+		 * 
+		 * @see #startToEndVector
+		 * 
+		 * @return Point a vector from the end point to the initial point
+		 * 
+		 * @example This example creates a line and draws a vector from the end point to the initial point.
+		 * <listing version="3.0">
+		 * import flash.geom.Line;
+		 * import flash.geom.Point;
+		 *		
+		 * const line:Line = new Line( new Point(100, 300), new Point(400, 200));
+		 * var point:Point = line.endToStartVector;
+		 * trace(point.x + " " + point.y); //-300 100
+		 *  
+		 * </listing>
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 */		
 		public function get endToStartVector() : Point
 		{
@@ -360,6 +514,35 @@ package flash.geom {
 		}
 
 		
+		/* *
+		 * Проверка вырожденности прямой в точку.
+		 * Если прямая вырождена в точку, то возвращается объект класса Point с координатой точки, в которую вырождена прямая.
+		 * В других случаях, если прямая протяженная, возвращается null.
+		 * 
+		 * @private Логика работы метода - проверка, что опорные точки прямой совпадают, с учетом допуска.
+		 *  
+		 * @return Point точка, в которую вырождена прямая
+		 * 
+		 * @example В этом примере создается прямая, и проверяется ее вырожденность в точку.
+		 * <listing version="3.0">
+		 * import flash.geom.Line;
+		 * import flash.geom.Point;
+		 *		
+		 * const line:Line = new Line(new Point(100, 300), new Point(100, 200));
+		 * var point:Point = line.lineAsPoint();
+		 * trace("Is it point? "+ (point != null)); //Is it point? false
+		 * line.end.y = 300;
+		 * point = line.lineAsPoint();
+		 * trace("Is it point? "+ (point != null)); //Is it point?  true
+		 * 
+		 * </listing>
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
+		 */
+		 
 		/**
 		 * Проверка вырожденности прямой в точку.
 		 * Если прямая вырождена в точку, то возвращается объект класса Point с координатой точки, в которую вырождена прямая.
@@ -374,7 +557,7 @@ package flash.geom {
 		 * import flash.geom.Line;
 		 * import flash.geom.Point;
 		 *		
-		 * const line:Line = Line( new Point(100, 300), new Point(100, 200));
+		 * const line:Line = new Line(new Point(100, 300), new Point(100, 200));
 		 * var point:Point = line.lineAsPoint();
 		 * trace("Is it point? "+ (point != null)); //Is it point? false
 		 * line.end.y = 300;
@@ -386,7 +569,6 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang rus
 		 */
 		public function lineAsPoint() : Point
 		{
@@ -415,10 +597,17 @@ package flash.geom {
 		 **/
 		 
 		/**
-		 * Angle of incline line at radian.
-		 * Rotate realize respecting at point <code>start</code>.
-		 * The return value is between positive PI and negative PI. 
+		 * Угол наклона прямой.
+		 * Измеряется в радианах, от положительного направления оси X к положительному направлению оси Y (стандартная схема).
+		 * Возвращаемое значение находится в пределах от отрицательного PI до положительного PI.
+		 * 
+		 * @return Number угол наклона прямой
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 **/
+		 
 		public function get angle() : Number 
 		{
 			return Math.atan2(__end.y - __start.y, __end.x - __start.x);
