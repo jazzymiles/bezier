@@ -212,13 +212,14 @@ package flash.geom {
 	 * 		И общай случай: Кривая Безье порядка N на плоскости - сегмент проекции на плоскость N-мерной кривой, построеной в N-мерном пространстве.
 	 * 		</I>
 	 * </UL>
-	 * @langversion 3.0
-	 * @playerversion Flash 9.0
-	 * @lang rus
 	 * 
 	 * @see Line
 	 * @see Intersection
-	 *  
+	 * 
+	 * @langversion 3.0
+	 * @playerversion Flash 9.0
+	 * 
+	 * @lang rus
 	 **/
 		 
 	/**
@@ -2691,7 +2692,7 @@ package flash.geom {
 		 * @lang rus
 		 */
 		 
-		/* *
+		/**
 		 * Calculates and returns a time-iterator of a point, obviously belonging to a Bezier curve.
 		 * Used only when convinced that the point lies on the curve, for example - to determine 
 		 * the time-iterator from the point of intersection.<BR/>
@@ -2705,8 +2706,6 @@ package flash.geom {
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
 		 */
 		public function getPointOnCurve(point : Point) : Number {
 			const startToControlVector : Point = this.startToControlVector;			
@@ -2933,6 +2932,7 @@ package flash.geom {
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
 		 * @lang rus
 		 */
 		 
@@ -3179,10 +3179,10 @@ package flash.geom {
 		 * - if there is no intersection, an object Intersection with empty arrays currentTimes and targetTimes returns;<BR/>
 		 * - if there were intersections in one or two points, the object Intersection returns, 
 		 * - and time-iterators of intersection points of a Bezier curve will be located in an array currentTimes. 
-		 * time-iterators of intersection points of Bezier curve <code>target</code> will be located in an array targetTimes;<BR/>
+		 *   time-iterators of intersection points of Bezier curve <code>target</code> will be located in an array targetTimes;<BR/>
 		 * - if the Bezier curve is degenerate, the coincidence can happen.<BR/>
-		 * In this case, the result is a segment - object Line (<code>isSegment=true</code>), 
-		 * which will be available as a property <code>coincidenceLine</code> in the returned object Intersection;<BR/>
+		 *   In this case, the result is a segment - object Line (<code>isSegment=true</code>), 
+		 *   which will be available as a property <code>coincidenceLine</code> in the returned object Intersection;<BR/>
 		 * <BR/>
 		 * The property <code>isSegment</code> of current object, as well as value <code>isSegment</code> of target object, affects the result of calculation.
 		 * 
@@ -3208,14 +3208,11 @@ package flash.geom {
 		 *	trace(intersection);
 		 *	
 		 * </listing>
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
 		 * 
 		 * @see Intersection
 		 *
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
-		 * @lang rus 
 		 */
 		public function intersectionLine(target : Line) : Intersection {			
 			var intersection : Intersection = new Intersection();
@@ -3294,6 +3291,8 @@ package flash.geom {
 				if (Math.abs(lineVector.y) < PRECISION) {	
 					// вообще, такого быть не может - если прямая вырождена в точку, то это обработалось в начале метода
 					// но все же, решение найти можно 
+					// in general, this can not happen - if the curve degenerates to a point, it is processed in the beginning of the method
+					//but still, the solution could be found
 					for (i = 0;i < solutionsForCurve.length; i++) {		
 						solutionForCurve = solutionsForCurve[i];
 						solutionForLine = 0;
@@ -3311,13 +3310,14 @@ package flash.geom {
 			} else {
 				if (Math.abs(lineVector.y) < PRECISION) {
 					//прямая горизонтальна. Уравнение по Y имеет только переменную t2. Решаем относительно нее, подставляем в первое уравнение.
+					// The line is horisontal. The equation for Y has only variable t2. Solve relatively to it, substitute to the first equation.
 
 					coefficientInPower2 = diagonalVector.y;
 					coefficientInPower1 = 2 * startToControlVector.y;
 					coefficientInPower0 = deltaStarts.y;						
 				} else {					
 					//прямая имеет обе ненулевых координаты, нормируем одну по другой, и собираем одно квадратное уравнение относительно t2.
-
+					// line has two nonzero coordinates, we normalize one to another, and collect a quadratic equation relatively to t2.
 					const normalizationCoefficient : Number = lineVector.y / lineVector.x;
 					
 					coefficientInPower2 = diagonalVector.x * normalizationCoefficient - diagonalVector.y;
@@ -3328,7 +3328,8 @@ package flash.geom {
 				solutionsForCurve = Equations.solveQuadraticEquation(coefficientInPower2, coefficientInPower1, coefficientInPower0);
 					
 				if (!solutionsForCurve) {
-					// вообще, такого быть не может - если кривая совпала с прямой, то она сама прямая, и это обработалось в начале метода			
+					// вообще, такого быть не может - если кривая совпала с прямой, то она сама прямая, и это обработалось в начале метода		
+					// in general, this can not happen - if the curve coincided with the line, then it is a straight line, and it is processed in the beginning of the method
 					return null;								
 				}
 				
@@ -3344,7 +3345,7 @@ package flash.geom {
 		}
 
 		
-		/**
+		/* *
 		 * Результат вычисления пересечения кривой Безье с другой кривой Безье может дать следующие результаты:<BR/>
 		 * - если пересечение отсутствует, возвращается объект Intersection с пустыми массивами currentTimes и targetTimes;<BR/>
 		 * - если пересечение произошло в точках (от одной до четырех точек), будет возвращен объект Intersection,
@@ -3376,7 +3377,44 @@ package flash.geom {
 		 *	trace(intersection);
 		 *	
 		 * </listing>
-		 * 		 * 
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * @lang rus
+		 */
+		 		
+		/**
+		 * Calculation of the intersection of a Bezier curve with a Bezier curve can give the following results:<BR/>
+		 * - if there is no intersection, an object Intersection with empty arrays currentTimes and targetTimes returns;<BR/>
+		 * - if there were intersections in one to four points, the object Intersection returns, and time-iterators of 
+		 *   intersection points of a Bezier curve will be located in an array currentTimes. 
+		 *   time-iterators of intersection points of Bezier curve <code>target</code> will be located in an array targetTimes;<BR/>
+		 * - the coincidence of curves can also occur. In this case the result is a curve - an object Bezier (<code>isSegment=true</code>), 
+		 *   which will be available as a property <code>coincidenceBezier</code> in the returned object Intersection;<BR/>
+		 *   <BR/>
+		 * The property <code>isSegment<code> of current object, as well as value <code>isSegment</code> of target object, affects the result of calculation.
+		 *   
+		 * @param target:Bezier
+		 * @return Intersection
+		 * 
+		 * @example <listing version="3.0">
+		 *	import flash.geom.Bezier;
+		 * 	import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomBezier():Bezier {
+		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const bezier:Bezier = randomBezier();
+		 *	var target:Bezier = new Bezier(new Point(100, 100), new Point(200, 200), new Point(300, 400));
+		 *	var intersection:Intersection = bezier.intersectionBezier(target);
+		 *	trace(intersection);
+		 *	
+		 * </listing>
+		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * @lang rus
@@ -3476,6 +3514,7 @@ package flash.geom {
 			intersection = new Intersection();
 						
 			//поворачиваем кривую в вертикальное положение. Решение будет одно и только одно.
+			// turn a curve in a vertical position. There will be only one solution.
 			var	tga : Number, sina : Number, cosa : Number;
 					
 			if (Math.abs(ay2) > PRECISION) {
@@ -3494,6 +3533,7 @@ package flash.geom {
 			var	pointSolve : Point;
 			
 			// бесконечное множество решений. То есть есть совпадение кривых
+			// infinite set of solutions. That is a coincidence of the curves
 			if ((Math.abs(A) < PRECISION) && (Math.abs(B) < PRECISION) && (Math.abs(C) < PRECISION) && (Math.abs(D) < PRECISION) && (Math.abs(E) < PRECISION)) {
 				var	time1 : Number,
 					time2 : Number,
@@ -3526,6 +3566,7 @@ package flash.geom {
 					rt2 = time1 * (time1 - 1) <= 0 ? time1 : time2;
 				} else {
 					// нет пересечений
+					// no intersections
 					return intersection;
 				}				
 				
@@ -3561,6 +3602,14 @@ package flash.geom {
 		 * @return String описание объекта
 		 * 
 		 */
+		 
+		/**
+		 * Returns the string presentation of the Bezier object.
+		 * 
+		 * @return String object description
+		 * 
+		 */
+		 
 		public function toString() : String {
 			return 	"(start:" + startPoint + ", control:" + controlPoint + ", end:" + endPoint + ")";
 		}
