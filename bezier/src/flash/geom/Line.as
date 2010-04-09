@@ -563,7 +563,7 @@ package flash.geom {
 				return null;
 			}
 		}
-		
+
 		/* *
 		 * Угол наклона прямой.
 		 * Измеряется в радианах, от положительного направления оси X к положительному направлению оси Y (стандартная схема).
@@ -850,7 +850,7 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 */ 
-		 
+
 		public function getTimeByDistance(distance : Number) : Number {
 			var lineLength : Number = this.length;
 			
@@ -946,7 +946,7 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-		 	
+
 		public function setPoint(time : Number, x : Number = undefined, y : Number = undefined) : void {
 			if (isNaN(x) && isNaN(y)) {
 				return;
@@ -1019,7 +1019,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 */
-		 
+
 		public function get bounds() : Rectangle {
 			if (__start.x > __end.x) {
 				if (__start.y > __end.y) {
@@ -1095,7 +1095,7 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-		 	
+
 		public function getSegment(fromTime : Number = 0, toTime : Number = 1) : Line {
 			return new Line(getPoint(fromTime), getPoint(toTime));
 		}
@@ -1163,6 +1163,7 @@ package flash.geom {
 		 *	function randomPoint():Point {
 		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
 		 *	}
+		 *	
 		 *	function randomLine():Line {
 		 *		return new Line(randomPoint(), randomPoint());
 		 *	}
@@ -1183,31 +1184,13 @@ package flash.geom {
 		 * 
 		 * @see #length
 		 * 
-		 * @lang rus
 		 **/
-		 
+
 		public function getSegmentLength(time : Number) : Number {
 			return Point.distance(__start, getPoint(time));
 		}
 
-		/* *
-		 * Вычисляет и возвращает массив точек на линии удаленных друг от друга на 
-		 * расстояние, заданное параметром <code>step</code>.<BR/>
-		 * Первая точка массива будет смещена от стартовой точки на расстояние, 
-		 * заданное параметром <code>startShift</code>. 
-		 * При этом, если значение <code>startShift</code> превышает значение
-		 * <code>step</code>, будет использован остаток от деления на <code>step</code>.<BR/>
-		 * <BR/>
-		 * Типичное применение данного метода - вычисление последовательности точек 
-		 * для рисования пунктирных линий. 
-		 * 
-		 * @param step
-		 * @param startShift
-		 * @return 
-		 * 
-		 */
-		 
-		/**  
+		/* *  
 		 * Вычисляет и возвращает массив точек на линии удаленных друг от друга на 
 		 * расстояние, заданное параметром <code>step</code>.<BR/>
 		 * Первая точка массива будет смещена от стартовой точки на расстояние, 
@@ -1250,22 +1233,47 @@ package flash.geom {
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
 		 * @lang rus
 		 */
-		/**
-		 * Calculate and return array of points on line than can be found at distance 
-		 * given be parameter <code>step</code>.<BR/>
-		 * First point of array will be moved from start point at distance, 
-		 * given be parameter <code>startShift</code>. 
-		 * If variable <code>startShift</code> bigger then 
-		 * <code>step</code>, will be used remainder from segmentation on <code>step</code>.<BR/>
-		 * <BR/>
-		 * Use this method it - calculating consecution of points 
-		 * for drawing dotted lines. 
+		 
+		/**  
+		 * Calculates and returns an array of points on a line, distant from each other by a distance specified by <code>step</code> parameter.
+		 * The first point of the array will be shifted from the initial point for a distance, specified by the <code>startShift</code> parameter.
+		 * In this case, if the value <code>startShift</code> exceeds the value <code>step</code>, the remainder of division by <code>step</code>will be used.
+		 * The typical application of this method is calculating a sequence of points for drawing dotted lines.
 		 * 
-		 * @param step
-		 * @param startShift
-		 * @return 
+		 * @param step:Number step, the distance along the straight line between the points.
+		 * @param startShift:Number the distance along the straight line, determining the shift of the first sequence point with respect to a point <code>start</code>
+		 * 
+		 * @return Array iterators array
+		 *  
+		 * @example <listing version="3.0">
+		 * import flash.geom.Line;
+		 * import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomLine():Line {
+		 *		return new Line(randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 * const line:Line = randomLine();
+		 * var points:Array = line.getTimesSequence(10, 0);
+		 *
+		 *  for(var i:uint=0; i<points.length; i+=2)
+		 *  {
+		 *  	var startSegmentTime:Number = points[i];
+		 *		var endSegmentTime:Number = points[i+1];
+		 *		var segment:Line = line.getSegment(startSegmentTime, endSegmentTime);
+		 *		drawLine(segment);
+		 *  }
+		 *
+		 * </listing>
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 * 
 		 */
 
@@ -1288,7 +1296,7 @@ package flash.geom {
 			return times;
 		}
 
-		/**
+		/* *
 		 * Метод находит пересечения прямой с точкой<BR/>
 		 * Добавлен для гармонии с методами пересечения двух прямых и кривой Безье с прямой.
 		 * К этому методу сводятся остальные методы поиска пересечений в случае вырожденности фигур.
@@ -1319,8 +1327,40 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
+		 
+		/**
+		 * The method searches the intersection of the line with a point.
+		 * It is added for the harmony with the methods of intersection of two lines and intersection of Bezier curve with the line.
+		 * By this method reduce the remaining methods of search of intersections in the case of degeneracy of the figures.
+		 *
+		 * @param target:Point the point at which the intersection is sought
+		 * 
+		 * @return Intersection the object with the description of intersection
+		 *  
+		 * @example <listing version="3.0">
+		 *	import flash.geom.Line;
+		 * 	import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomLine():Line {
+		 *		return new Line(randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const line:Line = randomLine();
+		 *	var intersection:Intersection = line.intersectionPoint(new Point(100, 100));
+		 *	trace(intersection);
+		 *	
+		 * </listing>
+		 *  
+		 * @see Intersection
+		 *  
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 */
 
-		
 		public function intersectionPoint(target : Point) : Intersection {
 			var intersection : Intersection = new Intersection();
 			
@@ -1334,10 +1374,10 @@ package flash.geom {
 			return intersection;
 		}
 
-		/**
+		/* *
 		 * Метод находит пересечения двух прямых<BR/>
 		 * Результат вычисления пересечения двух прямых может дать следующие результаты:  <BR/>
-		 * - если пересечение отсутствует, возвращается объект Intersection с пустыми массивами currentTimes и targetTimes;<BR/>
+		 * - если пересечение отсутствует, возвращается объект Intersection с пустыми массивами <code>currentTimes<code> и <code>targetTimes;</code><BR/>
 		 * - если пересечение произошло в одной или двух точках, будет возвращен объект Intersection,
 		 *   и time-итераторы точек пересечения данной прямой будут находиться в массиве currentTimes.
 		 *   time-итераторы точек пересечения прямой <code>target</code> будут находиться в массиве targetTimes;<BR/>
@@ -1377,6 +1417,53 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * @lang rus 
+		 */
+		 
+		/**
+		 * The method searches the intersection of two lines<BR/>
+		 * Calculation of the intersection of two lines can give the following results:<BR/>
+		 * - if there is no intersection, an object Intersection with empty arrays 
+		 *   <code>currentTimes</code> and <code>targetTimes</code> returns;<BR/>
+		 * - if there were intersections in one or two points, the object Intersection returns, 
+		 *   and time-iterators of intersection points of this line will be located in an array 
+		 *   <code>currentTimes</code>, time-iterators of intersection points of line <code>target</code> will 
+		 *   be located in an array targetTimes;<BR/>
+		 * - if the line is degenerate, the coincidence can happen. In this case, the result is 
+		 *   a segment - object Line (<code>isSegment=true</code>), which will be available as 
+		 *   a property <code>coincidenceLine</code> in the returned object Intersection;<BR/>
+		 * <BR/>
+		 * The property <code>isSegment<code> of current object, as well as value <code>isSegment</code> 
+		 * of target object, affects the result of calculation.
+		 * 
+		 * @param target:Line line at which the intersection is sought
+		 * 
+		 * @return Intersection the object with the description of intersection
+		 *  
+		 * @example <listing version="3.0">
+		 *	import flash.geom.Bezier;
+		 * 	import flash.geom.Point;
+		 *	import flash.geom.Line;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomLine():Line {
+		 *		return new Line(randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const line:Line = randomLine();
+		 *	var target:Line = new Line(new Point(100, 100), new Point(200, 200));
+		 *	var intersection:Intersection = line.intersectionLine(target);
+		 *	trace(intersection);
+		 *	
+		 * </listing>
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @see Intersection
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 */
 
 		public function intersectionLine(targetLine : Line) : Intersection {
@@ -1486,7 +1573,22 @@ package flash.geom {
 		 * 
 		 * @param target:Bezier кривая Безье, с которой ищется пересечение
 		 * @return Intersection объект с описанием пересечения
-		 *   	
+		 *   
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus 
+		 */
+		 		   		
+		/**
+		 * The method searches the intersection of the line with a Bezier curve<BR/>
+		 * Absolutely reduces the intersectionLine method of the Bezier class, refer its description for details.
+		 * 
+		 * @param target:Bezier Bezier curve at which the intersection is sought
+		 * @return Intersection the object with the description of intersection
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 */		   		
 		public function intersectionBezier(target : Bezier) : Intersection {
 			var intersection : Intersection = target.intersectionLine(this);
@@ -1534,6 +1636,44 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 **/
+		 
+		/**
+		 * Calculates and returns the time-iterator of the point on the line, nearest to the point <code>fromPoint</code>.
+		 * Depending on the value of property <a href="#isSegment">isSegment</a>, returns a value ranging from 0 to 1, or 
+		 * from minus infinity to plus infinity.
+		 * 
+		 * @param fromPoint:Point arbitrary point on the plane
+		 * @return Number time-iterator of the nearest point on the line
+		 * 
+		 * @example
+		 * <listing version="3.0">
+		 * 	import flash.geom.Point;
+		 *	import flash.geom.Line;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomLine():Line {
+		 *		return new Line(randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const line:Line = randomLine();
+		 *	var fromPoint:Point = randomPoint();
+		 *	var closest:Number = line.getClosest(fromPoint);
+		 * 
+		 *  trace(line);
+		 *  trace(fromPoint);
+		 *  trace(line.getPoint(closest));
+		 *  
+		 * </listing>
+		 * 
+		 * @see #isSegment
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 **/
+
 		public function getClosest(fromPoint : Point) : Number {
 			const startToEndVector : Point = this.startToEndVector;
 			const startToEndLength : Number = startToEndVector.length;
@@ -1569,6 +1709,16 @@ package flash.geom {
 		 * 
 		 * @return String описание объекта
 		 * 
+		 * @lang rus
+		 */
+		 
+		/**
+		 * Returns the description of the Line object.
+		 * 
+		 * @return String object description
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 */
 		public function toString() : String {
 			return 	"(start:" + __start + ", end:" + __end + ")";
