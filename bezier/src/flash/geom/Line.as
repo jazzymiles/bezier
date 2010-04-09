@@ -138,12 +138,18 @@ package flash.geom {
 		 * Приватный инициализатор для объекта, который можно переопределить. 
 		 * Параметры совпадают с параметрами конструктора.
 		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 * @lang rus
 		 **/
 		  
 		/**
 		 * Private initializer for an object that can be redefined. 
 		 * Parameters coincide with the parameters of the constructor.
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 **/ 
 
 		protected function initInstance(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true, isRay : Boolean = false) : void {
