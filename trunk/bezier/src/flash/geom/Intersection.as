@@ -1,6 +1,3 @@
-// UTF-8
-// translator: Flastar http://flastar.110mb.com
-
 package flash.geom {
 
 	/* *
@@ -139,7 +136,6 @@ package flash.geom {
 			return current.intersects(target);
 		}
 
-		
 		/* *
 		 * Свойство, указывающее на тип пересечения. 
 		 * 
