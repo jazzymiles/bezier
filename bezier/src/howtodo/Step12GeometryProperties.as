@@ -123,7 +123,7 @@ package howtodo
 			parabolaVertexPoint.position = bezier.getPoint(bezier.parabolaVertex);
 			parabolaVertexPoint.pointName = "vertex";	
 						
-			parabolaFocusPoint.position = bezier.parabolaFocusPoint;
+			parabolaFocusPoint.position = bezier.parabolaFocus;
 			parabolaFocusPoint.pointName = "focus";	
 			
 			var curveText:String = "bezier is simple convex curve";
