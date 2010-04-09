@@ -1629,7 +1629,7 @@ package flash.geom {
 			const area : Number = Math.sqrt(halfPerimeter * (halfPerimeter - distanceStartControl) * (halfPerimeter - distanceEndControl) * (halfPerimeter - distanceStartEnd)); 
 			return area;
 		}
-		
+
 		/* *
 		 * Получение центра тяжести кривой Безье.
 		 * 
@@ -1830,7 +1830,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 */	
-		
+
 		public function get triangleCentroid() : Point {
 			const x : Number = (startPoint.x + endPoint.x + controlPoint.x) / 3 ;
 			const y : Number = (startPoint.y + endPoint.y + controlPoint.y) / 3;
@@ -1900,9 +1900,9 @@ package flash.geom {
 		 * @lang rus
 		 */
 		 
-		 // Логика работы метода - вычисляются минимальные и максимальные значения координат из начальной и конечной точек, и возможно, точек экстремума по каждой из координат. 
-		 // Logic of the method - calculate minimum and maximum values of the coordinates of the initial and end points, and perhaps the extreme points in each of the coordinates.
-		 
+		// Логика работы метода - вычисляются минимальные и максимальные значения координат из начальной и конечной точек, и возможно, точек экстремума по каждой из координат. 
+		// Logic of the method - calculate minimum and maximum values of the coordinates of the initial and end points, and perhaps the extreme points in each of the coordinates.
+
 		public function get bounds() : Rectangle {
 			var xMin : Number = Math.min(startPoint.x, endPoint.x);
 			var xMax : Number = Math.max(startPoint.x, endPoint.x);
@@ -2069,7 +2069,7 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * 
 		 */	
-		 
+
 		public function get parabolaFocus() : Point {			
 			const startToControlVector : Point = this.startToControlVector;
 			const diagonalVector : Point = this.diagonalVector;
@@ -2107,14 +2107,16 @@ package flash.geom {
 		 * Вычисляет и возвращает объект Point, представляющий точку на кривой Безье, заданную параметром <code>time</code>.
 		 * Реализация <a href="#formula1">формулы 1</a><BR/>
 		 * 
-		 * @param time:Number итератор точки кривой
-		 * @param point:Point=null необязательный параметр, объект Point, в который записать координаты
-		 * 
-		 * @return Point точка на кривой Безье
 		 * <I>
 		 * Если передан параметр time равный 0 или 1, то будут возвращены объекты Point
 		 * эквивалентные <code>start</code> и <code>end</code>, но не сами объекты <code>start</code> и <code>end</code> 
 		 * </I> 
+		 * 
+		 * @param time:Number итератор точки кривой
+		 * @param point:Point=null необязательный параметр, объект Point, в который будут записаны координаты. 
+		 * Если этот параметр не передан, то будет создан и возвращен новый объект Point с вычисленными координатами.
+		 * 
+		 * @return Point точка на кривой Безье
 		 * 
 		 * @example <listing version="3.0">
 		 * 
@@ -2143,28 +2145,28 @@ package flash.geom {
 		 */
 
 		/**
-		 * Realization of <a href="#formula1">formula 1</a><BR/>
-		 * Calculates and returns object Point which representing a point on a Bezier curve,
-		 * specified by the parameter <code>time</code>.
-		 *
-		 * @param time:Number iterator of the point on curve
-		 *
-		 * @return Point point on the Bezier curve;<BR/>
+		 * Calculates and returns the object Point, introducing the point on the Bezier curve, given by the parameter <code>time</code>.
+		 * Implementation of the <a href="#formula1">formula 1</a>
+		 * 
 		 * <I>
-		 * If passed the parameter time equal to 1 or 0, object Point equivalent to <code>start</code>
-		 * or <code>end</code> will be returned, but not objects exact <code>start</code> or <code>end</code>.
+		 * If the given parameter time equals 0 or 1, so the objects Point equal to <code>start</code> and <code>end</code> will be returned, 
+		 * but not the objects <code>start</code> and <code>end</code> itself.
 		 * </I>
-		 *
+		 * 
+		 * @param time:Number iterator of the point of the curve
+		 * @param point:Point=null optional parameter, object Point
+		 * 
+		 * @return Point point on the Bezier curve
 		 * @example <listing version="3.0">
 		 *
 		 * import flash.geom.Bezier;
 		 * import flash.geom.Point;
 		 *
 		 * function randomPoint():Point {
-		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * 		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
 		 * }
 		 * function randomBezier():Bezier {
-		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * 		return new Bezier(randomPoint(), randomPoint(), randomPoint());
 		 * }
 		 *
 		 * const bezier:Bezier = randomBezier();
@@ -2178,9 +2180,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang eng
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
-		 * 
 		 **/
 		public function getPoint(time : Number, point : Point = null) : Point {
 			if (isNaN(time)) {
@@ -2197,11 +2197,14 @@ package flash.geom {
 		}
 
 		
-		/**
-		 * 
-		 * @private Логика работы метода - считается интеграл длины L(t) сегмента кривой Безье от 0 до t, и ищется решение L(t)=distance.
+		/* Логика работы метода - считается интеграл длины L(t) сегмента кривой Безье от 0 до t, и ищется решение L(t)=distance.
 		 * Решение производится методом Ньютона, т.к. функция L(t) монотонна и везде имеет производную. 
 		 * Смысл делать метод для вычисления нескольких значений есть, потому как много общих величин вычисляется предварительно.
+		 */
+		 
+		/* Logic of the method - calculates length integral L(t) of the Bezier curve segment from 0 to t, and seek a solution of L(t)=distance.
+		 * The decision is made by Newton's method, because function L(t) is monotone and has a derivative everywhere.
+		 * Making the method for calculating multiple values is worthwhile, because a lot of common values are calculated previously.
 		 */
 
 		protected function getTimesByDistances(distances : Array) : Array {
@@ -2284,8 +2287,6 @@ package flash.geom {
 		 * 
 		 * @return Number time-итератор искомой точки
 		 * 
-		 * @private Логика работы метода - сводится к общему методу вычисления массива итераторов по массиву дистанций
-		 * 
 		 * @example <listing version="3.0">
 		 * 
 		 *	import flash.geom.Bezier;
@@ -2311,6 +2312,41 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
+		 
+		/**
+		 * Calculates time-iterator of the point, located at a given distance along the curve from the point <code>start</code>
+		 * To calculate the equidistant sequence of points, for example, drawing a dotted line, use the method getTimesSequence.
+		 * 
+		 * @param distance:Number a distance from the curve to the desired point
+		 * @return Number time-iterator of the desired point
+		 * 
+		 * @example <listing version="3.0">
+		 * 
+		 *	import flash.geom.Bezier;
+		 *	import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomBezier():Bezier {
+		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const bezier:Bezier = randomBezier();
+		 * 
+		 *	trace(bezier.getTimeByDistance(-10); // negative value
+		 *	trace(bezier.getTimeByDistance(bezier.length/2); // value between 0 and 1
+		 * </listing>
+		 * 
+		 * @see #getPoint
+		 * @see #getTimesSequence
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 */
+		 
+		// Логика работы метода - сводится к общему методу вычисления массива итераторов по массиву дистанций
+		// Logic of the method - reduces the common method of calculating the iterators array over distances array
 
 		public function getTimeByDistance(distance : Number) : Number {
 			if (isNaN(distance)) {
@@ -2352,8 +2388,6 @@ package flash.geom {
 		 *  
 		 * @return Array массив итераторов
 		 * 
-		 * @private Логика работы метода - сводится к общему методу вычисления массива итераторов по массиву дистанций
-		 * 
 		 * @example <listing version="3.0">
 		 * 
 		 *	import flash.geom.Bezier;
@@ -2383,6 +2417,51 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
+		 
+		/**  
+		 * Calculates the array of time-iterators of points, are separated by a distance on the curve given by the parameter <code>step</code>.
+		 * If the parameter <code>startShift</code> is given, the calculation is made not from the point <code>start</code>, 
+		 * but from the point on the curve, located on a range given by this parameter.
+		 * The value startShift is converted to remainder of division by step.
+		 * 
+		 * @param step:Number a step, distance along the curve between points.
+		 * @param startShift:Number a distance along the curve between points, giving the shift of the first point 
+		 * of the sequence relatively to the point <code>start</code>
+		 * 
+		 * @return Array array of the iterators
+		 * 
+		 * 
+		 * @example <listing version="3.0">
+		 * 
+		 *	import flash.geom.Bezier;
+		 *	import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomBezier():Bezier {
+		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const bezier:Bezier = randomBezier();
+		 *	var points:Array = bezier.getTimesSequence(10, 0);
+		 *
+		 *  for(var i:uint=0; i<points.length; i+=2)
+		 *  {
+		 *  	var startSegmentTime:Number = points[i];
+		 *		var endSegmentTime:Number = points[i+1];
+		 *		var segment:Bezier = bezier.getSegment(startSegmentTime, endSegmentTime);
+		 *		drawBezier(segment);
+		 *  }
+		 *
+		 * </listing>
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 */
+		 
+		// Логика работы метода - сводится к общему методу вычисления массива итераторов по массиву дистанций
+		// Logic of the method - reduces the common method of calculating the iterators array over distances array
 		public function getTimesSequence(step : Number, startShift : Number = 0) : Array {
 			step = Math.abs(step);
 						
@@ -2413,10 +2492,8 @@ package flash.geom {
 		}
 
 		
-		
-		
 		//**************************************************
-		//				CHANGE BEZIER
+		//				CHANGE OF BEZIER CURVE
 		//**************************************************
 		
 		
@@ -2424,7 +2501,9 @@ package flash.geom {
 		 * Изменяет кривую таким образом, что заданная параметром time точка кривой <code>P<sub>t</sub></code>, 
 		 * будет находиться в заданных параметрами <code>x</code> и <code>y</code> координатах.<BR/>
 		 * Если один из параметров <code>x</code> или <code>y</code> не задан, 
-		 * то точка <code>P<sub>t</sub></code> не изменит значение соответствующей координаты.
+		 * то точка <code>P<sub>t</sub></code> не изменит значение соответствующей координаты.<BR/>
+		 * <BR/>
+		 * <I>Типичное применение данного метода - организация интерактивного изменения кривой пользователем с помощью мыши.</I>
 		 * 
 		 * @param time:Number time-итератор точки кривой.
 		 * @param x:Number новое значение позиции точки по оси X.
@@ -2456,6 +2535,47 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * @lang rus
+		 */
+		 
+		/**
+		 * Changes the curve in such a way that the point of the curve <code>P<sub>t</sub></ code> 
+		 * given by the parameter time, will be located in the coordinates, given by the specified 
+		 * parameters <code>x</code> and <code>y</code>.<BR/>
+		 * If one of the parameters <code>x</code> or <code>y</code> is not given, so the point 
+		 * <code>P<sub>t</sub></code> will not change the corresponding coordinates.<BR/>
+		 * <BR/>
+		 * 
+		 * <I>A typical application of this method is the organization of interactive change of the curve by the user using the mouse.</I>
+		 * 
+		 * @param time:Number a time-iterator of a point of a curve.
+		 * @param x:Number new value of the position of a point on the X axis.
+		 * @param y:Number new value of the position of a point on the Y axis.
+		 * 
+		 * @example 
+		 * <listing version="3.0">
+		 * 
+		 *	import flash.geom.Bezier;
+		 * 	import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomBezier():Bezier {
+		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const bezier:Bezier = randomBezier();
+		 *	trace(bezier);
+		 *	
+		 *	bezier.setPoint(0, 0, 0);
+		 *	bezier.setPoint(0.5, 100, 100);
+		 *	bezier.setPoint(1, 200, 0);
+		 *	
+		 *	trace(bezier); // (start:(x=0, y=0), control:(x=100, y=200), end:(x=200, y=0))
+		 * </listing>
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 */
 		public function setPoint(time : Number, newX : Number = undefined, newY : Number = undefined) : void {
 			if ((isNaN(newX) && isNaN(newY))) {
@@ -2502,22 +2622,17 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-
+		 
 		/**
-		 * Rotate a curve concerning to a point <code>fulcrum</code> on the <code>value</code> angle
-		 * If point <code>fulcrum</code> is not set, used (0,0)
+		 * Rotate the curve relative to the point <code>fulcrum</code> at a given angle.
+		 * If the point <code>fulcrum</code> is not given, (0,0) is used
 		 * 
-		 * @param value:Number rotation angle
+		 * @param value:Number angle of rotation
+		 * @param fulcrum:Point rotation center
 		 * 
-		 * @param fulcrum:Point center of rotation.
-		 *
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
-		 * 
-		 * @lang eng
-		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
-		 *
-		 **/
+		 */
 
 		public function angleOffset(value : Number, fulcrum : Point = null) : void {
 			fulcrum = fulcrum || new Point();
@@ -2567,6 +2682,26 @@ package flash.geom {
 		 * В случае, если точек находится несколько (что возможно при вырожденности кривой в луч), будет возвращен time-итератор с минимальным значением, потому что там оба итератора дают одну и ту же точку.
 		 * 
 		 * @param point:Point точка на кривой
+		 * 
+		 * @see #getClosest
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
+		 */
+		 
+		/* *
+		 * Calculates and returns a time-iterator of a point, obviously belonging to a Bezier curve.
+		 * Used only when convinced that the point lies on the curve, for example - to determine 
+		 * the time-iterator from the point of intersection.<BR/>
+		 * This method works much faster than universal getClosest.<BR/>
+		 * If there are several points (which is possible if the curve is degenerate in the ray), 
+		 * time-iterator with a minimum value will be returned, because there are two iterator giving the same point.
+		 * 
+		 * @param point:Point a point on the curve
+		 * 
+		 * @see #getClosest
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
@@ -2645,6 +2780,43 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * @lang rus
+		 **/
+		 
+		/**
+		 * Calculates and returns a time-iterator of a point on a curve, nearest to the point <code>fromPoint</code>.
+		 * Depending on the value of a property <a href="#isSegment">isSegment</a> returns a value ranging from 0 to 1, 
+		 * or from minus infinity to plus infinity.
+		 * 
+		 * @param fromPoint:Point arbitrary point on the plane
+		 * 
+		 * @return Number time-iterator of the nearest point on a curve.
+		 * 
+		 * @example
+		 * <listing version="3.0">
+		 *	import flash.geom.Bezier;
+		 * 	import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomBezier():Bezier {
+		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const bezier:Bezier = randomBezier();
+		 *	var fromPoint:Point = randomPoint();
+		 *	var closest:Number = bezier.getClosest(fromPoint);
+		 * 
+		 *  trace(bezier);
+		 *  trace(fromPoint);
+		 *  trace(bezier.getPoint(closest));
+		 *  
+		 * </listing>
+		 * 
+		 * @see #isSegment
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 **/
 		public function getClosest(fromPoint : Point) : Number {
 			if (!fromPoint) {
@@ -2731,7 +2903,7 @@ package flash.geom {
 		//				WORKING WITH SEGMENTS
 		//**************************************************
 		
-		/**
+		/* *
 		 * Вычисляет и возвращает сегмент кривой Безье, заданный начальным и конечным итераторами.
 		 * 
 		 * @param fromTime:Number time-итератор начальной точки сегмента
@@ -2763,6 +2935,39 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
+		 
+		/**
+		 * Calculates and returns a segment of a Bezier curve, defined by initial and end iterators.
+		 * 
+		 * @param fromTime:Number a time-iterator of an initial point of a segment of curve
+		 * @param toTime:Number time--iterator of an end point of a segment of curve
+		 * 
+		 * @return Bezier;
+		 * 
+		 * @example In this example two Bezier curves are created on basis of random Bezier curve.<BR/>
+		 * Frist of it is <code>segment1</code>
+		 * <listing version="3.0">
+		 *	import flash.geom.Bezier;
+		 * 	import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomBezier():Bezier {
+		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 * const bezier:Bezier = randomBezier();
+		 * const segment1:Bezier = bezier.getSegment(1/3, 2/3);
+		 * const segment2:Bezier = bezier.getSegment(-1, 2);
+		 * 
+		 * </listing>
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 */
+
+		
 		public function getSegment(fromTime : Number = 0, toTime : Number = 1) : Bezier {
 			const segmentStart : Point = getPoint(fromTime);
 			const segmentEnd : Point = getPoint(toTime);
@@ -2806,12 +3011,13 @@ package flash.geom {
 		 */
 		 
 		/**
-		 * Tangent is line that touches but does not intersect with bezier.
-		 * Computes and returns the angle of tangent line in radians. 
-		 * The return value is between positive pi and negative pi. 
+		 * Tangent - a line passing through a given point of a Bezier curve, which coincides with its direction 
+		 * at this point, and does not intersect it.
+		 * The method calculates and returns the inclination to a point of a Bezier curve, defined by time-iterator.
+		 * The return value is in the range from negative PI to positive PI.
 		 * 
-		 * @param t:Number time of bezier point
-		 * @return Number angle in radians;
+		 * @param t:Number time-iterator of a point on a curve
+		 * @return Number tangent inclination
 		 * 
 		 * @example 
 		 * <listing version="3.0">
@@ -2876,6 +3082,38 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
+		 
+		/**
+		 * The method searches the intersection of the Bezier curve with a point.
+		 * It is added for the harmony with the methods of intersection of two Bezier curves and intersection of Bezier curve with the line.
+		 * By this method reduce the remaining methods of search of intersections in the case of degeneracy of the figures.
+		 * 
+		 * @param target:Point the point at which the intersection is sought
+		 * 
+		 * @return Intersection the object with the description of intersection
+		 *  
+		 * @example <listing version="3.0">
+		 *	import flash.geom.Bezier;
+		 * 	import flash.geom.Point;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomBezier():Bezier {
+		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const bezier:Bezier = randomBezier();
+		 *	var intersection:Intersection = bezier.intersectionPoint(new Point(100, 100));
+		 *	trace(intersection);
+		 *	
+		 * </listing>
+		 *  
+		 * @see Intersection
+		 *  
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 */
 		public function intersectionPoint(target : Point) : Intersection {
 			var intersection : Intersection = new Intersection();
 			
@@ -2934,6 +3172,51 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 * @lang rus 
 		 */
+		 
+		/**
+		 * The method searches the intersection of a Bezier curve with the line.<BR/>
+		 * Calculation of the intersection of a Bezier curve with the line can give the following results:<BR/>
+		 * - if there is no intersection, an object Intersection with empty arrays currentTimes and targetTimes returns;<BR/>
+		 * - if there were intersections in one or two points, the object Intersection returns, 
+		 * - and time-iterators of intersection points of a Bezier curve will be located in an array currentTimes. 
+		 * time-iterators of intersection points of Bezier curve <code>target</code> will be located in an array targetTimes;<BR/>
+		 * - if the Bezier curve is degenerate, the coincidence can happen.<BR/>
+		 * In this case, the result is a segment - object Line (<code>isSegment=true</code>), 
+		 * which will be available as a property <code>coincidenceLine</code> in the returned object Intersection;<BR/>
+		 * <BR/>
+		 * The property <code>isSegment</code> of current object, as well as value <code>isSegment</code> of target object, affects the result of calculation.
+		 * 
+		 * @param target:Line line at which the intersection is sought
+		 * 
+		 * @return Intersection the object with the description of intersection
+		 *  
+		 * @example <listing version="3.0">
+		 *	import flash.geom.Bezier;
+		 * 	import flash.geom.Point;
+		 *	import flash.geom.Line;
+		 *	
+		 *	function randomPoint():Point {
+		 *		return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 *	}
+		 *	function randomBezier():Bezier {
+		 *		return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 *	}
+		 *	
+		 *	const bezier:Bezier = randomBezier();
+		 *	var target:Line = new Line(new Point(100, 100), new Point(200, 200));
+		 *	var intersection:Intersection = bezier.intersectionLine(target);
+		 *	trace(intersection);
+		 *	
+		 * </listing>
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @see Intersection
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * @lang rus 
+		 */
 		public function intersectionLine(target : Line) : Intersection {			
 			var intersection : Intersection = new Intersection();
 			var i : int;
@@ -2964,6 +3247,8 @@ package flash.geom {
 				
 			// если ни одна из проверок не прошла, значит у нас настоящая кривая и настоящая прямая. 
 			// решаем чистый случай!	
+			// if none of the checks passed, then we have a real curve and a real line.
+			// solving a pure chance!	
 
 			const startToControlVector : Point = this.startToControlVector;			
 			const diagonalVector : Point = this.diagonalVector;
@@ -2983,9 +3268,17 @@ package flash.geom {
 			 * где t1 - итератор прямой, а t2 - итератор кривой Безье
 			 * Пары решений (t1,t2) соответствуют одной и той же точке.
 			 */
+			/*
+			 * Solving the vector equation (by 2 coordinates - 2 combined equations):
+			 * diagonal*t2^2 + 2*startToControl*t2 + lineVector*t + deltaStarts = 0
+			 * 
+			 * where t1 is an iterator of a line, а t2 - is an iterator of a Bezier curve
+			 * The pares of solutions (t1,t2) correspond to the same point.
+			 */
 
 			if (Math.abs(lineVector.x) < PRECISION) {
-				//прямая вертикальна. Уравнение по X имеет только переменную t2. Решаем относительно нее, подставляем во второе уравнение.
+				// Прямая вертикальна. Уравнение по X имеет только переменную t2. Решаем относительно нее, подставляем во второе уравнение.
+				// The line is vertical. The equation for X has only variable t2. Solve relatively to it, substitute to the second equation.
 
 				coefficientInPower2 = diagonalVector.x;
 				coefficientInPower1 = 2 * startToControlVector.x;
