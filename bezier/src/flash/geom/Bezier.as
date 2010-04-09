@@ -374,7 +374,7 @@ package flash.geom {
 		 *
 		 * @param end:Point end point of Bezier curve
 		 *
-		 * @param isSegment:Boolean TODO: (нужен перевод)
+		 * @param isSegment:Boolean limitation flag
 		 *
 		 * @example In this example created Bezier curve with random coordinates.
 		 * <listing version="3.0">
@@ -1829,7 +1829,6 @@ package flash.geom {
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
-		 * 
 		 */	
 		
 		public function get triangleCentroid() : Point {
@@ -1844,8 +1843,6 @@ package flash.geom {
 		 * Если свойство isSegment=false, это игнорируется, не влияет на результаты рассчета.</I> 
 		 * 
 		 * @return Rectangle габаритный прямоугольник.
-		 * 
-		 * @private Логика работы метода - вычисляются минимальные и максимальные значения координат из начальной и конечной точек, и возможно, точек экстремума по каждой из координат. 
 		 * 
 		 * @example В этом примере создается случайна кривая Безье, и выводится центр тяжести описывающего ее треугольника.
 		 * <listing version="3.0">
@@ -1872,15 +1869,13 @@ package flash.geom {
 		 * @lang rus
 		 */
 		 
-		/* *
-		 * Вычисляет и возвращает описывающий прямоугольник сегмента кривой Безье между начальной и конечной точками.<BR/> 
-		 * Если свойство isSegment=false, это игнорируется, не влияет на результаты рассчета.</I> 
+		/**
+		 * Calculates and returns a bounding rectangle of the Bezier curve segment between initial point and end point.
+		 * If the property isSegment=false, it is ignored, does not affect the results of the calculation.
 		 * 
-		 * @return Rectangle габаритный прямоугольник.
+		 * @return Rectangle bounding rectangle
 		 * 
-		 * @private Логика работы метода - вычисляются минимальные и максимальные значения координат из начальной и конечной точек, и возможно, точек экстремума по каждой из координат. 
-		 * 
-		 * @example В этом примере создается случайна кривая Безье, и выводится центр тяжести описывающего ее треугольника.
+		 * @example In this example a random Bezier curve is created and a center of gravity of its bounding triangle is derived.
 		 * <listing version="3.0">
 		 * import flash.geom.Bezier;
 		 * import flash.geom.Point;
@@ -1902,7 +1897,11 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
+		 * @lang rus
 		 */
+		 
+		 // Логика работы метода - вычисляются минимальные и максимальные значения координат из начальной и конечной точек, и возможно, точек экстремума по каждой из координат. 
+		 // Logic of the method - calculate minimum and maximum values of the coordinates of the initial and end points, and perhaps the extreme points in each of the coordinates.
 		 
 		public function get bounds() : Rectangle {
 			var xMin : Number = Math.min(startPoint.x, endPoint.x);
