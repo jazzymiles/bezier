@@ -1937,7 +1937,7 @@ package flash.geom {
 		//		PARENT PARABOLA
 		//**************************************************
 
-		/**
+		/* *
 		 * Вычисляет и возвращает time-итератор вершины родительской параболы.
 		 * Точку можно получить из итератора методом getPoint у кривой Безье, так как вершина параболы принадлежит ей. 
 		 * 
@@ -1969,9 +1969,10 @@ package flash.geom {
 		 */	
 
 		/**
-		 * Calculates and returns time-iterator of top of the parabola.
-		 *
-		 * @return Number;
+		 * Calculates and returns the time-iterator of vertex of the parent parabola.
+		 * The point can be obtained from the iterator using the method getPoint from Bezier curve, as the vertex of the parabola belongs to it.
+		 * 
+		 * @return Number time-iterator of vertex of the parent parabola
 		 *
 		 * @example <listing version="3.0">
 		 * import flash.geom.Bezier;
@@ -1995,9 +1996,7 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 *
-		 * @lang eng
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
-		 * 
 		 **/
 		public function get parabolaVertex() : Number {			
 			const controlToStartVector : Point = this.controlToStartVector;
@@ -2034,28 +2033,44 @@ package flash.geom {
 		 *	
 		 * </listing>
 		 * 
-		 * @see #parabolaFocus
-		 * 
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */	
-		 
-		 		 
-		/**
-		 * @return Point - focus of a parental parabola;
-		 *
 		 * @see #parabolaVertex
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang eng
-		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
+		 * @lang rus
+		 */
+		 	
+		/**
+		 * Calculates and returns the focus of parent parabola of the Bezier curve.
 		 * 
-		 **/
-		public function get parabolaFocusPoint() : Point {			
+		 * @return Point a focus of parent parabola
+		 * 
+		 * @example <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *	
+		 * function randomPoint():Point {
+		 *	return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * 	return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
+		 *	
+		 * const randomBezier:Bezier = randomBezier();
+		 * const point:Point = randomBezier.parabolaFocusPoint();
+		 * trace("parabola focus: "+point.x+" "+point.y);
+		 *	
+		 * </listing>
+		 * 
+		 * @see #parabolaVertex
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 */	
+		 
+		public function get parabolaFocus() : Point {			
 			const startToControlVector : Point = this.startToControlVector;
 			const diagonalVector : Point = this.diagonalVector;
 							
