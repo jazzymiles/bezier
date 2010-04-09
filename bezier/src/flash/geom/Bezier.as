@@ -2468,14 +2468,14 @@ package flash.geom {
 			var times : Array = new Array();
 			const curveLength : Number = length;
 			
-			if (startShift > curveLength) {
-				return times;
-			}
-			
 			if (startShift < 0) {
 				startShift = startShift % step + step;
 			} else {
 				startShift = startShift % step;
+			}
+			
+			if (startShift > curveLength) {
+				return times;
 			}
 			
 			var distance : Number = startShift;
