@@ -137,8 +137,7 @@
  
  
 
-package flash.geom 
-{
+package flash.geom {
 	import flash.math.Equations;	
 
 	/* * 
@@ -314,13 +313,10 @@ package flash.geom
 	 * @langversion 3.0
 	 * @playerversion Flash 9.0
 	 * 
-	 * @lang eng
 	 * @translator Maxim Kachurovskiy http://www.riapriority.com
-	 *
 	 **/
 
-	public class Bezier extends Object implements IParametric 
-	{
+	public class Bezier extends Object implements IParametric {
 
 		protected static const PRECISION : Number = Equations.PRECISION;
 
@@ -399,20 +395,28 @@ package flash.geom
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang eng
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 **/
-		public function Bezier(start : Point = undefined, control : Point = undefined, end : Point = undefined, isSegment : Boolean = true) 
-		{
+		public function Bezier(start : Point = undefined, control : Point = undefined, end : Point = undefined, isSegment : Boolean = true) {
 			initInstance(start, control, end, isSegment);
 		}
 
 		/* *
 		 * Приватный инициализатор для объекта, который можно переопределить. Параметры совпадают с параметрами конструктора.
 		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
 		 **/ 
-		protected function initInstance(start : Point = undefined, control : Point = undefined, end : Point = undefined, isSegment : Boolean = true) : void 
-		{
+
+		/**
+		 * Private initializer for an object that can be redefined. Parameters coincide with the parameters of the constructor.
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 **/
+		protected function initInstance(start : Point = undefined, control : Point = undefined, end : Point = undefined, isSegment : Boolean = true) : void {
 			startPoint = (start as Point) || new Point();
 			controlPoint = (control as Point) || new Point();
 			endPoint = (end as Point) || new Point();
@@ -451,13 +455,11 @@ package flash.geom
 		 **/
 
 		
-		public function get start() : Point 
-		{
+		public function get start() : Point {
 			return startPoint;
 		}
 
-		public function set start(value : Point) : void 
-		{
+		public function set start(value : Point) : void {
 			startPoint = value;
 		}
 
@@ -485,13 +487,11 @@ package flash.geom
 		 **/
 
 		
-		public function get control() : Point 
-		{
+		public function get control() : Point {
 			return controlPoint;
 		}
 
-		public function set control(value : Point) : void 
-		{
+		public function set control(value : Point) : void {
 			controlPoint = value;
 		}
 
@@ -517,13 +517,11 @@ package flash.geom
 		 **/
 
 		
-		public function get end() : Point 
-		{
+		public function get end() : Point {
 			return endPoint;
 		}
 
-		public function set end(value : Point) : void 
-		{
+		public function set end(value : Point) : void {
 			endPoint = value;
 		}
 
@@ -588,13 +586,11 @@ package flash.geom
 
 		
 		
-		public function get isSegment() : Boolean 
-		{
+		public function get isSegment() : Boolean {
 			return __isSegment;
 		}
 
-		public function set isSegment(value : Boolean) : void 
-		{
+		public function set isSegment(value : Boolean) : void {
 			__isSegment = value;
 		}
 
@@ -632,11 +628,12 @@ package flash.geom
 		 **/
 		 
 		/**
-		 * Creates and returns a copy of current object Bezier.
-		 *
-		 * @return Bezier 
-		 *
-		 * @example In this example creates random Bezier curve and its copy.
+		 * Creates and returns a copy of the current Bezier object.
+		 * Please note that copies of the control points are copied as well, and they are new objects.
+		 * 
+		 * @return Bezier copy of the Bezier curve
+		 * 
+		 * @example This example creates a random Bezier curve and its copy:
 		 * <listing version="3.0">
 		 * import flash.geom.Bezier;
 		 * import flash.geom.Point;
@@ -661,8 +658,7 @@ package flash.geom
 		 **/
 
 		
-		public function clone() : Bezier 
-		{
+		public function clone() : Bezier {
 			return new Bezier(startPoint.clone(), controlPoint.clone(), endPoint.clone(), __isSegment);
 		}
 
@@ -670,15 +666,20 @@ package flash.geom
 		//				GEOMETRIC PROPERTIES 
 		//**************************************************
 
-		/**
-		 * Проверка вырожденности кривой в прямую линию.
-		 * Если кривая Безье вырождена в бесконечную в оба направления прямую линию, возвращается объект класса Line со свойством isRay = false, геометрически совпадающий с кривой Безье.
-		 * Если кривая Безье вырождена в луч, то есть прямую линию, бесконечную только в одном направлении, возвращается объект класса Line со свойством isRay = true.
-		 * В других случаях, если кривая Безье выпуклая, или вырождена в точку, возвращается null.
-		 * 
-		 * @private Логика работы метода - проверка, что существует такое t, при котором control = start+t*(end-start). 
-		 * Если при этом control между start и end, то isRay=true. Начало луча в этом случае вычисляется просто - это точка с итератором time=0.5.
-		 * Остается проблема, что в новосозданном объекте Line итератор действует иначе, чем в кривой. В случае использования объекта Line там, где надо вычислить инератор по кривой Безье, нужно не забывать об этом, получать Point и пользоваться методом getPointOnCurve.
+		
+		/* *
+		 * Проверка вырожденности кривой в прямую линию.<BR/>
+		 * Если кривая Безье вырождена в бесконечную в оба направления прямую линию, 
+		 * возвращается объект класса Line со свойством isRay = false, геометрически 
+		 * совпадающий с кривой Безье.<BR/>
+		 * Если кривая Безье вырождена в луч, то есть прямую линию, бесконечную 
+		 * только в одном направлении, возвращается объект класса Line со свойством isRay = true.<BR/>
+		 * В других случаях, если кривая Безье выпуклая, или вырождена в точку, возвращается null.<BR/>
+		 * Если при этом control между start и end, то isRay=true. Начало луча в этом случае 
+		 * вычисляется просто - это точка с итератором time=0.5.<BR/>
+		 * Остается проблема, что в новосозданном объекте Line итератор действует иначе, чем в кривой. 
+		 * В случае использования объекта Line там, где надо вычислить инератор по кривой Безье, нужно 
+		 * не забывать об этом, получать Point и пользоваться методом getPointOnCurve.<BR/>
 		 *  
 		 * @return Line прямая, в которую вырождена кривая Безье
 		 * 
@@ -702,40 +703,66 @@ package flash.geom
 		 * 
 		 * @lang rus
 		 */
+		 
+		/**
+		 * Checking the degeneracy of the curve in a straight line.<BR/>
+		 * If the Bezier curve is degenerate in an infinite in both directions straight line, 
+		 * an object of class Line with the property isRay = false, geometrically coinciding 
+		 * with the Bezier curve, returns.<BR/>
+		 * If the Bezier curve is degenerate in a ray, i.e. a straight line, infinite in one 
+		 * direction only, an object of class Line with the property isRay = true returns.<BR/>
+		 * In other cases, if the Bezier curve is convex, or degenerate to the point, returns null.<BR/>
+		 * If the control is between the start and end, then isRay=true. In this case the start of 
+		 * a ray is calculated simply - it is a point with an iterator time=0.5.<BR/>
+		 * There remains the problem that in the newly created object Line iterator operates 
+		 * differently than in the curve. In the case of using an object Line, where we have 
+		 * to calculate the iterator on a Bezier curve, we must not forget about obtaining 
+		 * a Point and using the method getPointOnCurve.<BR/>
+		 * 
+		 * @return Line the line, which is degenerate Bezier curve
+		 * 
+		 * @example In this example a Bezier curve is created, and its degeneration into a straight line is checked.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Line;
+		 * import flash.geom.Point;
+		 *		
+		 * const bezier:Bezier = Bezier( new Point(100, 100), new Point(200, 200), new Point(300, 301));
+		 * var line:Line = bezier.curveAsLine();
+		 * trace("Is it line? "+ (line != null)); //Is it line? false
+		 * bezier.end.y = 300;
+		 * line = bezier.curveAsLine();
+		 * trace("Is it line? "+ (line != null)); //Is it line?  true
+		 * 
+		 * </listing>
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 */
 
-		public function curveAsLine() : Line 
-		{
+		// Логика работы метода - проверка, что существует такое t, при котором control = start+t*(end-start).
+		// The logic of method - check, that there exists a t, where control = start+t*(end-start).
+		public function curveAsLine() : Line {
 			var startToControlVector : Point = this.startToControlVector;
 			var startToEndVector : Point = this.startToEndVector;
 			
-			if (startToEndVector.length > PRECISION) 
-			{
+			if (startToEndVector.length > PRECISION) {
 				var timeOfControl : Number = startToControlVector.length / startToEndVector.length;
 				var isLine : Boolean = (Math.abs(startToControlVector.x - timeOfControl * startToEndVector.x) < PRECISION) && (Math.abs(startToControlVector.y - timeOfControl * startToEndVector.y) < PRECISION);
 				
-				if (isLine) 
-				{
-					if (timeOfControl < 0) 
-					{
+				if (isLine) {
+					if (timeOfControl < 0) {
 						return new Line(this.getPoint(this.parabolaVertex), end.clone(), this.isSegment, true);						
-					} 
-					else 
-					{
-						if (timeOfControl > 1) 
-						{
+					} else {
+						if (timeOfControl > 1) {
 							return new Line(this.getPoint(this.parabolaVertex), start.clone(), this.isSegment, true);						
-						} 
-						else 
-						{
+						} else {
 							return new Line(start.clone(), end.clone(), this.isSegment, ((timeOfControl - 0.5) > PRECISION));		
 						}
 					}
 				}
-			} 
-			else 
-			{
-				if (startToControlVector.length > PRECISION) 
-				{					
+			} else {
+				if (startToControlVector.length > PRECISION) {					
 					return new Line(this.getPoint(this.parabolaVertex), start.clone(), this.isSegment, true);			
 				}
 			}
@@ -743,13 +770,11 @@ package flash.geom
 			return null;
 		}
 
-		/**
+		/* *
 		 * Проверка вырожденности кривой в точку.
 		 * Если кривая Безье вырождена в точку, то возвращается объект класса Point с координатой точки, в которую вырождена кривая.
 		 * В других случаях, если кривая Безье выпуклая, или вырождена в прямую, возвращается null.
 		 * 
-		 * @private Логика работы метода - проверка, что все три опорные точки кривой совпадают, с учетом допуска.
-		 *  
 		 * @return Point точка, в которую вырождена кривая Безье
 		 * 
 		 * @example В этом примере создается кривая Безье, и проверяется ее вырожденность в точку.
@@ -771,20 +796,45 @@ package flash.geom
 		 * 
 		 * @lang rus
 		 */
-		public function curveAsPoint() : Point 
-		{
-			if ((this.startToEndVector.length < PRECISION) && (this.startToControlVector.length < PRECISION)) 
-			{
+		 
+		/**
+		 * Checking the degeneracy of the curve in a point.
+		 * If the Bezier curve is degenerate in a point, an object of class Point with the coordinates of the point at which the curve degenerates returns.
+		 * In other cases, if the Bezier curve is convex, or degenerate to a line, returns null.
+		 * 
+		 * @return Point the point, which is the degenerate Bezier curve
+		 * 
+		 * @example In this example a Bezier curve is created, and its degeneration into a point is checked.
+		 * 
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * const bezier:Bezier = Bezier( new Point(100, 100), new Point(100, 100), new Point(100, 101));
+		 * var point:Point = bezier.curveAsPoint();
+		 * trace("Is it point? "+ (point != null)); //Is it point? false
+		 * bezier.end.y = 100;
+		 * point = bezier.curveAsPoint();
+		 * trace("Is it point? "+ (point != null)); //Is it point?  true
+		 * 
+		 * </listing>
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 */
+		 
+		// Логика работы метода - проверка, что все три опорные точки кривой совпадают, с учетом допуска.
+		// The logic of method - tolerance check all three anchor points of the curve coincide
+		public function curveAsPoint() : Point {
+			if ((this.startToEndVector.length < PRECISION) && (this.startToControlVector.length < PRECISION)) {
 				return start.clone();				
-			} 
-			else 
-			{
+			} else {
 				return null;
 			}
 		}
 
 		
-		/**
+		/* *
 		 * Получение вектора из начальной точки кривой Безье в контрольную точку.
 		 * Обратный вектор можно получить методом <a href="#controlToStartVector">controlToStartVector</a><BR/> 
 		 *  
@@ -807,13 +857,38 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
-		 */		 
-		public function get startToControlVector() : Point 
-		{
+		 */
+		 
+		/**
+		 * Obtaining a vector from the initial point of a Bezier curve to the control point.
+		 * Reverse vector can be obtained by the method <a href="#controlToStartVector">controlToStartVector</a>
+		 * 
+		 * @return Point a vector from the initial point to the control point
+		 * 
+		 * @example In this example a Bezier curve is created, and a vector from the initial point to the control point is derived.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
+		 * var point:Point = bezier.startToControlVector;
+		 * trace(point.x+" "+point.y); //300 -100
+		 *  
+		 * </listing>
+		 *
+		 * @see #controlToStartVector
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
+		 */
+
+		public function get startToControlVector() : Point {
 			return new Point(control.x - start.x, control.y - start.y);			
 		}
 
-		/**
+		/* *
 		 * Получение вектора из контрольной точки кривой Безье в начальную точку.
 		 * Обратный вектор можно получить методом <a href="#startToControlVector">startToControlVector</a><BR/> 
 		 * 
@@ -835,19 +910,37 @@ package flash.geom
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang rus
+		 */
+		 		 
+		/**
+		 * Obtaining a vector from the control point of a Bezier curve to the initial point.
+		 * Reverse vector can be obtained by the method <a href="#startToControlVector">startToControlVector</a>
+		 * 
+		 * @return Point a vector from the control point to the initial point
+		 * 
+		 * @example In this example a Bezier curve is created, and a vector from the control point to the initial point is derived.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
+		 * var point:Point = bezier.controlToStartVector;
+		 * trace(point.x+" "+point.y); //-300 100
+		 *  
+		 * </listing>
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 */		 
-		public function get controlToStartVector() : Point 
-		{
+		public function get controlToStartVector() : Point {
 			return new Point(start.x - control.x, start.y - control.y);			
 		}
 
 		
-		/**
+		/* *
 		 * Получение вектора из конечной точки кривой Безье в контрольную точку.
 		 * Обратный вектор можно получить методом <a href="#controlToEndVector">controlToEndVector</a><BR/> 
-		 *  
-		 * @see #controlToEndVector
 		 * 
 		 * @return Point вектор из конечной точки в контрольную
 		 * 
@@ -861,18 +954,45 @@ package flash.geom
 		 * trace(point.x+" "+point.y); //-300 -100
 		 *  
 		 * </listing>
+		 * 
+		 * @see #controlToEndVector
 		 *
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
-		 */	
-		public function get endToControlVector() : Point 
-		{
+		 */
+		 
+		/**
+		 * Obtaining a vector from the end point of a Bezier curve to the control point.
+		 * Reverse vector can be obtained by the method <a href="#controlToEndVector">controlToEndVector</a>
+		 * 
+		 * @return Point a vector from the end point to the control point
+		 * 
+		 * @example In this example a Bezier curve is created, and a vector from the end point to the control point is derived.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
+		 * var point:Point = bezier.endToControlVector;
+		 * trace(point.x+" "+point.y); //-300 -100
+		 *  
+		 * </listing>
+		 * 
+		 * @see #controlToEndVector
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 */
+
+		
+		public function get endToControlVector() : Point {
 			return new Point(control.x - end.x, control.y - end.y);			
 		}
 
-		/**
+		/* *
 		 * Получение вектора из контрольной точки кривой Безье в конечную точку.
 		 * Обратный вектор можно получить методом <a href="#endToControlVector">endToControlVector</a><BR/> 
 		 * 
@@ -895,17 +1015,38 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
+		 */
+		 	
+		/**
+		 * Obtaining a vector from the control point of a Bezier curve to the end point.
+		 * Reverse vector can be obtained by the method <a href="#endToControlVector">endToControlVector</a>
+		 * 
+		 * @return Point a vector from the control point to the end point
+		 * 
+		 * @example In this example a Bezier curve is created, and a vector from the control point to the end point is derived.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
+		 * var point:Point = bezier.controlToEndVector;
+		 * trace(point.x+" "+point.y); //300 100
+		 *  
+		 * </listing>
+		 * 
+		 * @see #endToControlVector
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 */	
-		public function get controlToEndVector() : Point 
-		{
+		public function get controlToEndVector() : Point {
 			return new Point(end.x - control.x, end.y - control.y);			
 		}
 
-		/**
+		/* *
 		 * Получение вектора из начальной точки кривой Безье в конечную точку.
 		 * Обратный вектор можно получить методом <a href="#endToStartVector">endToStartVector</a><BR/> 
-		 *  
-		 * @see #endToStartVector
 		 * 
 		 * @return Point вектор из начальной точки в конечную
 		 * 
@@ -919,18 +1060,42 @@ package flash.geom
 		 * trace(point.x+" "+point.y); //600 0
 		 *  
 		 * </listing>
+		 * 
+		 * @see #endToStartVector
 		 *
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
+		 */
+		 		
+		/**
+		 * Obtaining a vector from the initial point of a Bezier curve to the end point.
+		 * Reverse vector can be obtained by the method <a href="#endToStartVector">endToStartVector</a><BR/>
+		 * 
+		 * @return Point a vector from the initial point to the end point
+		 * 
+		 * @example In this example a Bezier curve is created, and a vector from the initial point to the end point is derived.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
+		 * var point:Point = bezier.startToEndVector;
+		 * trace(point.x+" "+point.y); //600 0
+		 * </listing>
+		 * 
+		 * @see #endToStartVector
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 */		
-		public function get startToEndVector() : Point 
-		{
+		public function get startToEndVector() : Point {
 			return new Point(end.x - start.x, end.y - start.y);			
 		}
 
-		/**
+		/* *
 		 * Получение вектора из конечной точки кривой Безье в начальную точку.
 		 * Обратный вектор можно получить методом <a href="#startToEndVector">startToEndVector</a><BR/> 
 		 *  
@@ -953,13 +1118,35 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
+		 */
+		 	
+		/**
+		 * Obtaining a vector from the initial point of a Bezier curve to the end point.
+		 * Reverse vector can be obtained by the method <a href="#startToEndVector">startToEndVector</a>
+		 * 
+		 * @return Point a vector from the initial point to the end point
+		 * 
+		 * @example In this example a Bezier curve is created, and a vector from the initial point to the end point is derived.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
+		 * var point:Point = bezier.endToStartVector;
+		 * trace(point.x+" "+point.y); //-600 0
+		 *  
+		 * </listing>
+		 * @see #startToEndVector
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 */	
-		public function get endToStartVector() : Point 
-		{
+		public function get endToStartVector() : Point {
 			return new Point(start.x - end.x, start.y - end.y);			
 		}
 
-		/**
+		/* *
 		 * Получение вектора диагонали параллелограмма, достроенного на опорных точках кривой Безье, которая опирается на контрольную точку.
 		 * Обратный вектор можно получить методом <a href="#invertedDiagonalVector">invertedDiagonalVector</a><BR/> 
 		 *  
@@ -982,9 +1169,32 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
+		 */
+		 	
+		/**
+		 * Obtaining a vector of the diagonal of a parallelogram, drawn on control points of Bezier curve, which leans on the control point.
+		 * 
+		 * Reverse vector can be obtained by the method <a href="#invertedDiagonalVector">invertedDiagonalVector</a><BR/>
+		 * 
+		 * @return Point a vector of the diagonal
+		 * 
+		 * @example In this example a Bezier curve is created, and a vector of the diagonal is derived.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
+		 * var point:Point = bezier.diagonalVector;
+		 * trace(point.x+" "+point.y); //0 200
+		 * </listing>
+		 * 
+		 * @see #invertedDiagonalVector
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 */	
-		public function get diagonalVector() : Point 
-		{
+		public function get diagonalVector() : Point {
 			return new Point(start.x - 2 * control.x + end.x, start.y - 2 * control.y + end.y);			
 		}
 
@@ -992,8 +1202,6 @@ package flash.geom
 		 * Получение обратного вектора диагонали параллелограмма, достроенного на опорных точках кривой Безье, которая опирается на контрольную точку.
 		 * Обратный вектор можно получить методом <a href="#diagonalVector">diagonalVector</a><BR/> 
 		 *  
-		 * @see #diagonalVector
-		 * 
 		 * @return Point обратный вектор диагонали
 		 * 
 		 * @example В этом примере создается кривая Безье, и выводится обратного вектор диагонали.
@@ -1004,17 +1212,41 @@ package flash.geom
 		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
 		 * var point:Point = bezier.invertedDiagonalVector;
 		 * trace(point.x+" "+point.y); //0 -200
-		 *  
 		 * </listing>
+		 * 
+		 * @see #diagonalVector
 		 *
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
-		 */	
-		public function get invertedDiagonalVector() : Point 
-		{
-			return new Point(- start.x + 2 * control.x - end.x, - start.y + 2 * control.y - end.y);			
+		 */
+		 	
+		/**
+		 * Obtaining a reverse vector of the diagonal of a parallelogram, drawn on control points of Bezier curve, which leans on the control point.
+		 * Reverse vector can be obtained by the method <a href="#diagonalVector">diagonalVector</a><BR/>
+		 * 
+		 * 
+		 * @return Point a reverse vector of the diagonal
+		 * 
+		 * @example In this example a Bezier curve is created, and a reverse vector of the diagonal is derived.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
+		 * var point:Point = bezier.invertedDiagonalVector;
+		 * trace(point.x+" "+point.y); //0 -200
+		 * </listing>
+		 * 
+		 * @see #diagonalVector
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 */
+
+		public function get invertedDiagonalVector() : Point {
+			return new Point(-start.x + 2 * control.x - end.x, -start.y + 2 * control.y - end.y);			
 		}
 
 		/**
@@ -1037,9 +1269,29 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
+		 */
+		 	
+		/**
+		 * Obtaining a point (vertex) in a parallelogram, drawn on control points of Bezier curve, which is located opposite to control point.
+		 * 
+		 * @return Point a point, opposite to control point
+		 * 
+		 * @example In this example a Bezier curve is created, and a point opposite to a control point is derived.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
+		 * var point:Point = bezier.oppositeControl;
+		 * trace(point.x+" "+point.y); //400 400
+		 *  
+		 * </listing>
+		 *
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 */	
-		public function get oppositeControl() : Point 
-		{
+		public function get oppositeControl() : Point {
 			return new Point(start.x - control.x + end.x, start.y - control.y + end.y);			
 		}
 
@@ -1079,11 +1331,11 @@ package flash.geom
 		 **/
 		 
 		/**
-		 * Calculates length of the Bezier curve
-		 *
-		 * @return Number length of the Bezier curve.
-		 *
-		 * @example In this example creates random Bezier curve and traces its length.
+		 * Calculates a length of a Bezier curve from the initial point to the end point.
+		 * 
+		 * @return Number a length of a Bezier curve
+		 * 
+		 * @example In this example a Bezier curve is created, and its length is derived.
 		 * <listing version="3.0">
 		 *
 		 * import flash.geom.Bezier;
@@ -1099,7 +1351,6 @@ package flash.geom
 		 * const bezier:Bezier = randomBezier();
 		 *
 		 * trace("bezier length: "+bezier.length);
-		 *
 		 * </listing>
 		 *
 		 *
@@ -1108,12 +1359,8 @@ package flash.geom
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang eng
-		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
-		 * 
 		 **/
-		public function get length() : Number 
-		{
+		public function get length() : Number {
 			return getSegmentLength(1.0);
 		}
 
@@ -1205,8 +1452,7 @@ package flash.geom
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
-		public function getSegmentLength(time : Number) : Number 
-		{
+		public function getSegmentLength(time : Number) : Number {
 			const startToControlVector : Point = this.startToControlVector;
 			const diagonalVector : Point = this.diagonalVector;
 							
@@ -1219,27 +1465,22 @@ package flash.geom
 			var integralValueInTime : Number;
 			var integralValueInZero : Number;
 						
-			if (diagonalLenght == 0) 
-			{
+			if (diagonalLenght == 0) {
 				integralValueInTime = 2 * diagonalLenght * time;
 				integralValueInZero = 0;				
-			} 
-			else 
-			{
+			} else {
 				const integralFrequentPart1 : Number = Math.sqrt(diagonalLenghtPower2 * time * time + controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2);
 				const integralFrequentPart2 : Number = (controlToStartMultiplyMainDiagonal + 2 * diagonalLenghtPower2 * time) / diagonalLenght + 2 * integralFrequentPart1;
 				const integralFrequentPart3 : Number = controlToStartMultiplyMainDiagonal / diagonalLenght + 2 * startToControlLenght;
 				const integralFrequentPart4 : Number = (startToControlLenghtPower2 - 0.25 * controlToStartMultiplyMainDiagonal * controlToStartMultiplyMainDiagonal / diagonalLenghtPower2);
 						
 				integralValueInTime = 0.5 * (2 * diagonalLenghtPower2 * time + controlToStartMultiplyMainDiagonal) * integralFrequentPart1 / diagonalLenghtPower2;
-				if (Math.abs(integralFrequentPart2) >= PRECISION) 
-				{					
+				if (Math.abs(integralFrequentPart2) >= PRECISION) {					
 					integralValueInTime += Math.log(integralFrequentPart2) / diagonalLenght * integralFrequentPart4;
 				}
 				
 				integralValueInZero = 0.5 * (controlToStartMultiplyMainDiagonal) * startToControlLenght / diagonalLenghtPower2;
-				if (Math.abs(integralFrequentPart3) >= PRECISION) 
-				{
+				if (Math.abs(integralFrequentPart3) >= PRECISION) {
 					integralValueInZero += Math.log(integralFrequentPart3) / diagonalLenght * integralFrequentPart4;
 				}
 			}
@@ -1283,13 +1524,10 @@ package flash.geom
 		 **/
 
 		/**
-		 * Calculates and returns the area of the figure limited by Bezier curve and
-		 * line <code>SE</code>.
-		 * The area of this figure makes 2/3 areas of a triangle ∆SCE, which is formed of
-		 * control points <code>start, control, end</code>.<BR/>
-		 * Accordingly, the rest of a triangle makes 1/3 its areas.
-		 *
-		 * @return Number
+		 * Calculates and returns an area of the figure, limited by Bezier curve and a segment, connecting the initial point and the end point.
+		 * The area of this figure makes 2/3 areas of a triangle ∆SCE, which is formed of control points <code>start, control, end</code>.
+		 * 
+		 * @return Number an area of the Bezier curve
 		 *
 		 * @example <listing version="3.0">
 		 *
@@ -1313,12 +1551,11 @@ package flash.geom
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
-		 * @lang eng
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 *
 		 **/
-		public function get area() : Number 
-		{
+
+		public function get area() : Number {
 			return this.triangleArea * (2.0 / 3.0);
 		}
 
@@ -1327,8 +1564,6 @@ package flash.geom
 		 * образуемого контрольными точками <code>start, control, end</code>.  
 		 * 
 		 * @return Number площадь треугольника, ограничиваюшего кривую Безье
-		 * 
-		 * @private Логика работы метода - вычисление площади треугольника по формуле Герона.
 		 * 
 		 * @example <listing version="3.0">
 		 *
@@ -1355,20 +1590,38 @@ package flash.geom
 		 * 
 		 * @lang rus
 		 **/
-		
+		 
 		/**
-		 * Calculates and returns the area of a triangle ∆SCE, which is formed of
-		 * control points <code>start, control, end</code>.
+		 * Calculates and returns an area of the triangle ∆SCE, which is formed of control points <code>start, control, end</code>.
+		 * @return Number an area of the triangle, limiting a Bezier curve
+		 * 
+		 * @example <listing version="3.0">
 		 *
-		 * @return Number
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
 		 *
+		 * function randomPoint():Point {
+		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
+		 *
+		 * const randomBezier:Bezier = randomBezier();
+		 * trace("triangle area: "+randomBezier.triangleArea);
+		 * </listing>
+		 * 
 		 * @see #area
-		 *
-		 * @lang eng
-		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
-		 **/	
-		public function get triangleArea() : Number 
-		{
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 **/
+		
+		// Логика работы метода - вычисление площади треугольника по формуле Герона.
+		// The logic of method - calculate an area of a triangle using the Heron's formula.
+
+		public function get triangleArea() : Number {
 			const distanceStartControl : Number = Point.distance(startPoint, controlPoint);
 			const distanceEndControl : Number = Point.distance(endPoint, controlPoint);
 			const distanceStartEnd : Number = Point.distance(startPoint, endPoint);
@@ -1376,10 +1629,8 @@ package flash.geom
 			const area : Number = Math.sqrt(halfPerimeter * (halfPerimeter - distanceStartControl) * (halfPerimeter - distanceEndControl) * (halfPerimeter - distanceStartEnd)); 
 			return area;
 		}
-
 		
-		
-		/**
+		/* *
 		 * Получение центра тяжести кривой Безье.
 		 * 
 		 * @return Point центр тяжести кривой Безье
@@ -1409,26 +1660,83 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
+		 */
+		 	
+		/**
+		 * Obtaining a center of gravity of a Bezier curve.
+		 * 
+		 * @return Point a center of gravity of a Bezier curve
+		 * 
+		 * @example In this example a random Bezier curve is created, and its center of gravity is derived.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * function randomPoint():Point {
+		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
+		 *
+		 * const randomBezier:Bezier = randomBezier();
+		 * var point:Point = randomBezier.internalCentroid;
+		 * trace(point.x+" "+point.y); 
+		 *  
+		 * </listing>
+		 *
+		 * @see #externalCentroid
+		 * @see #triangleCentroid
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 */	
 
-		/**
-		 * Gravity center of the figure limited by Bezier curve and line <code>SE</code>.
-		 * 
-		 * @return Point
-		 **/
-		public function get internalCentroid() : Point 
-		{
+		public function get internalCentroid() : Point {
 			const x : Number = (startPoint.x + endPoint.x) * 0.4 + controlPoint.x * 0.2;
 			const y : Number = (startPoint.y + endPoint.y) * 0.4 + controlPoint.y * 0.2;
 			return new Point(x, y);
 		}
 
 		/**
-		 * Получение центра тяжести фигуры, полученной вычитанием кривой Безье из описывающего ее прямоугольника.
+		 * Получение центра тяжести внешней фигуры - фигуры, полученной кривой Безье и боковыми сторонами (SC,CE) описывающего ее треугольника.
 		 * 
-		 * @return Point центр тяжести довеска кривой Безье до треугольника
+		 * @return Point центр тяжести врешней фигуры.
 		 * 
-		 * @example В этом примере создается случайна кривая Безье, и выводится центр тяжести довеска кривой Безье до треугольника.
+		 * @example В этом примере создается случайна кривая Безье, и выводится центр тяжести внешней фигуры.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *		
+		 * function randomPoint():Point {
+		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
+		 *
+		 * const randomBezier:Bezier = randomBezier();
+		 * var point:Point = randomBezier.externalCentroid;
+		 * trace(point.x+" "+point.y); 
+		 *  
+		 * </listing>
+		 *
+		 * @see #internalCentroid
+		 * @see #triangleCentroid
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
+		 */
+		 	
+		/**
+		 * Obtaining a center of gravity of the outside figure - this figure is obtained by the Bezier curve and sides (SC,CE) of the bounding triangle.
+		 * 
+		 * @return Point a center of gravity of the outside figure
+		 * 
+		 * @example In this example a random Bezier curve is created and a center of gravity of the outside figure is derived.
 		 * <listing version="3.0">
 		 * import flash.geom.Bezier;
 		 * import flash.geom.Point;
@@ -1455,19 +1763,13 @@ package flash.geom
 		 * @lang rus
 		 */	
 
-		/**
-		 * Gravity center of the figure limited by Bezier curve and lines <code>SC</code> and <code>CE</code>.
-		 * 
-		 * @return Point
-		 **/
-		public function get externalCentroid() : Point 
-		{
+		public function get externalCentroid() : Point {
 			const x : Number = (startPoint.x + endPoint.x) * 0.2 + controlPoint.x * 0.6 ;
 			const y : Number = (startPoint.y + endPoint.y) * 0.2 + controlPoint.y * 0.6;
 			return new Point(x, y);
 		}
 
-		/**
+		/* *
 		 * Получение центра тяжести треугольника, описывающего кривую Безье.
 		 * 
 		 * @return Point центра тяжести треугольника, описывающего кривую Безье
@@ -1490,22 +1792,47 @@ package flash.geom
 		 *  
 		 * </listing>
 		 *
-		 * @see #externalCentroid
+		 * @see #internalCentroid
 		 * @see #externalCentroid
 		 * 
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 * 
 		 * @lang rus
+		 */
+		 	
+		/**
+		 * Obtaining a center of gravity of the triangle, bounding the Bezier curve.
+		 * 
+		 * @return Point a center of gravity of the triangle, bounding the Bezier curve
+		 * 
+		 * @example In this example a random Bezier curve is created and a center of gravity of its bounding triangle is derived.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 *
+		 * function randomPoint():Point {
+		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
+		 *
+		 * const randomBezier:Bezier = randomBezier();
+		 * var point:Point = randomBezier.triangleCentroid;
+		 * trace(point.x+" "+point.y); 
+		 *  
+		 * </listing>
+		 *
+		 * @see #internalCentroid
+		 * @see #externalCentroid
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 */	
 		
-		/**
-		 * Gravity center of triangle <code>SCE</code>.
-		 * 
-		 * @return Point
-		 **/
-		public function get triangleCentroid() : Point 
-		{
+		public function get triangleCentroid() : Point {
 			const x : Number = (startPoint.x + endPoint.x + controlPoint.x) / 3 ;
 			const y : Number = (startPoint.y + endPoint.y + controlPoint.y) / 3;
 			return new Point(x, y);
@@ -1545,14 +1872,39 @@ package flash.geom
 		 * @lang rus
 		 */
 		 
-		/**
-		 * Calculates and returns a bounds rectangular of a segment of Bezier curve.<BR/>
-		 * <I>Property isSegment=false does not change result of calculations.</I>
+		/* *
+		 * Вычисляет и возвращает описывающий прямоугольник сегмента кривой Безье между начальной и конечной точками.<BR/> 
+		 * Если свойство isSegment=false, это игнорируется, не влияет на результаты рассчета.</I> 
+		 * 
+		 * @return Rectangle габаритный прямоугольник.
+		 * 
+		 * @private Логика работы метода - вычисляются минимальные и максимальные значения координат из начальной и конечной точек, и возможно, точек экстремума по каждой из координат. 
+		 * 
+		 * @example В этом примере создается случайна кривая Безье, и выводится центр тяжести описывающего ее треугольника.
+		 * <listing version="3.0">
+		 * import flash.geom.Bezier;
+		 * import flash.geom.Point;
+		 * import flash.geom.Rectangle;
+		 *		
+		 * function randomPoint():Point {
+		 * return new Point(Math.random()&#42;stage.stageWidth, Math.random()&#42;stage.stageHeight);
+		 * }
+		 * function randomBezier():Bezier {
+		 * return new Bezier(randomPoint(), randomPoint(), randomPoint());
+		 * }
 		 *
-		 * @return Rectangle bounds rectangular.
+		 * const randomBezier:Bezier = randomBezier();
+		 * var boundBox:Rectangle = randomBezier.bounds;
+		 * trace(boundBox.x+" "+boundBox.y+" "+boundBox.width+" "+boundBox.height); 
+		 *  
+		 * </listing>
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 */
-		public function get bounds() : Rectangle 
-		{
+		 
+		public function get bounds() : Rectangle {
 			var xMin : Number = Math.min(startPoint.x, endPoint.x);
 			var xMax : Number = Math.max(startPoint.x, endPoint.x);
 			var yMin : Number = Math.min(startPoint.y, endPoint.y);
@@ -1564,15 +1916,13 @@ package flash.geom
 			const extremumTimeX : Number = controlToStartVector.x / diagonalVector.x;
 			const extremumTimeY : Number = controlToStartVector.y / diagonalVector.y;	
 					
-			if ((! isNaN(extremumTimeX)) && (extremumTimeX > 0) && (extremumTimeX < 1)) 
-			{
+			if ((!isNaN(extremumTimeX)) && (extremumTimeX > 0) && (extremumTimeX < 1)) {
 				const extremumPointX : Point = getPoint(extremumTimeX);
 				xMin = Math.min(extremumPointX.x, xMin);
 				xMax = Math.max(extremumPointX.x, xMax);
 			} 
 												
-			if ((! isNaN(extremumTimeY)) && (extremumTimeY > 0) && (extremumTimeY < 1)) 
-			{
+			if ((!isNaN(extremumTimeY)) && (extremumTimeY > 0) && (extremumTimeY < 1)) {
 				const extemumPointY : Point = getPoint(extremumTimeY);
 				yMin = Math.min(extemumPointY.y, yMin);
 				yMax = Math.max(extemumPointY.y, yMax);
@@ -1650,16 +2000,14 @@ package flash.geom
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
-		public function get parabolaVertex() : Number 
-		{			
+		public function get parabolaVertex() : Number {			
 			const controlToStartVector : Point = this.controlToStartVector;
 			const diagonalVector : Point = this.diagonalVector;							
 			const diagonalLenght : Number = diagonalVector.length;
 			const diagonalLenghtPower2 : Number = diagonalLenght * diagonalLenght;
 														
 			var vertexTime : Number = 0.5; 
-			if (diagonalLenght > PRECISION) 
-			{
+			if (diagonalLenght > PRECISION) {
 				vertexTime = (diagonalVector.x * controlToStartVector.x + diagonalVector.y * controlToStartVector.y) / diagonalLenghtPower2;
 			} 
 			return vertexTime;
@@ -1708,20 +2056,18 @@ package flash.geom
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
-		public function get parabolaFocusPoint() : Point 
-		{			
+		public function get parabolaFocusPoint() : Point {			
 			const startToControlVector : Point = this.startToControlVector;
 			const diagonalVector : Point = this.diagonalVector;
 							
 			const diagonalLenght : Number = diagonalVector.length;
 			const diagonalLenghtPower2 : Number = diagonalLenght * diagonalLenght;
 						
-			if (diagonalLenght < PRECISION) 
-			{
+			if (diagonalLenght < PRECISION) {
 				return controlPoint.clone();
 			}
 						
-			const vertexTime : Number = - (diagonalVector.x * startToControlVector.x + diagonalVector.y * startToControlVector.y) / diagonalLenghtPower2;
+			const vertexTime : Number = -(diagonalVector.x * startToControlVector.x + diagonalVector.y * startToControlVector.y) / diagonalLenghtPower2;
 			const parabolaVertex : Point = getPoint(vertexTime);
 			const parabolaAxisX : Number = 2 * startToControlVector.x + 2 * vertexTime * diagonalVector.x;
 			const parabolaAxisY : Number = 2 * startToControlVector.y + 2 * vertexTime * diagonalVector.y;
@@ -1731,8 +2077,7 @@ package flash.geom
 			
 			const parabolaConvexity : Number = (parabolaAxisY * (start.x - parabolaVertex.x) - parabolaAxisX * (start.y - parabolaVertex.y)) * (parabolaAxisY * (focusX - parabolaVertex.x) - parabolaAxisX * (focusY - parabolaVertex.y));
 
-			if (parabolaConvexity < 0) 
-			{
+			if (parabolaConvexity < 0) {
 				focusX = parabolaVertex.x + parabolaAxisY / (4 * Math.SQRT2);
 				focusY = parabolaVertex.y - parabolaAxisX / (4 * Math.SQRT2);
 			}
@@ -1823,10 +2168,8 @@ package flash.geom
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 * 
 		 **/
-		public function getPoint(time : Number, point : Point = null) : Point 
-		{
-			if (isNaN(time)) 
-			{
+		public function getPoint(time : Number, point : Point = null) : Point {
+			if (isNaN(time)) {
 				return null;
 			}
 			point = point || new Point();
@@ -1847,8 +2190,7 @@ package flash.geom
 		 * Смысл делать метод для вычисления нескольких значений есть, потому как много общих величин вычисляется предварительно.
 		 */
 
-		protected function getTimesByDistances(distances : Array) : Array 
-		{
+		protected function getTimesByDistances(distances : Array) : Array {
 			const startToControlVector : Point = this.startToControlVector;			
 			const diagonalVector : Point = this.diagonalVector;
 			const curveLength : Number = length;				
@@ -1870,50 +2212,38 @@ package flash.geom
 						
 			var times : Array = new Array();
 						
-			for(var i : int = 0;i < distances.length; i++) 
-			{				
+			for(var i : int = 0;i < distances.length; i++) {				
 				var distance : Number = distances[i];
 				
 				var maxIterations : Number = 20;
 				var time : Number = distance / curveLength;
 		
-				if (diagonalLenght < PRECISION) 
-				{
-					if (controlToStartMultiplyMainDiagonal < PRECISION) 
-					{
-						do 
-						{
+				if (diagonalLenght < PRECISION) {
+					if (controlToStartMultiplyMainDiagonal < PRECISION) {
+						do {
 							arcLength = 2 * startToControlLenght * time;
 							derivativeArcLength = 2 * Math.sqrt(diagonalLenghtPower2 * time * time + controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2) || PRECISION; 
 							time = time - (arcLength - distance) / derivativeArcLength;
 						} while ((Math.abs(arcLength - distance) > PRECISION) && (maxIterations--));
-					} 
-					else 
-					{
-						do 
-						{
+					} else {
+						do {
 							arcLength = (4 / 3) * (controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2) * Math.sqrt(controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2) / controlToStartMultiplyMainDiagonal - (4 / 3) * startToControlLenghtPower2 * startToControlLenght / controlToStartMultiplyMainDiagonal; 
 							derivativeArcLength = 2 * Math.sqrt(diagonalLenghtPower2 * time * time + controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2) || PRECISION;
 							time = time - (arcLength - distance) / derivativeArcLength;
 						} while ((Math.abs(arcLength - distance) > PRECISION) && (maxIterations--));
 					}
-				} 
-				else 
-				{
-					do 
-					{
+				} else {
+					do {
 						integralFrequentPart4 = 2 * Math.sqrt(diagonalLenghtPower2 * time * time + controlToStartMultiplyMainDiagonal * time + startToControlLenghtPower2);
 						integralFrequentPart5 = (controlToStartMultiplyMainDiagonal + 2 * diagonalLenghtPower2 * time) / diagonalLenght + integralFrequentPart4;
 					
 						integralValueInTime = 0.25 * (2 * diagonalLenghtPower2 * time + controlToStartMultiplyMainDiagonal) * integralFrequentPart4 / diagonalLenghtPower2;
 						integralValueInZero = integralFrequentPart2;
 					
-						if (integralFrequentPart5 >= PRECISION) 
-						{						
+						if (integralFrequentPart5 >= PRECISION) {						
 							integralValueInTime += 0.25 * Math.log(integralFrequentPart5) / diagonalLenght * integralFrequentPart1;
 						}					
-						if (integralFrequentPart3 >= PRECISION) 
-						{
+						if (integralFrequentPart3 >= PRECISION) {
 							integralValueInZero += 0.25 * Math.log(controlToStartMultiplyMainDiagonal / diagonalLenght + 2 * startToControlLenght) / diagonalLenght * integralFrequentPart1;
 						}
 					
@@ -1968,23 +2298,18 @@ package flash.geom
 		 * @lang rus
 		 */
 
-		public function getTimeByDistance(distance : Number) : Number 
-		{
-			if (isNaN(distance)) 
-			{
+		public function getTimeByDistance(distance : Number) : Number {
+			if (isNaN(distance)) {
 				return Number.NaN;
 			}
 						
 			const curveLength : Number = this.length;
 						
-			if (__isSegment) 
-			{
-				if (distance <= 0) 
-				{
+			if (__isSegment) {
+				if (distance <= 0) {
 					return 0;
 				}
-				if (distance >= curveLength) 
-				{
+				if (distance >= curveLength) {
 					return 1;
 				}
 			}			
@@ -2044,32 +2369,26 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-		public function getTimesSequence(step : Number, startShift : Number = 0) : Array 
-		{
+		public function getTimesSequence(step : Number, startShift : Number = 0) : Array {
 			step = Math.abs(step);
 						
 			var times : Array = new Array();
 			const curveLength : Number = length;
 			
-			if (startShift > curveLength) 
-			{
+			if (startShift > curveLength) {
 				return times;
 			}
 			
-			if (startShift < 0) 
-			{
+			if (startShift < 0) {
 				startShift = startShift % step + step;
-			} 
-			else 
-			{
+			} else {
 				startShift = startShift % step;
 			}
 			
 			var distance : Number = startShift;
 			var distances : Array = new Array();
 										
-			while (distance <= curveLength) 
-			{				
+			while (distance <= curveLength) {				
 				distances[distances.length] = distance;
 				distance += step;
 			}
@@ -2124,10 +2443,8 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-		public function setPoint(time : Number, newX : Number = undefined, newY : Number = undefined) : void 
-		{
-			if ((isNaN(newX) && isNaN(newY))) 
-			{
+		public function setPoint(time : Number, newX : Number = undefined, newY : Number = undefined) : void {
+			if ((isNaN(newX) && isNaN(newY))) {
 				return;
 			}
 			
@@ -2138,17 +2455,14 @@ package flash.geom
 			
 			var point : Point = this.getPoint(time);
 			
-			if (isNaN(newX)) 
-			{
+			if (isNaN(newX)) {
 				newX = point.x;
 			}
-			if (isNaN(newY)) 
-			{
+			if (isNaN(newY)) {
 				newY = point.y;
 			}
 			
-			switch (time) 
-			{
+			switch (time) {
 				case 0:
 					startPoint.x = newX;
 					startPoint.y = newY; 
@@ -2191,8 +2505,7 @@ package flash.geom
 		 *
 		 **/
 
-		public function angleOffset(value : Number, fulcrum : Point = null) : void 
-		{
+		public function angleOffset(value : Number, fulcrum : Point = null) : void {
 			fulcrum = fulcrum || new Point();
 			
 			const startLine : Line = new Line(fulcrum, startPoint);
@@ -2227,8 +2540,7 @@ package flash.geom
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 *
 		 */
-		public function offset(dX : Number = 0, dY : Number = 0) : void 
-		{
+		public function offset(dX : Number = 0, dY : Number = 0) : void {
 			startPoint.offset(dX, dY);
 			controlPoint.offset(dX, dY);
 			endPoint.offset(dX, dY);
@@ -2247,8 +2559,7 @@ package flash.geom
 		 * 
 		 * @lang rus
 		 */
-		public function getPointOnCurve(point : Point) : Number 
-		{
+		public function getPointOnCurve(point : Point) : Number {
 			const startToControlVector : Point = this.startToControlVector;			
 			const diagonalVector : Point = this.diagonalVector;
 									
@@ -2257,24 +2568,20 @@ package flash.geom
 			var freeCoefficient : Number = start.x - point.x;
 			var solutions : Array = Equations.solveQuadraticEquation(squareCoefficient, linearCoefficient, freeCoefficient);
 			
-			if (! solutions) 
-			{
+			if (!solutions) {
 				squareCoefficient = diagonalVector.y;
 				linearCoefficient = 2 * startToControlVector.y;
 				freeCoefficient = start.y - point.y;
 				solutions = Equations.solveQuadraticEquation(squareCoefficient, linearCoefficient, freeCoefficient);
 				
-				if (! solutions) 
-				{
+				if (!solutions) {
 					return Number.NaN;
 				}
 			}
 			
-			for (var i : uint = 0;i < solutions.length; i++) 
-			{
+			for (var i : uint = 0;i < solutions.length; i++) {
 				var foundPoint : Point = getPoint(solutions[i]);
-				if (Point.distance(foundPoint, point) < PRECISION) 
-				{
+				if (Point.distance(foundPoint, point) < PRECISION) {
 					return solutions[i];				
 				}
 			}
@@ -2325,16 +2632,13 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 **/
-		public function getClosest(fromPoint : Point) : Number 
-		{
-			if (! fromPoint) 
-			{
+		public function getClosest(fromPoint : Point) : Number {
+			if (!fromPoint) {
 				return NaN;
 			}
 				
 			var curveAsPoint : Point = this.curveAsPoint();
-			if (curveAsPoint) 
-			{						
+			if (curveAsPoint) {						
 				return 0;				
 			}
 						
@@ -2353,25 +2657,21 @@ package flash.geom
 			var extremumTimes : Array;
 			var cubicCoefficient : Number, squareCoefficient : Number, linearCoefficient : Number, freeCoefficient : Number;
 			
-			if(diagonalLenght > PRECISION) 
-			{
+			if(diagonalLenght > PRECISION) {
 				cubicCoefficient = 1;
 				squareCoefficient = 3 * controlToStartMultiplyMainDiagonal / diagonalLenghtPower2;
 				linearCoefficient = (2 * startToControlLenghtPower2 + fromPointToStartMultiplyMainDiagonal) / diagonalLenghtPower2;
 				freeCoefficient = fromPointToStartMultiplyStartToControl / diagonalLenghtPower2;
 			
 				extremumTimes = Equations.solveCubicEquation(cubicCoefficient, squareCoefficient, linearCoefficient, freeCoefficient);
-			} 
-			else 
-			{				
+			} else {				
 				linearCoefficient = 2 * startToControlLenghtPower2 + fromPointToStartMultiplyMainDiagonal;
 				freeCoefficient = fromPointToStartMultiplyStartToControl;
 								
 				extremumTimes = Equations.solveLinearEquation(linearCoefficient, freeCoefficient);
 			}
 			
-			if (__isSegment) 
-			{
+			if (__isSegment) {
 				extremumTimes.push(0);
 				extremumTimes.push(1);
 			}
@@ -2385,8 +2685,7 @@ package flash.geom
 			
 			var isInside : Boolean;
 						
-			for (var i : uint = 0;i < extremumTimes.length; i++) 
-			{
+			for (var i : uint = 0;i < extremumTimes.length; i++) {
 				extremumTime = extremumTimes[i];
 				extremumPoint = getPoint(extremumTime);
 				
@@ -2394,20 +2693,16 @@ package flash.geom
 				
 				isInside = (extremumTime >= 0) && (extremumTime <= 1);
 				
-				if (isNaN(closestPointTime)) 
-				{
-					if (! __isSegment || isInside) 
-					{
+				if (isNaN(closestPointTime)) {
+					if (!__isSegment || isInside) {
 						closestPointTime = extremumTime;
 						closestDistance = extremumDistance;
 					}
 					continue;
 				}
 				
-				if (extremumDistance < closestDistance) 
-				{
-					if (! __isSegment || isInside) 
-					{
+				if (extremumDistance < closestDistance) {
+					if (!__isSegment || isInside) {
 						closestPointTime = extremumTime;
 						closestDistance = extremumDistance;
 					}
@@ -2454,8 +2749,7 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-		public function getSegment(fromTime : Number = 0, toTime : Number = 1) : Bezier 
-		{
+		public function getSegment(fromTime : Number = 0, toTime : Number = 1) : Bezier {
 			const segmentStart : Point = getPoint(fromTime);
 			const segmentEnd : Point = getPoint(toTime);
 			const segmentVertex : Point = getPoint((fromTime + toTime) / 2);
@@ -2524,8 +2818,7 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * 
 		 */
-		public function getTangentAngle(time : Number = 0) : Number 
-		{
+		public function getTangentAngle(time : Number = 0) : Number {
 			const startToControlVector : Point = this.startToControlVector;			
 			const diagonalVector : Point = this.diagonalVector;
 						
@@ -2569,15 +2862,13 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */
-		public function intersectionPoint(target : Point) : Intersection 
-		{
+		public function intersectionPoint(target : Point) : Intersection {
 			var intersection : Intersection = new Intersection();
 			
 			var closestTime : Number = this.getClosest(target);
 			var closestPoint : Point = this.getPoint(closestTime);
 						
-			if (Point.distance(target, closestPoint) < PRECISION) 
-			{
+			if (Point.distance(target, closestPoint) < PRECISION) {
 				intersection.addIntersection(closestTime, 0, this.isSegment, false);	
 			}
 
@@ -2629,26 +2920,22 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * @lang rus 
 		 */
-		public function intersectionLine(target : Line) : Intersection 
-		{			
+		public function intersectionLine(target : Line) : Intersection {			
 			var intersection : Intersection = new Intersection();
 			var i : int;
 						
 			var curveAsPoint : Point = this.curveAsPoint();
-			if (curveAsPoint) 
-			{				
+			if (curveAsPoint) {				
 				intersection = target.intersectionPoint(curveAsPoint);
 				intersection.switchCurrentAndTarget();
 				return intersection;				
 			}
 			
 			var curveAsLine : Line = this.curveAsLine();			
-			if (curveAsLine) 
-			{
+			if (curveAsLine) {
 				intersection = target.intersectionLine(curveAsLine);
 				intersection.switchCurrentAndTarget();
-				for (i = 0;i < intersection.currentTimes.length; i++) 
-				{
+				for (i = 0;i < intersection.currentTimes.length; i++) {
 					var point : Point = curveAsLine.getPoint(intersection.currentTimes[i]);
 					intersection.currentTimes[i] = this.getPointOnCurve(point);
 				}
@@ -2656,8 +2943,7 @@ package flash.geom
 			}
 				
 			var targetAsPoint : Point = target.lineAsPoint();
-			if (targetAsPoint) 
-			{				
+			if (targetAsPoint) {				
 				intersection = this.intersectionPoint(targetAsPoint);
 				return intersection;				
 			}
@@ -2684,8 +2970,7 @@ package flash.geom
 			 * Пары решений (t1,t2) соответствуют одной и той же точке.
 			 */
 
-			if (Math.abs(lineVector.x) < PRECISION) 
-			{
+			if (Math.abs(lineVector.x) < PRECISION) {
 				//прямая вертикальна. Уравнение по X имеет только переменную t2. Решаем относительно нее, подставляем во второе уравнение.
 
 				coefficientInPower2 = diagonalVector.x;
@@ -2694,47 +2979,36 @@ package flash.geom
 						
 				solutionsForCurve = Equations.solveQuadraticEquation(coefficientInPower2, coefficientInPower1, coefficientInPower0);
 					
-				if (! solutionsForCurve) 
-				{		
+				if (!solutionsForCurve) {		
 					// вообще, такого быть не может - если кривая совпала с прямой, то она сама прямая, и это обработалось в начале метода			
 					return null;										
 				}
 				
-				if (Math.abs(lineVector.y) < PRECISION) 
-				{	
+				if (Math.abs(lineVector.y) < PRECISION) {	
 					// вообще, такого быть не может - если прямая вырождена в точку, то это обработалось в начале метода
 					// но все же, решение найти можно 
-					for (i = 0;i < solutionsForCurve.length; i++) 
-					{		
+					for (i = 0;i < solutionsForCurve.length; i++) {		
 						solutionForCurve = solutionsForCurve[i];
 						solutionForLine = 0;
 						
 						intersection.addIntersection(solutionForCurve, solutionForLine, this.isSegment, target.isSegment);
 					}						
-				} 
-				else 
-				{
-					for (i = 0;i < solutionsForCurve.length; i++) 
-					{						
+				} else {
+					for (i = 0;i < solutionsForCurve.length; i++) {						
 						solutionForCurve = solutionsForCurve[i];
-						solutionForLine = - (diagonalVector.y * Math.pow(solutionForCurve, 2) + 2 * startToControlVector.y * solutionForCurve + deltaStarts.y) / lineVector.y;
+						solutionForLine = -(diagonalVector.y * Math.pow(solutionForCurve, 2) + 2 * startToControlVector.y * solutionForCurve + deltaStarts.y) / lineVector.y;
 							
 						intersection.addIntersection(solutionForCurve, solutionForLine, this.isSegment, target.isSegment);
 					}
 				}
-			} 
-			else 
-			{
-				if (Math.abs(lineVector.y) < PRECISION) 
-				{
+			} else {
+				if (Math.abs(lineVector.y) < PRECISION) {
 					//прямая горизонтальна. Уравнение по Y имеет только переменную t2. Решаем относительно нее, подставляем в первое уравнение.
 
 					coefficientInPower2 = diagonalVector.y;
 					coefficientInPower1 = 2 * startToControlVector.y;
 					coefficientInPower0 = deltaStarts.y;						
-				} 
-				else 
-				{					
+				} else {					
 					//прямая имеет обе ненулевых координаты, нормируем одну по другой, и собираем одно квадратное уравнение относительно t2.
 
 					const normalizationCoefficient : Number = lineVector.y / lineVector.x;
@@ -2746,16 +3020,14 @@ package flash.geom
 				
 				solutionsForCurve = Equations.solveQuadraticEquation(coefficientInPower2, coefficientInPower1, coefficientInPower0);
 					
-				if (! solutionsForCurve) 
-				{
+				if (!solutionsForCurve) {
 					// вообще, такого быть не может - если кривая совпала с прямой, то она сама прямая, и это обработалось в начале метода			
 					return null;								
 				}
 				
-				for (i = 0;i < solutionsForCurve.length; i++) 
-				{						
+				for (i = 0;i < solutionsForCurve.length; i++) {						
 					solutionForCurve = solutionsForCurve[i];
-					solutionForLine = - (diagonalVector.x * Math.pow(solutionForCurve, 2) + 2 * startToControlVector.x * solutionForCurve + deltaStarts.x) / lineVector.x;
+					solutionForLine = -(diagonalVector.x * Math.pow(solutionForCurve, 2) + 2 * startToControlVector.x * solutionForCurve + deltaStarts.x) / lineVector.x;
 						
 					intersection.addIntersection(solutionForCurve, solutionForLine, this.isSegment, target.isSegment);
 				}
@@ -2802,27 +3074,23 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 */		
-		public function intersectionBezier(target : Bezier) : Intersection 
-		{
+		public function intersectionBezier(target : Bezier) : Intersection {
 			var intersection : Intersection = null;
 			var i : int;
 			var point : Point;
 						
 			var curveAsPoint : Point = this.curveAsPoint();
-			if (curveAsPoint) 
-			{				
+			if (curveAsPoint) {				
 				intersection = target.intersectionPoint(curveAsPoint);
 				intersection.switchCurrentAndTarget();				
 				return intersection;				
 			}
 			
 			var curveAsLine : Line = this.curveAsLine();			
-			if (curveAsLine) 
-			{
+			if (curveAsLine) {
 				intersection = target.intersectionLine(curveAsLine);
 				intersection.switchCurrentAndTarget();
-				for (i = 0;i < intersection.currentTimes.length; i++) 
-				{
+				for (i = 0;i < intersection.currentTimes.length; i++) {
 					point = curveAsLine.getPoint(intersection.currentTimes[i]);
 					intersection.currentTimes[i] = this.getPointOnCurve(point);
 				}
@@ -2830,18 +3098,15 @@ package flash.geom
 			}
 			
 			var targetAsPoint : Point = target.curveAsPoint();
-			if (targetAsPoint) 
-			{				
+			if (targetAsPoint) {				
 				intersection = this.intersectionPoint(targetAsPoint);
 				return intersection;				
 			}
 			
 			var targetAsLine : Line = target.curveAsLine();			
-			if (targetAsLine) 
-			{
+			if (targetAsLine) {
 				intersection = this.intersectionLine(targetAsLine);
-				for (i = 0;i < intersection.currentTimes.length; i++) 
-				{
+				for (i = 0;i < intersection.currentTimes.length; i++) {
 					point = targetAsLine.getPoint(intersection.targetTimes[i]);
 					intersection.targetTimes[i] = target.getPointOnCurve(point);
 				}
@@ -2881,7 +3146,7 @@ package flash.geom
 			
 			// решение «в лоб»		
 			const	part1 : Number = (ax2 * ay1 - ax1 * ay2),
-					part2 : Number = (- ay2 * bx1 + ax2 * by1),
+					part2 : Number = (-ay2 * bx1 + ax2 * by1),
 					part3 : Number = (bx1 * bx1 + 2 * ax1 * cx),
 					part4 : Number = (ay1 * bx2 - ax1 * by2),
 					part5 : Number = (by1 * by1 + 2 * ay1 * cy),
@@ -2889,15 +3154,15 @@ package flash.geom
 					part7 : Number = (bx1 * by1 + ax1 * cy),
 					part8 : Number = (bx2 * by1 - bx1 * by2),
 					part9 : Number = (by1 * cx + bx1 * cy),
-					part10 : Number = (- bx2 * by1 + bx1 * by2),
-					part11 : Number = (- by2 * cx + bx2 * cy),
-					part12 : Number = (- by2 * cx + bx2 * cy);
+					part10 : Number = (-bx2 * by1 + bx1 * by2),
+					part11 : Number = (-by2 * cx + bx2 * cy),
+					part12 : Number = (-by2 * cx + bx2 * cy);
 						
-			const   A : Number = - part1 * part1,
-                    B : Number = - 2 * part1 * part2,
-                    C : Number = - ay2 * ay2 * part3 - ax2 * (by2 * part4 + ax2 * part5) + ay2 * (- ax1 * bx2 * by2 + ay1 * part6 + 2 * ax2 * part7),
-                    D : Number = - 2 * ay2 * ay2 * bx1 * cx + ay2 * (bx2 * part8 + 2 * ax2 * part9) + ax2 * (part10 * by2 - 2 * ax2 * by1 * cy),
-                    E : Number = - ay2 * ay2 * cx * cx + ay2 * (bx2 * part11 + 2 * ax2 * cx * cy) - ax2 * (part12 * by2 + ax2 * cy * cy);
+			const   A : Number = -part1 * part1,
+                    B : Number = -2 * part1 * part2,
+                    C : Number = -ay2 * ay2 * part3 - ax2 * (by2 * part4 + ax2 * part5) + ay2 * (-ax1 * bx2 * by2 + ay1 * part6 + 2 * ax2 * part7),
+                    D : Number = -2 * ay2 * ay2 * bx1 * cx + ay2 * (bx2 * part8 + 2 * ax2 * part9) + ax2 * (part10 * by2 - 2 * ax2 * by1 * cy),
+                    E : Number = -ay2 * ay2 * cx * cx + ay2 * (bx2 * part11 + 2 * ax2 * cx * cy) - ax2 * (part12 * by2 + ax2 * cy * cy);
                         		
 			const solutionsForCurve : Array = Equations.solveEquation(A, B, C, D, E);
 			
@@ -2906,16 +3171,13 @@ package flash.geom
 			//поворачиваем кривую в вертикальное положение. Решение будет одно и только одно.
 			var	tga : Number, sina : Number, cosa : Number;
 					
-			if (Math.abs(ay2) > PRECISION)
-			{
-				tga = - ax2 / ay2;	
+			if (Math.abs(ay2) > PRECISION) {
+				tga = -ax2 / ay2;	
 				sina = tga / Math.sqrt(1 + tga * tga);				
 				cosa = 1 / Math.sqrt(1 + tga * tga);			
-			}			
-			else
-			{
+			} else {
 				tga = 0;
-				sina = (- ax2 > PRECISION) ? 1 : (- ax2) < - PRECISION ? - 1 : 0;
+				sina = (-ax2 > PRECISION) ? 1 : (-ax2) < -PRECISION ? -1 : 0;
 				cosa = 0;
 			}
 								
@@ -2925,8 +3187,7 @@ package flash.geom
 			var	pointSolve : Point;
 			
 			// бесконечное множество решений. То есть есть совпадение кривых
-			if ((Math.abs(A) < PRECISION) && (Math.abs(B) < PRECISION) && (Math.abs(C) < PRECISION) && (Math.abs(D) < PRECISION) && (Math.abs(E) < PRECISION)) 
-			{
+			if ((Math.abs(A) < PRECISION) && (Math.abs(B) < PRECISION) && (Math.abs(C) < PRECISION) && (Math.abs(D) < PRECISION) && (Math.abs(E) < PRECISION)) {
 				var	time1 : Number,
 					time2 : Number,
 					
@@ -2938,31 +3199,25 @@ package flash.geom
 				pointSolve = getPoint(1);
 				time2 = (pointSolve.x * cosa + pointSolve.y * sina - cxn) / bxn;
 				
-				if (time1 * (time1 - 1) <= 0 && time2 * (time2 - 1) <= 0) 
-				{
+				if (time1 * (time1 - 1) <= 0 && time2 * (time2 - 1) <= 0) {
 					rt2 = time2;
 					rt1 = time1; 
 				} 
 				else 
-				if ( time1 * time2 <= 0 && (1 - time1) * (1 - time2) <= 0) 
-				{
+				if ( time1 * time2 <= 0 && (1 - time1) * (1 - time2) <= 0) {
 					rt2 = 1;
 					rt1 = 0; 
 				} 
 				else 
-				if ( time1 * time2 <= 0 && (1 - time1) * (1 - time2) >= 0) 
-				{
+				if ( time1 * time2 <= 0 && (1 - time1) * (1 - time2) >= 0) {
 					rt1 = 0;
 					rt2 = time1 * (time1 - 1) <= 0 ? time1 : time2;
 				} 
 				else 
-				if (time1 * time2 >= 0 && (1 - time1) * (1 - time2) <= 0) 
-				{
+				if (time1 * time2 >= 0 && (1 - time1) * (1 - time2) <= 0) {
 					rt1 = 1;
 					rt2 = time1 * (time1 - 1) <= 0 ? time1 : time2;
-				} 
-				else 
-				{
+				} else {
 					// нет пересечений
 					return intersection;
 				}				
@@ -2973,8 +3228,7 @@ package flash.geom
 			}
 			
 			
-			for(i = 0 ;i < solutionsForCurve.length; i++) 
-			{
+			for(i = 0 ;i < solutionsForCurve.length; i++) {
 				var solutionForCurve : Number = solutionsForCurve[i];
 				var solutionForTarget : Number;			
 								
@@ -3000,8 +3254,7 @@ package flash.geom
 		 * @return String описание объекта
 		 * 
 		 */
-		public function toString() : String 
-		{
+		public function toString() : String {
 			return 	"(start:" + startPoint + ", control:" + controlPoint + ", end:" + endPoint + ")";
 		}
 	}

@@ -1,8 +1,7 @@
 // UTF-8
 // translator: Flastar http://flastar.110mb.com
 
-package flash.geom 
-{
+package flash.geom {
 
 	/* *
 	 * Если пересечение существует, то результатом вычисления может быть либо массив точек,
@@ -52,40 +51,42 @@ package flash.geom
 	 * (управляющие точки лежат на одной линии).<BR/>
 	 * В вырожденном случае возможна ситуация, при котором совпадение даст два отрезка (4 итератора).  
 	 * 
+	 * @langversion 3.0
+	 * @playerversion Flash 9.0
 	 * 
+	 * @lang rus
 	 */
 	/**
-	 * If crossing exist, then result can be of array of points,
-	 * or full or brownout coincidence of shapes.<BR/>
+	 * If the intersection exists, then the result of calculation can be either an array of pixels, 
+	 * or full or partial coincidence of the figures.<BR/>
 	 * <BR/>
-	 * If variable <code>isCoincidence=false</code>, it means that shapes are crossing and not equally.
-	 * In that case array <code>currentTimes</code> will have interators of points of crossing
-	 * on current objects, and array <code>targetTimes</code> will contain interators of points
-	 * of crossing on object.<BR/>
-	 * <BR/>
-	 * If variable <code>isCoincidence=true</code>, it means that found coincidence.<BR/>
-	 * Coincidence describes by pair of interators, determinant begin and end of shape coincidence.<BR/>
-	 * Use method <code>getSegment</code> for get coincidence shapes.<BR/>
-	 * <BR/>
-	 * For example, if you get crossing of two curves of Bezier, you must check, 
-	 * are they crossing? And further work in influence from his type:
+	 * If the value <code>isCoincidence=false</code>, then the figures have intersection and do not coincide.
+	 * In this case, the array <code>currentTimes </code> will contain the intersection points of 
+	 * the iterators of the current object, and an array <code>targetTimes</code> will contain the 
+	 * intersection points of the iterators of the target object.<BR/>
+	 * If the value <code>isCoincidence=true</code>, then a coincidence is found.<BR/>
+	 * The coincidence is described by the pair of iterators defining the beginning and 
+	 * the end of the coincidence figure.<BR/>
+	 * Use the method <code>getSegment</code> for coincidence figures.<BR/>
+	 * For example, obtaining the intersection of two Bezier curves, you want to check were there the 
+	 * intersection, and further process it depending on its type:<BR/>
 	 * <BR/>
 	 * <listing version="3.0">
 	 * var intersection:Intersection = currentBezier.intersectionBezier(targetBezier);
 	 * if (intersection) {
 	 * 	if (intersection.isCoincidence) {
-	 * 		// processing of coincidence
+	 * 		// Coincidence processing
 	 * 	} else {
-	 * 		// processing of crossing
+	 * 		// Intersection processing
 	 * 	}
 	 * }
 	 * </listing>
 	 * <BR/>
 	 * <BR/>
-	 * Coincidence of two segment of lines can be only segment of line.
-	 * He will be describe how pair if variables in array currentTimes
-	 * and correspond pair of variables in array targetTimes.<BR/>
-	 * Segment of line can get:<BR/>
+	 * The coincidence of the two segments can only be a segment.
+	 * It will be described as a pair of values in the array currentTimes and the corresponding 
+	 * pair of values in the array targetTimes.<BR/>
+	 * The segment can be obtained in following ways:<BR/>
 	 * <listing version="3.0">
 	 * currentLine.getSegment(intersection.currentTimes[0], intersection.currentTimes[1]);
 	 * </listing>
@@ -93,46 +94,40 @@ package flash.geom
 	 * <listing version="3.0">
 	 * targetLine.getSegment(intersection.targetTimes[0], intersection.targetTimes[1]);
 	 * </listing>
-	 * Result of this two calculation will be two equivalent segments of line.<BR/>
-	 * 
+	 * The results of these two calculations will be two equivalent segments.
 	 * <BR/>
 	 * <BR/>
+	 * Coincidence of the segment and the Bezier curve can be only if the Bezier curve 
+	 * is degenerate (control points lie on one line).<BR/>
 	 * 
-	 * Coincidence segment of line and curve of Bezier can be only, if curve of Bezier to give rise
-	 * (administrator points lie at one line).<BR/>
-	 * 
+	 * @langversion 3.0
+	 * @playerversion Flash 9.0
 	 * 
 	 */	 
-	public class Intersection extends Object 
-	{
+	public class Intersection extends Object {
 
 		
-		public static function isIntersectionPossible(current : Rectangle, target : Rectangle) : Boolean 
-		{
+		public static function isIntersectionPossible(current : Rectangle, target : Rectangle) : Boolean {
 			current = current.clone();
 			target = target.clone();
 			
 			// fix negative
-			if (current.width < 0) 
-			{
+			if (current.width < 0) {
 				current.x += current.width;
-				current.width = - current.width;
+				current.width = -current.width;
 			}
-			if (current.height < 0) 
-			{
+			if (current.height < 0) {
 				current.y += current.height;
-				current.height = - current.height;
+				current.height = -current.height;
 			}
 			
-			if (target.width < 0) 
-			{
+			if (target.width < 0) {
 				target.x += target.width;
-				target.width = - target.width;
+				target.width = -target.width;
 			}
-			if (target.height < 0) 
-			{
+			if (target.height < 0) {
 				target.y += target.height;
-				target.height = - target.height;
+				target.height = -target.height;
 			}
 			// fix zero
 			current.width += 1e-10;
@@ -148,11 +143,19 @@ package flash.geom
 		/* *
 		 * Свойство, указывающее на тип пересечения. 
 		 * 
-		 */
-		/**
-		 * Property, that show type of crossing.<BR/> 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 * 
+		 * @lang rus
 		 */
+		 
+		/**
+		 * The property that specifies the type of intersection. 
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 */
+
 		public var isCoincidence : Boolean = false;
 
 		public var coincidenceLine : Line;
@@ -161,42 +164,75 @@ package flash.geom
 
 		/* *
 		 * Массив, содержащий time-итераторы точек пересечения.
-		 * time-итераторы задаются для объекта, метод которого был вызван. 
+		 * time-итераторы задаются для объекта, метод которого был вызван.
+		 *  
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
 		 **/
+		 
 		/**
 		 * Array, having time-interators of points of crossing.
-		 * time-interators given for object, method whose was call. 
+		 * time-interators given for object, method whose was call.
+		 *  
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
 		 **/
 		public const currentTimes : Array = new Array();
 
 		/* *
 		 * Массив, содержащий time-итераторы точек пересечения.
 		 * time-итераторы задаются для объекта, который был передан 
-		 * в качестве аргумента при вызове метода получения пересечений. 
+		 * в качестве аргумента при вызове метода получения пересечений.
+		 *  
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 * 
+		 * @lang rus
 		 **/
+		 
 		/**
-		 * Array, having time-interators of points of crossing.
-		 * time-interators given for object, whose was dan 
-		 * in role argument with calling method for getting crossings. 
+		 * Array containing time-iterators of points of intersection.
+		 * time-iterators are defined for an object that was passed as an argument 
+		 * when calling the method for obtaining intersection.
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
 		 **/
+		 
 		public const targetTimes : Array = new Array();
 
 		
 		/* *
 		 * Меняет местами time-итераторы текущей и таргет фигур.
-		 * Метод часто используется там, где делается перевызов на другой метод пересечения, например, с вырожденной фигурой.
-		 * Не стоит забывать в таких случаях, что у разных фигур могут быть разные итераторы для одной и той же точки. 
-		 * Если есть такая опасность, то следует дополнительно скорректировать time-итераторы через методы getPoint и getPointOnCurve.
+		 * Метод часто используется там, где делается перевызов на другой метод пересечения, например, 
+		 * с вырожденной фигурой. Не стоит забывать в таких случаях, что у разных фигур могут быть 
+		 * разные итераторы для одной и той же точки. 
+		 * Если есть такая опасность, то следует дополнительно скорректировать time-итераторы через 
+		 * методы getPoint и getPointOnCurve.
 		 *    
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
+		 * 
 		 * @lang rus
 		 **/
-		public function switchCurrentAndTarget() : void
-		{
+		 
+		/* *
+		 * Swaps time-iterators of current and target figures.
+		 * The method is often used where another method of intersection is recalled, for example, with 
+		 * a degenerate figure. In such cases remember, that different figures can have different iterators 
+		 * for the same point.
+		 * If there is such a possibility, time-iterators should be further adjusted through the methods 
+		 * getPoint and getPointOnCurve.
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 **/
+		public function switchCurrentAndTarget() : void {
 			var time : Number;
-			for(var i : int = 0;i < currentTimes.length; i++) 
-			{
+			for(var i : int = 0;i < currentTimes.length; i++) {
 				time = currentTimes[i];
 				currentTimes[i] = targetTimes[i];
 				targetTimes[i] = time;
@@ -217,14 +253,27 @@ package flash.geom
 		 * @playerversion Flash 9.0
 		 * @lang rus
 		 **/
+		 
+		/* *
+		 * Adds a new point of intersection, with the respect to the flags of limitation of intersecting figures.
+		 * 
+		 * @param solutionForCurrent:Number time-iterator for the current figure
+		 * @param solutionForTarget:Number time-iterator for the intersecting figure
+		 * @param currentIsSegment:Boolean flag of limitation for the current figure
+		 * @param targetIsSegment:Boolean flag of limitation for the intersecting figure
+		 * 
+		 * @return Intersection current object with intersection
+		 * 
+		 * 
+		 * @langversion 3.0
+		 * @playerversion Flash 9.0
+		 **/
 
-		public function addIntersection(solutionForCurrent : Number, solutionForTarget : Number, currentIsSegment : Boolean, targetIsSegment : Boolean) : Intersection
-		{						
-			var segmentRestrictionForCurve : Boolean = (! currentIsSegment) || ((solutionForCurrent >= 0) && (solutionForCurrent <= 1));
-			var segmentRestrictionForLine : Boolean = (! targetIsSegment) || ((solutionForTarget >= 0) && (solutionForTarget <= 1));
+		public function addIntersection(solutionForCurrent : Number, solutionForTarget : Number, currentIsSegment : Boolean, targetIsSegment : Boolean) : Intersection {						
+			const segmentRestrictionForCurve : Boolean = (!currentIsSegment) || ((solutionForCurrent >= 0) && (solutionForCurrent <= 1));
+			const segmentRestrictionForLine : Boolean = (!targetIsSegment) || ((solutionForTarget >= 0) && (solutionForTarget <= 1));
 							
-			if (segmentRestrictionForCurve && segmentRestrictionForLine)	
-			{								
+			if (segmentRestrictionForCurve && segmentRestrictionForLine) {								
 				targetTimes.push(solutionForTarget);
 				currentTimes.push(solutionForCurrent);
 			}
