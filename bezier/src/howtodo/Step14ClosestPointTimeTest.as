@@ -34,9 +34,9 @@ package howtodo {
 			control.y = 300;
 			end.x = 700;
 			end.y = 500;
+			bezier.isSegment = false;	
 									
 			addTextField(fpsTextField, 100, 50);
-			
 			addChild(closestPoint);
 			
 			stage.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMoveHandler);
@@ -72,9 +72,7 @@ package howtodo {
 		{			
 			var i:int;
 			var closestTime:Number;
-						
-			bezier.isSegment = false;	
-			
+
 			var calculationTime : Number = getTimer();
 			for(i=0; i<1000; i++)
 			{
