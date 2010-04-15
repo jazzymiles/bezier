@@ -77,7 +77,7 @@ package howtodo {
 		}	
 
 		private function updateOutText(time : Number) : void {
-			fpsTextField.text = "time for 1000 iterations: " + time + "\n" + (time / 1000) + " ms. per one";
+			fpsTextField.text = "1000 iterations duration - " + time + "milliseconds\n" + (time / 1000) + " milliseconds spent on single method call";
 		}
 
 		private function onKeyUpHandler(event : KeyboardEvent) : void {
