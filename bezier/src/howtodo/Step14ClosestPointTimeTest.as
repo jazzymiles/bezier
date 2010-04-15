@@ -1,18 +1,14 @@
-package howtodo 
-{
-	import flash.utils.clearInterval;	
-	import flash.utils.setInterval;	
-	import flash.events.Event;	
-	import flash.text.TextFieldAutoSize;	
-	import flash.text.TextField;	
+package howtodo {
+	import howtodo.view.DragPoint;
+	
 	import flash.events.MouseEvent;
 	import flash.geom.Bezier;
 	import flash.geom.Line;
 	import flash.geom.Point;
-	
-	import howtodo.view.DragPoint;	
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
+	import flash.utils.getTimer;	
 
-	
 	public class Step14ClosestPointTimeTest extends BezierUsage 
 	{
 		
@@ -21,14 +17,9 @@ package howtodo
 		private const closestPoint:DragPoint = new DragPoint();
 		private const mouse:Point = new Point();
 		private var fpsTextField : TextField = new TextField();		
-		private var framesCounter:int = 0;
-		private var intervalCookie:int = 0;
 				
 		public function Step14ClosestPointTimeTest () {
 			super();
-			
-			addEventListener(Event.ADDED_TO_STAGE, onAddedTotageHandler);
-			addEventListener(Event.REMOVED_FROM_STAGE, onRemoveFromStageHandler);
 		}
 		
 		override protected function init():void 
@@ -44,7 +35,7 @@ package howtodo
 			end.x = 700;
 			end.y = 500;
 									
-			addTextField(fpsTextField, 100, 80);
+			addTextField(fpsTextField, 100, 50);
 			
 			addChild(closestPoint);
 			
@@ -53,26 +44,8 @@ package howtodo
 			redraw();
 		}
 		
-		private function onAddedTotageHandler(event : Event) : void
-		{
-			intervalCookie = setInterval(updateFps, 1000);
-			stage.addEventListener(Event.ENTER_FRAME, onEnterFrameHandler);
-		}
-		private function onRemoveFromStageHandler(event : Event) : void
-		{
-			clearInterval(intervalCookie);
-			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrameHandler);
-		}
-
-		private function updateFps() : void
-		{
-			fpsTextField.text = "FPS: "+framesCounter+"/"+stage.frameRate;
-			framesCounter = 0;
-		}
-
-		private function onEnterFrameHandler(event:Event) : void
-		{
-			redraw();
+		private function updateOutText(time : Number) : void {
+			fpsTextField.text = "1000 iterations duration - " + time + "milliseconds\n" + (time / 1000) + " milliseconds spent on single method call";
 		}
 
 		private function addTextField(textField:TextField, x:Number, y:Number) : void 
@@ -92,20 +65,23 @@ package howtodo
 		{
 			mouse.x = event.stageX;
 			mouse.y = event.stageY;
+			redraw();
 		}
 		
 		private function redraw ():void 
 		{			
-			framesCounter += 1;
-						
 			var i:int;
 			var closestTime:Number;
 						
 			bezier.isSegment = false;	
+			
+			var calculationTime : Number = getTimer();
 			for(i=0; i<1000; i++)
 			{
 				closestTime = bezier.getClosest(mouse);		
 			}
+			calculationTime = getTimer() - calculationTime;
+			updateOutText(calculationTime);
 											
 			closestPoint.position = bezier.getPoint(closestTime);						
 			closestPoint.pointName = "P("+round(closestTime, 3)+")";
