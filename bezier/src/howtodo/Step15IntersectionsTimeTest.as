@@ -1,5 +1,5 @@
-package howtodo 
-{
+package howtodo {
+	import flash.utils.getTimer;	
 	import flash.utils.clearInterval;	
 	import flash.text.TextFieldAutoSize;	
 	import flash.utils.setInterval;	
@@ -11,38 +11,33 @@ package howtodo
 	import flash.geom.Line;
 	import flash.geom.Point;
 	import flash.ui.Keyboard;
-	
+
 	import howtodo.view.DragPoint;		
 
 	public class Step15IntersectionsTimeTest extends BezierUsage {
 
-		private static const DESCRIPTION:String = "<B>Bezier-Bezier intersection time test</B><BR/> every frame does 1000 intersections";
+		private static const DESCRIPTION : String = "<B>Bezier-Bezier intersection time test</B><BR/> every frame does 1000 intersections";
 
-		private static const GREEN:uint = 0x00FF00; 
-		private static const GRAY:uint = 0x333333; 
-		private static const BLUE:uint = 0x0000FF; 
+		private static const GREEN : uint = 0x00FF00; 
+		private static const GRAY : uint = 0x333333; 
+		private static const BLUE : uint = 0x0000FF; 
 
-		protected var bezierBlue:Bezier;
-		
-		protected const startGray:DragPoint = new DragPoint();
-		protected const controlGray:DragPoint = new DragPoint();
-		protected const endGray:DragPoint = new DragPoint();
-		protected const bezierGray:Bezier = new Bezier(startGray.point, controlGray.point, endGray.point);
-		
-		protected const intersections:Array = [];
+		protected var bezierBlue : Bezier;
+
+		protected const startGray : DragPoint = new DragPoint();
+		protected const controlGray : DragPoint = new DragPoint();
+		protected const endGray : DragPoint = new DragPoint();
+		protected const bezierGray : Bezier = new Bezier(startGray.point, controlGray.point, endGray.point);
+
+		protected const intersections : Array = [];
 
 		private var fpsTextField : TextField = new TextField();		
-		private var framesCounter:int = 0;
-		private var intervalCookie:int = 0;
-		
+
 		public function Step15IntersectionsTimeTest() {
 			super();
-			
-			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
-			addEventListener(Event.REMOVED_FROM_STAGE, onRemoveFromStage);
 		}
 
-		override protected function init():void {
+		override protected function init() : void {
 			
 			addEventListener(KeyboardEvent.KEY_UP, onKeyUpHandler);
 			
@@ -62,28 +57,14 @@ package howtodo
 			bezierBlue.isSegment = false;
 			bezierGray.isSegment = false;
 			
-			setTestPosition(100,400, 800,500, 100,600, 
-							200,700, 300,100, 400,700,
-							100,300, 500,750);
+			setTestPosition(100, 400, 800, 500, 100, 600, 200, 700, 300, 100, 400, 700, 100, 300, 500, 750);
 							
-			addTextField(fpsTextField, 100, 80);
+			addTextField(fpsTextField, 100, 50);
 										
 			onPointMoved();
 		}
-		
-		private function onAddedToStage(event : Event) : void
-		{			
-			intervalCookie = setInterval(updateFps, 1000);
-			addEventListener(Event.ENTER_FRAME, onEnterFrameHandler);
-		}
-		private function onRemoveFromStage(event : Event) : void
-		{
-			clearInterval(intervalCookie);
-			removeEventListener(Event.ENTER_FRAME, onEnterFrameHandler);
-		}
-		
-		private function addTextField(textField:TextField, x:Number, y:Number) : void 
-		{			
+
+		private function addTextField(textField : TextField, x : Number, y : Number) : void {			
 			textField.selectable = false;
 			textField.wordWrap = false;
 			textField.multiline = true;
@@ -94,30 +75,21 @@ package howtodo
 			textField.y = y;
 			addChild(textField);
 		}	
-		
-		private function updateFps() : void
-		{
-			fpsTextField.text = "FPS: "+framesCounter;
-			framesCounter = 0;
+
+		private function updateOutText(time : Number) : void {
+			fpsTextField.text = "time for 1000 iterations: " + time + "\n" + (time / 1000) + " ms. per one";
 		}
 
-		private function onEnterFrameHandler(event:Event) : void
-		{
-			framesCounter += 1;
-			onPointMoved();
-		}
-		
-		private function onKeyUpHandler(event:KeyboardEvent):void {
+		private function onKeyUpHandler(event : KeyboardEvent) : void {
 			if (event.keyCode == Keyboard.SPACE) {
 				trace(getTestPosition());
 			}
 		}
 
 		private function setTestPosition(
-				s0x:Number, s0y:Number, c0x:Number, c0y:Number, e0x:Number, e0y:Number,
-				s1x:Number, s1y:Number, c1x:Number, c1y:Number, e1x:Number, e1y:Number, 
-				s2x:Number, s2y:Number, e2x:Number, e2y:Number):void 
-		{
+				s0x : Number, s0y : Number, c0x : Number, c0y : Number, e0x : Number, e0y : Number,
+				s1x : Number, s1y : Number, c1x : Number, c1y : Number, e1x : Number, e1y : Number, 
+				s2x : Number, s2y : Number, e2x : Number, e2y : Number) : void {
 			start.x = s0x;
 			start.y = s0y;
 			control.x = c0x;
@@ -132,10 +104,9 @@ package howtodo
 			endGray.x = e1x;
 			endGray.y = e1y;					
 		}
-		
-		private function getTestPosition ():String {
-			return ""+[
-			start.x,
+
+		private function getTestPosition() : String {
+			return "" + [start.x,
 			start.y,
 			control.x,
 			control.y,
@@ -147,13 +118,11 @@ package howtodo
 			controlGray.x,
 			controlGray.y,
 			endGray.x,
-			endGray.y
-			];
+			endGray.y];
 		}
 
 		
-		override protected function onPointMoved(event:Event = undefined):void 
-		{			
+		override protected function onPointMoved(event : Event = undefined) : void {			
 			
 			
 			graphics.clear();
@@ -169,16 +138,19 @@ package howtodo
 			showBezierBezierIntersection(bezierBlue, bezierGray);			
 		}
 
-		protected function showBezierBezierIntersection(curve1:Bezier, curve2:Bezier):void {
-			var time:Number;
-			var isect:Intersection;
+		protected function showBezierBezierIntersection(curve1 : Bezier, curve2 : Bezier) : void {
+			var time : Number;
+			var isect : Intersection;
 			
-			for (var j:int=0; j<1000; j++)
-			{
+			var calculationTime : Number = getTimer();
+			for (var j : int = 0;j < 1000; j++) {
 				isect = curve1.intersectionBezier(curve2);
 			}
+			calculationTime = getTimer() - calculationTime;
+			updateOutText(calculationTime);
+			
 			if (isect) {
-				for (var i:uint = 0;i < isect.currentTimes.length; i++) {
+				for (var i : uint = 0;i < isect.currentTimes.length; i++) {
 					time = isect.currentTimes[i];
 					showIntersection(curve1.getPoint(time), false, time);
 					time = isect.targetTimes[i];
@@ -187,11 +159,11 @@ package howtodo
 			}
 		}
 
-		protected function showLineBezierIntersection(curve:Bezier, line:Line):void {
-			var isect:Intersection = curve.intersectionLine(line);
+		protected function showLineBezierIntersection(curve : Bezier, line : Line) : void {
+			var isect : Intersection = curve.intersectionLine(line);
 			if (isect) {
 				if (isect.currentTimes.length) {
-					var time:Number = isect.currentTimes[0];
+					var time : Number = isect.currentTimes[0];
 					showIntersection(curve.getPoint(time), false, time);
 					time = isect.targetTimes[0];
 					showIntersection(line.getPoint(time), true, time);
@@ -206,11 +178,11 @@ package howtodo
 			}
 		}
 
-		protected function showLineLineIntersection(line1:Line, line2:Line):void {
-			var isect:Intersection = line1.intersectionLine(line2);
+		protected function showLineLineIntersection(line1 : Line, line2 : Line) : void {
+			var isect : Intersection = line1.intersectionLine(line2);
 			if (isect) {
 				if (isect.currentTimes.length) {
-					var time:Number = isect.currentTimes[0];
+					var time : Number = isect.currentTimes[0];
 					showIntersection(line1.getPoint(time), false, time);
 					time = isect.targetTimes[0];
 					showIntersection(line2.getPoint(time), true, time);
@@ -225,9 +197,9 @@ package howtodo
 			}
 		}
 
-		protected function showIntersection(point:Point, small:Boolean, time:Number):DragPoint {
+		protected function showIntersection(point : Point, small : Boolean, time : Number) : DragPoint {
 			if (point is Point) {
-				var intersection:DragPoint = new DragPoint();
+				var intersection : DragPoint = new DragPoint();
 				intersection.position = point;
 				addChild(intersection);
 				intersections.push(intersection);
@@ -241,9 +213,9 @@ package howtodo
 			return null;
 		}
 
-		protected function removeIntersections():void {
+		protected function removeIntersections() : void {
 			while(intersections.length) {
-				var intersectionPoint:DragPoint = intersections.pop();
+				var intersectionPoint : DragPoint = intersections.pop();
 				removeChild(intersectionPoint);
 			}
 		}
