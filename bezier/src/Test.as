@@ -5,7 +5,7 @@ package {
 	import flash.display.StageScaleMode;
 	import flash.events.Event;
 	import flash.text.TextField;
-	
+
 	import howtodo.*;
 	import howtodo.view.DragPoint;
 	import howtodo.view.GridInput;
@@ -18,8 +18,7 @@ package {
 		
 		private var stepContainer : Sprite;
 
-		private const constructors : Array = [
-			Step01Building,
+		private const constructors : Array = [Step01Building,
 			Step02ClosestPoint,
 			Step03EditDrag,
 			Step04EmulationCubic,
@@ -50,18 +49,18 @@ package {
 			
 			showByFlashvars();
 		}
-		
+
 		private function showByFlashvars() : void {
-			var demoNum:Number = Number(stage.loaderInfo.parameters["demo"]);
+			var demoNum : Number = Number(stage.loaderInfo.parameters["demo"]);
 			if (!isNaN(demoNum)) {
 				try {
-					var switchButton : SwitchButton = switchButtonsTarget.getChildAt(demoNum-1) as SwitchButton;
+					var switchButton : SwitchButton = switchButtonsTarget.getChildAt(demoNum - 1) as SwitchButton;
 					switchButton.onMouseClick(null);
-				} catch (err:Error) {
+				} catch (err : Error) {
 				}
 			}
 		}
-		
+
 		private function initSwitchButtons() : void {
 			addChild(switchButtonsTarget);
 			switchButtonsTarget.x = 405;

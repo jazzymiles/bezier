@@ -54,6 +54,8 @@ package flash.geom {
 
 	public class Line extends Object implements IParametric {
 
+		private static const POINT0 : Point = new Point();
+		private static const POINT1 : Point = new Point();
 		
 		protected static const PRECISION : Number = Equations.PRECISION;
 
@@ -400,112 +402,6 @@ package flash.geom {
 			return new Line(__start.clone(), __end.clone(), __isSegment);
 		}
 
-		
-		/* *
-		 * Получение вектора из начальной точки прямой в конечную точку.
-		 * Обратный вектор можно получить методом <a href="#endToStartVector">endToStartVector</a><BR/> 
-		 *  
-		 * @see #endToStartVector
-		 * 
-		 * @return Point вектор из начальной точки в конечную
-		 * 
-		 * @example В этом примере создается прямая, и выводится вектор из начальной точки в конечную.
-		 * <listing version="3.0">
-		 * import flash.geom.Line;
-		 * import flash.geom.Point;
-		 *		
-		 * const line:Line = new Line( new Point(100, 300), new Point(400, 200));
-		 * const point:Point = line.startToEndVector;
-		 * trace(point.x+" "+point.y); //300 -100
-		 *  
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */
-		 		
-		/**
-		 * Obtaining a vector from the initial point of a line to the end point.
-		 * Vector can be obtained by the method a href="#endToStartVector">endToStartVector</a><BR/>
-		 * 
-		 * @see #endToStartVector
-		 * 
-		 * @return Point vector from the initial point to the end point
-		 * 
-		 * @example This example creates a line and draws a vector from the initial point to the end point
-		 * 
-		 * <listing version="3.0">
-		 * import flash.geom.Line;
-		 * import flash.geom.Point;
-		 *		
-		 * const line:Line = new Line( new Point(100, 300), new Point(400, 200));
-		 * const point:Point = line.startToEndVector;
-		 * trace(point.x + " " + point.y); //300 -100
-		 *  
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 */		
-		public function get startToEndVector() : Point {
-			return new Point(end.x - start.x, end.y - start.y);			
-		}
-
-		/* *
-		 * Получение вектора из конечной точки прямой в начальную точку.
-		 * Обратный вектор можно получить методом <a href="#endToStartVector">startToEndVector</a><BR/> 
-		 *  
-		 * @see #startToEndVector
-		 * 
-		 * @return Point вектор из конечной точки в начальную
-		 * 
-		 * @example В этом примере создается прямая, и выводится вектор из конечной точки в начальную.
-		 * <listing version="3.0">
-		 * import flash.geom.Line;
-		 * import flash.geom.Point;
-		 *		
-		 * const line:Line = new Line( new Point(100, 300), new Point(400, 200));
-		 * var point:Point = line.endToStartVector;
-		 * trace(point.x + " " + point.y); //-300 100
-		 * 
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */
-		 		
-		/**
-		 * Obtaining a vector from the end point of a line to the initial point.
-		 * Reverse vector can be obtained by the method <a href="#endToStartVector">startToEndVector</a><BR/>
-		 * 
-		 * @see #startToEndVector
-		 * 
-		 * @return Point a vector from the end point to the initial point
-		 * 
-		 * @example This example creates a line and draws a vector from the end point to the initial point.
-		 * <listing version="3.0">
-		 * import flash.geom.Line;
-		 * import flash.geom.Point;
-		 *		
-		 * const line:Line = new Line( new Point(100, 300), new Point(400, 200));
-		 * var point:Point = line.endToStartVector;
-		 * trace(point.x + " " + point.y); //-300 100
-		 *  
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 */		
-		public function get endToStartVector() : Point {
-			return new Point(start.x - end.x, start.y - end.y);			
-		}
-
-		
 		/* *
 		 * Проверка вырожденности прямой в точку.
 		 * Если прямая вырождена в точку, то возвращается объект класса Point с координатой точки, в которую вырождена прямая.
@@ -562,8 +458,12 @@ package flash.geom {
 		 */
 		 
 		// Логика работы метода - проверка, что опорные точки прямой совпадают, с учетом допуска.
-		public function lineAsPoint() : Point {
-			if (this.startToEndVector.length < PRECISION) {
+		public function asPoint() : Point {
+			const startToEndVector:Point = POINT0;
+			startToEndVector.x = end.x - start.x;
+			startToEndVector.y = end.y - start.y;
+			
+			if (startToEndVector.length < PRECISION) {
 				return start.clone();				
 			} else {
 				return null;
@@ -633,7 +533,9 @@ package flash.geom {
 
 		
 		public function angleOffset(value : Number, fulcrum : Point = null) : void {
-			fulcrum = fulcrum || new Point();
+			fulcrum = fulcrum || POINT0;
+			POINT0.x = 0;
+			POINT0.y = 0;
 			const startLine : Line = new Line(fulcrum, __start);
 			startLine.angle += value;
 			const endLine : Line = new Line(fulcrum, __end);
@@ -1484,8 +1386,13 @@ package flash.geom {
 				} 
 			}
 			
-			var startToEndVector : Point = this.startToEndVector;
-			var targetStartToEndVector : Point = targetLine.startToEndVector;
+			const startToEndVector:Point = POINT0;
+			startToEndVector.x = end.x - start.x;
+			startToEndVector.y = end.y - start.y;
+			
+			const targetStartToEndVector:Point = POINT1;
+			startToEndVector.x = targetLine.end.x - targetLine.start.x;
+			startToEndVector.y = targetLine.end.y - targetLine.start.y;
 			
 			const currentDeterminant : Number = startToEndVector.x * __start.y - startToEndVector.y * __start.x;
 			const targetDeterminant : Number = targetStartToEndVector.x * targetLine.__start.y - targetStartToEndVector.y * targetLine.__start.x;
@@ -1534,6 +1441,7 @@ package flash.geom {
 					}
 					var startPoint : Point = new Point(coincidenceStartTime * startToEndVector.x + __start.x, coincidenceStartTime * startToEndVector.y + __start.y);
 					var endPoint : Point = new Point(coincidenceEndTime * startToEndVector.x + __start.x, coincidenceEndTime * startToEndVector.y + __start.y);
+					
 					intersection.coincidenceLine = new Line(startPoint, endPoint);
 				}
 				
@@ -1682,10 +1590,13 @@ package flash.geom {
 		 **/
 
 		public function getClosest(fromPoint : Point) : Number {
-			const startToEndVector : Point = this.startToEndVector;
+			const startToEndVector:Point = POINT0;
+			startToEndVector.x = end.x - start.x;
+			startToEndVector.y = end.y - start.y;
+			
 			const startToEndLength : Number = startToEndVector.length;
-						
-			if( startToEndLength < PRECISION) {
+				
+			if(startToEndLength < PRECISION) {
 				return 0;
 			}
 			

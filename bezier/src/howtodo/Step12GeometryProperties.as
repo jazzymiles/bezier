@@ -117,7 +117,8 @@ package howtodo
 			closestPoint.position = bezier.getPoint(closestPointTime);						
 			closestPoint.pointName = "closest";
 			
-			diagonalPoint.position = bezier.oppositeControl;
+			const oppositeControl : Point = new Point(bezier.start.x - bezier.control.x + bezier.end.x, bezier.start.y - bezier.control.y + bezier.end.y);	
+			diagonalPoint.position = oppositeControl;
 			diagonalPoint.pointName = "diagonal";	
 			
 			parabolaVertexPoint.position = bezier.getPoint(bezier.parabolaVertex);
@@ -127,7 +128,7 @@ package howtodo
 			parabolaFocusPoint.pointName = "focus";	
 			
 			var curveText:String = "bezier is simple convex curve";
-			var curveAsPoint:Point = bezier.curveAsPoint();
+			var curveAsPoint:Point = bezier.asPoint();
 			var curveAsLine:Line = bezier.curveAsLine();
 			
 			if (curveAsPoint)
@@ -157,12 +158,18 @@ package howtodo
 						
 			// рисуем основные вектора			
 			graphics.lineStyle(0, 0x00FF00, 0.5);
-			drawLine(new Line(bezier.start, bezier.start.add(bezier.startToEndVector)));	
-			drawLine(new Line(bezier.start, bezier.start.add(bezier.startToControlVector)));	
-			drawLine(new Line(bezier.start, bezier.oppositeControl));	
-			drawLine(new Line(bezier.control, bezier.control.add(bezier.controlToEndVector)));	
-			drawLine(new Line(bezier.control, bezier.control.add(bezier.diagonalVector)));	
-			drawLine(new Line(bezier.end, bezier.oppositeControl));	
+			
+			const startToControlVector : Point = new Point(bezier.control.x - bezier.start.x, bezier.control.y - bezier.start.y);
+			const startToEndVector : Point = new Point(bezier.end.x - bezier.start.x, bezier.end.y - bezier.start.y);
+			const diagonalVector : Point = new Point(bezier.start.x - 2 * bezier.control.x + bezier.end.x, bezier.start.y - 2 * bezier.control.y + bezier.end.y);
+			const controlToEndVector : Point = new Point(bezier.end.x - bezier.control.x, bezier.end.y - bezier.control.y);
+			
+			drawLine(new Line(bezier.start, bezier.start.add(startToEndVector)));	
+			drawLine(new Line(bezier.start, bezier.start.add(startToControlVector)));	
+			drawLine(new Line(bezier.start, oppositeControl));
+			drawLine(new Line(bezier.control, bezier.control.add(controlToEndVector)));	
+			drawLine(new Line(bezier.control, bezier.control.add(diagonalVector)));	
+			drawLine(new Line(bezier.end, oppositeControl));	
 				
 			// рисуем площадь кривой и равновеликий ей прямоугольник
 			graphics.lineStyle(0, 0x000000, 0);
