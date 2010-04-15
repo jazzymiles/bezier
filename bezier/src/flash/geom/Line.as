@@ -1391,8 +1391,8 @@ package flash.geom {
 			startToEndVector.y = end.y - start.y;
 			
 			const targetStartToEndVector:Point = POINT1;
-			startToEndVector.x = targetLine.end.x - targetLine.start.x;
-			startToEndVector.y = targetLine.end.y - targetLine.start.y;
+			targetStartToEndVector.x = targetLine.end.x - targetLine.start.x;
+			targetStartToEndVector.y = targetLine.end.y - targetLine.start.y;
 			
 			const currentDeterminant : Number = startToEndVector.x * __start.y - startToEndVector.y * __start.x;
 			const targetDeterminant : Number = targetStartToEndVector.x * targetLine.__start.y - targetStartToEndVector.y * targetLine.__start.x;

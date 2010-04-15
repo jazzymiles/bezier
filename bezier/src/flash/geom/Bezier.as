@@ -2223,8 +2223,8 @@ package flash.geom {
 
 		public function angleOffset(value : Number, fulcrum : Point = null) : void {
 			fulcrum = fulcrum || POINT0;
-			POINT0.x = 0;
-			POINT0.y = 0;
+			fulcrum.x = 0;
+			fulcrum.y = 0;
 			
 			const startLine : Line = new Line(fulcrum, startPoint);
 			startLine.angle += value;
@@ -2320,10 +2320,14 @@ package flash.geom {
 				}
 			}
 			
-			for (var i : uint = 0;i < solutions.length; i++) {
-				var foundPoint : Point = getPoint(solutions[i]);
-				if (Point.distance(foundPoint, point) < PRECISION) {
-					return solutions[i];				
+			for (var i : uint = 0;i < solutions.length; i++) 
+			{
+				if ((!isSegment)||((solutions[i]>=0)&&(solutions[i]<=1)))
+				{
+					var foundPoint : Point = getPoint(solutions[i]);
+					if (Point.distance(foundPoint, point) < PRECISION) {
+						return solutions[i];				
+					}
 				}
 			}
 			
