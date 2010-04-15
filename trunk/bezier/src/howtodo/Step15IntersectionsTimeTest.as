@@ -1,18 +1,16 @@
 package howtodo {
-	import flash.utils.getTimer;	
-	import flash.utils.clearInterval;	
-	import flash.text.TextFieldAutoSize;	
-	import flash.utils.setInterval;	
-	import flash.text.TextField;	
+	import howtodo.view.DragPoint;
+	
 	import flash.events.Event;
 	import flash.events.KeyboardEvent;
 	import flash.geom.Bezier;
 	import flash.geom.Intersection;
 	import flash.geom.Line;
 	import flash.geom.Point;
+	import flash.text.TextField;
+	import flash.text.TextFieldAutoSize;
 	import flash.ui.Keyboard;
-
-	import howtodo.view.DragPoint;		
+	import flash.utils.getTimer;		
 
 	public class Step15IntersectionsTimeTest extends BezierUsage {
 
@@ -74,10 +72,10 @@ package howtodo {
 			textField.x = x;
 			textField.y = y;
 			addChild(textField);
-		}	
+		}
 
 		private function updateOutText(time : Number) : void {
-			fpsTextField.text = "1000 iterations duration - " + time + "milliseconds\n" + (time / 1000) + " milliseconds spent on single method call";
+			fpsTextField.text = "1000 iterations duration - " + time + "milliseconds\n" + round(time / 1000, 4) + " milliseconds spent on single method call";
 		}
 
 		private function onKeyUpHandler(event : KeyboardEvent) : void {
@@ -198,6 +196,7 @@ package howtodo {
 		}
 
 		protected function showIntersection(point : Point, small : Boolean, time : Number) : DragPoint {
+			trace("time: " +time);
 			if (point is Point) {
 				var intersection : DragPoint = new DragPoint();
 				intersection.position = point;
@@ -206,7 +205,7 @@ package howtodo {
 				if (small) {
 					intersection.radius -= 2;
 				} else {
-					intersection.pointName = "     t:" + time;
+					intersection.pointName = "     t:" + round(time,4);
 				}
 				return intersection;
 			}
