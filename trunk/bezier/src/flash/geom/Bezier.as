@@ -320,11 +320,17 @@ package flash.geom {
 	public class Bezier extends Object implements IParametric {
 
 		protected static const PRECISION : Number = Equations.PRECISION;
+		
+		private static const POINT0:Point = new Point();  
+		private static const POINT1:Point = new Point();  
+		private static const POINT2:Point = new Point();  
+		private static const POINT3:Point = new Point();  
 
 		protected var startPoint : Point;
 		protected var controlPoint : Point;
 		protected var endPoint : Point;
 		protected var __isSegment : Boolean = true;
+		
 
 		//**************************************************
 		//				CONSTRUCTOR 
@@ -744,8 +750,13 @@ package flash.geom {
 		// Логика работы метода - проверка, что существует такое t, при котором control = start+t*(end-start).
 		// The logic of method - check, that there exists a t, where control = start+t*(end-start).
 		public function curveAsLine() : Line {
-			var startToControlVector : Point = this.startToControlVector;
-			var startToEndVector : Point = this.startToEndVector;
+			const startToControlVector : Point = POINT0;
+			startToControlVector.x = control.x - start.x;
+			startToControlVector.y = control.y - start.y;
+
+			const startToEndVector : Point = POINT1;
+			startToEndVector.x = end.x - start.x;
+			startToEndVector.y = end.y - start.y;
 			
 			if (startToEndVector.length > PRECISION) {
 				var timeOfControl : Number = startToControlVector.length / startToEndVector.length;
@@ -826,477 +837,22 @@ package flash.geom {
 		 
 		// Логика работы метода - проверка, что все три опорные точки кривой совпадают, с учетом допуска.
 		// The logic of method - tolerance check all three anchor points of the curve coincide
-		public function curveAsPoint() : Point {
-			if ((this.startToEndVector.length < PRECISION) && (this.startToControlVector.length < PRECISION)) {
+		public function asPoint() : Point {
+			const startToControlVector:Point = POINT0;
+			startToControlVector.x = control.x - start.x;
+			startToControlVector.y = control.y - start.y;
+
+			const startToEndVector : Point = POINT1;
+			startToEndVector.x = end.x - start.x;
+			startToEndVector.y = end.y - start.y;
+			
+			if ((startToEndVector.length < PRECISION) && (startToControlVector.length < PRECISION)) {
 				return start.clone();				
 			} else {
 				return null;
 			}
 		}
 
-		
-		/* *
-		 * Получение вектора из начальной точки кривой Безье в контрольную точку.
-		 * Обратный вектор можно получить методом <a href="#controlToStartVector">controlToStartVector</a><BR/> 
-		 *  
-		 * @see #controlToStartVector
-		 * 
-		 * @return Point вектор из начальной точки в контрольную
-		 * 
-		 * @example В этом примере создается кривая Безье, и выводится вектор из начальной точки в контрольную.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.startToControlVector;
-		 * trace(point.x+" "+point.y); //300 -100
-		 *  
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */
-		 
-		/**
-		 * Obtaining a vector from the initial point of a Bezier curve to the control point.
-		 * Reverse vector can be obtained by the method <a href="#controlToStartVector">controlToStartVector</a>
-		 * 
-		 * @return Point a vector from the initial point to the control point
-		 * 
-		 * @example In this example a Bezier curve is created, and a vector from the initial point to the control point is derived.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.startToControlVector;
-		 * trace(point.x+" "+point.y); //300 -100
-		 *  
-		 * </listing>
-		 *
-		 * @see #controlToStartVector
-		 * 
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */
-
-		public function get startToControlVector() : Point {
-			return new Point(control.x - start.x, control.y - start.y);			
-		}
-
-		/* *
-		 * Получение вектора из контрольной точки кривой Безье в начальную точку.
-		 * Обратный вектор можно получить методом <a href="#startToControlVector">startToControlVector</a><BR/> 
-		 * 
-		 * @see #startToControlVector
-		 * 
-		 * @return Point вектор из контрольной точки в начальную
-		 * 
-		 * @example В этом примере создается кривая Безье, и выводится вектор из контрольной точки в начальную.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.controlToStartVector;
-		 * trace(point.x+" "+point.y); //-300 100
-		 *  
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 */
-		 		 
-		/**
-		 * Obtaining a vector from the control point of a Bezier curve to the initial point.
-		 * Reverse vector can be obtained by the method <a href="#startToControlVector">startToControlVector</a>
-		 * 
-		 * @return Point a vector from the control point to the initial point
-		 * 
-		 * @example In this example a Bezier curve is created, and a vector from the control point to the initial point is derived.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.controlToStartVector;
-		 * trace(point.x+" "+point.y); //-300 100
-		 *  
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 */		 
-		public function get controlToStartVector() : Point {
-			return new Point(start.x - control.x, start.y - control.y);			
-		}
-
-		
-		/* *
-		 * Получение вектора из конечной точки кривой Безье в контрольную точку.
-		 * Обратный вектор можно получить методом <a href="#controlToEndVector">controlToEndVector</a><BR/> 
-		 * 
-		 * @return Point вектор из конечной точки в контрольную
-		 * 
-		 * @example В этом примере создается кривая Безье, и выводится вектор из конечной точки в контрольную.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.endToControlVector;
-		 * trace(point.x+" "+point.y); //-300 -100
-		 *  
-		 * </listing>
-		 * 
-		 * @see #controlToEndVector
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */
-		 
-		/**
-		 * Obtaining a vector from the end point of a Bezier curve to the control point.
-		 * Reverse vector can be obtained by the method <a href="#controlToEndVector">controlToEndVector</a>
-		 * 
-		 * @return Point a vector from the end point to the control point
-		 * 
-		 * @example In this example a Bezier curve is created, and a vector from the end point to the control point is derived.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.endToControlVector;
-		 * trace(point.x+" "+point.y); //-300 -100
-		 *  
-		 * </listing>
-		 * 
-		 * @see #controlToEndVector
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 */
-
-		
-		public function get endToControlVector() : Point {
-			return new Point(control.x - end.x, control.y - end.y);			
-		}
-
-		/* *
-		 * Получение вектора из контрольной точки кривой Безье в конечную точку.
-		 * Обратный вектор можно получить методом <a href="#endToControlVector">endToControlVector</a><BR/> 
-		 * 
-		 * @see #endToControlVector
-		 * 
-		 * @return Point вектор из контрольной точки в конечную
-		 * 
-		 * @example В этом примере создается кривая Безье, и выводится вектор из контрольной точки в конечную.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.controlToEndVector;
-		 * trace(point.x+" "+point.y); //300 100
-		 *  
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */
-		 	
-		/**
-		 * Obtaining a vector from the control point of a Bezier curve to the end point.
-		 * Reverse vector can be obtained by the method <a href="#endToControlVector">endToControlVector</a>
-		 * 
-		 * @return Point a vector from the control point to the end point
-		 * 
-		 * @example In this example a Bezier curve is created, and a vector from the control point to the end point is derived.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.controlToEndVector;
-		 * trace(point.x+" "+point.y); //300 100
-		 *  
-		 * </listing>
-		 * 
-		 * @see #endToControlVector
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 */	
-		public function get controlToEndVector() : Point {
-			return new Point(end.x - control.x, end.y - control.y);			
-		}
-
-		/* *
-		 * Получение вектора из начальной точки кривой Безье в конечную точку.
-		 * Обратный вектор можно получить методом <a href="#endToStartVector">endToStartVector</a><BR/> 
-		 * 
-		 * @return Point вектор из начальной точки в конечную
-		 * 
-		 * @example В этом примере создается кривая Безье, и выводится вектор из начальной точки в конечную.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.startToEndVector;
-		 * trace(point.x+" "+point.y); //600 0
-		 *  
-		 * </listing>
-		 * 
-		 * @see #endToStartVector
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */
-		 		
-		/**
-		 * Obtaining a vector from the initial point of a Bezier curve to the end point.
-		 * Reverse vector can be obtained by the method <a href="#endToStartVector">endToStartVector</a><BR/>
-		 * 
-		 * @return Point a vector from the initial point to the end point
-		 * 
-		 * @example In this example a Bezier curve is created, and a vector from the initial point to the end point is derived.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.startToEndVector;
-		 * trace(point.x+" "+point.y); //600 0
-		 * </listing>
-		 * 
-		 * @see #endToStartVector
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 */		
-		public function get startToEndVector() : Point {
-			return new Point(end.x - start.x, end.y - start.y);			
-		}
-
-		/* *
-		 * Получение вектора из конечной точки кривой Безье в начальную точку.
-		 * Обратный вектор можно получить методом <a href="#startToEndVector">startToEndVector</a><BR/> 
-		 *  
-		 * @see #startToEndVector
-		 * 
-		 * @return Point вектор из конечной точки в начальную
-		 * 
-		 * @example В этом примере создается кривая Безье, и выводится вектор из конечной точки в начальную.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.endToStartVector;
-		 * trace(point.x+" "+point.y); //-600 0
-		 *  
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */
-		 	
-		/**
-		 * Obtaining a vector from the initial point of a Bezier curve to the end point.
-		 * Reverse vector can be obtained by the method <a href="#startToEndVector">startToEndVector</a>
-		 * 
-		 * @return Point a vector from the initial point to the end point
-		 * 
-		 * @example In this example a Bezier curve is created, and a vector from the initial point to the end point is derived.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.endToStartVector;
-		 * trace(point.x+" "+point.y); //-600 0
-		 *  
-		 * </listing>
-		 * @see #startToEndVector
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 */	
-		public function get endToStartVector() : Point {
-			return new Point(start.x - end.x, start.y - end.y);			
-		}
-
-		/* *
-		 * Получение вектора диагонали параллелограмма, достроенного на опорных точках кривой Безье, которая опирается на контрольную точку.
-		 * Обратный вектор можно получить методом <a href="#invertedDiagonalVector">invertedDiagonalVector</a><BR/> 
-		 *  
-		 * @see #invertedDiagonalVector
-		 * 
-		 * @return Point вектор диагонали
-		 * 
-		 * @example В этом примере создается кривая Безье, и выводится вектор диагонали.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.diagonalVector;
-		 * trace(point.x+" "+point.y); //0 200
-		 *  
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */
-		 	
-		/**
-		 * Obtaining a vector of the diagonal of a parallelogram, drawn on control points of Bezier curve, which leans on the control point.
-		 * 
-		 * Reverse vector can be obtained by the method <a href="#invertedDiagonalVector">invertedDiagonalVector</a><BR/>
-		 * 
-		 * @return Point a vector of the diagonal
-		 * 
-		 * @example In this example a Bezier curve is created, and a vector of the diagonal is derived.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.diagonalVector;
-		 * trace(point.x+" "+point.y); //0 200
-		 * </listing>
-		 * 
-		 * @see #invertedDiagonalVector
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 */	
-		public function get diagonalVector() : Point {
-			return new Point(start.x - 2 * control.x + end.x, start.y - 2 * control.y + end.y);			
-		}
-
-		/**
-		 * Получение обратного вектора диагонали параллелограмма, достроенного на опорных точках кривой Безье, которая опирается на контрольную точку.
-		 * Обратный вектор можно получить методом <a href="#diagonalVector">diagonalVector</a><BR/> 
-		 *  
-		 * @return Point обратный вектор диагонали
-		 * 
-		 * @example В этом примере создается кривая Безье, и выводится обратного вектор диагонали.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.invertedDiagonalVector;
-		 * trace(point.x+" "+point.y); //0 -200
-		 * </listing>
-		 * 
-		 * @see #diagonalVector
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */
-		 	
-		/**
-		 * Obtaining a reverse vector of the diagonal of a parallelogram, drawn on control points of Bezier curve, which leans on the control point.
-		 * Reverse vector can be obtained by the method <a href="#diagonalVector">diagonalVector</a><BR/>
-		 * 
-		 * 
-		 * @return Point a reverse vector of the diagonal
-		 * 
-		 * @example In this example a Bezier curve is created, and a reverse vector of the diagonal is derived.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.invertedDiagonalVector;
-		 * trace(point.x+" "+point.y); //0 -200
-		 * </listing>
-		 * 
-		 * @see #diagonalVector
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 */
-
-		public function get invertedDiagonalVector() : Point {
-			return new Point(-start.x + 2 * control.x - end.x, -start.y + 2 * control.y - end.y);			
-		}
-
-		/**
-		 * Получение точки (вершины) в параллелограмме, достроенном на опорных точках кривой Безье, которая находится напротив контрольной точки.
-		 * 
-		 * @return Point точка, противоположная контрольной
-		 * 
-		 * @example В этом примере создается кривая Безье, и выводится точка, противоположная контрольной.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.oppositeControl;
-		 * trace(point.x+" "+point.y); //400 400
-		 *  
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 * @lang rus
-		 */
-		 	
-		/**
-		 * Obtaining a point (vertex) in a parallelogram, drawn on control points of Bezier curve, which is located opposite to control point.
-		 * 
-		 * @return Point a point, opposite to control point
-		 * 
-		 * @example In this example a Bezier curve is created, and a point opposite to a control point is derived.
-		 * <listing version="3.0">
-		 * import flash.geom.Bezier;
-		 * import flash.geom.Point;
-		 *		
-		 * const bezier:Bezier = Bezier( new Point(100, 300), new Point(400, 200), new Point(700, 300));
-		 * var point:Point = bezier.oppositeControl;
-		 * trace(point.x+" "+point.y); //400 400
-		 *  
-		 * </listing>
-		 *
-		 * @langversion 3.0
-		 * @playerversion Flash 9.0
-		 * 
-		 */	
-		public function get oppositeControl() : Point {
-			return new Point(start.x - control.x + end.x, start.y - control.y + end.y);			
-		}
-
-		
 		/* *
 		 * Вычисляет длину кривой Безье от начальной точки до конечной.
 		 * 
@@ -1454,8 +1010,13 @@ package flash.geom {
 		 * 
 		 **/
 		public function getSegmentLength(time : Number) : Number {
-			const startToControlVector : Point = this.startToControlVector;
-			const diagonalVector : Point = this.diagonalVector;
+			const startToControlVector : Point = POINT0; 
+			startToControlVector.x = control.x - start.x;
+			startToControlVector.y = control.y - start.y;
+			
+			const diagonalVector : Point = POINT1;
+			diagonalVector.x = start.x - 2 * control.x + end.x;
+			diagonalVector.y = start.y - 2 * control.y + end.y;
 							
 			const startToControlLenght : Number = startToControlVector.length;				
 			const startToControlLenghtPower2 : Number = startToControlLenght * startToControlLenght;				
@@ -1665,6 +1226,8 @@ package flash.geom {
 		 	
 		/**
 		 * Obtaining a center of gravity of a Bezier curve.
+		 * 
+		 * @param targetPoint:Point 
 		 * 
 		 * @return Point a center of gravity of a Bezier curve
 		 * 
@@ -1910,8 +1473,13 @@ package flash.geom {
 			var yMin : Number = Math.min(startPoint.y, endPoint.y);
 			var yMax : Number = Math.max(startPoint.y, endPoint.y);
 			
-			const controlToStartVector : Point = this.controlToStartVector;
-			const diagonalVector : Point = this.diagonalVector;
+			const controlToStartVector : Point = POINT0;
+			controlToStartVector.x = start.x - control.x;
+			controlToStartVector.y = start.y - control.y;
+			
+			const diagonalVector : Point = POINT1;
+			diagonalVector.x = start.x - 2 * control.x + end.x;
+			diagonalVector.y = start.y - 2 * control.y + end.y;
 						
 			const extremumTimeX : Number = controlToStartVector.x / diagonalVector.x;
 			const extremumTimeY : Number = controlToStartVector.y / diagonalVector.y;	
@@ -1999,14 +1567,20 @@ package flash.geom {
 		 *
 		 * @translator Ilya Segeda http://www.digitaldesign.com.ua
 		 **/
-		public function get parabolaVertex() : Number {			
-			const controlToStartVector : Point = this.controlToStartVector;
-			const diagonalVector : Point = this.diagonalVector;							
-			const diagonalLenght : Number = diagonalVector.length;
-			const diagonalLenghtPower2 : Number = diagonalLenght * diagonalLenght;
+		public function get parabolaVertex() : Number {	
+			const controlToStartVector : Point = POINT0;
+			controlToStartVector.x = start.x - control.x;
+			controlToStartVector.y = start.y - control.y;
+			
+			const diagonalVector : Point = POINT1;
+			diagonalVector.x = start.x - 2 * control.x + end.x;
+			diagonalVector.y = start.y - 2 * control.y + end.y;
+			
+			const diagonalLengh : Number = diagonalVector.length;
+			const diagonalLenghtPower2 : Number = diagonalLengh * diagonalLengh;
 														
 			var vertexTime : Number = 0.5; 
-			if (diagonalLenght > PRECISION) {
+			if (diagonalLengh > PRECISION) {
 				vertexTime = (diagonalVector.x * controlToStartVector.x + diagonalVector.y * controlToStartVector.y) / diagonalLenghtPower2;
 			} 
 			return vertexTime;
@@ -2072,8 +1646,14 @@ package flash.geom {
 		 */	
 
 		public function get parabolaFocus() : Point {			
-			const startToControlVector : Point = this.startToControlVector;
-			const diagonalVector : Point = this.diagonalVector;
+			const startToControlVector : Point = POINT0; 
+			startToControlVector.x = control.x - start.x;
+			startToControlVector.y = control.y - start.y;
+			
+			const diagonalVector : Point = POINT1;
+			diagonalVector.x = start.x - 2 * control.x + end.x;
+			diagonalVector.y = start.y - 2 * control.y + end.y;
+			
 							
 			const diagonalLenght : Number = diagonalVector.length;
 			const diagonalLenghtPower2 : Number = diagonalLenght * diagonalLenght;
@@ -2209,8 +1789,14 @@ package flash.geom {
 		 */
 
 		protected function getTimesByDistances(distances : Array) : Array {
-			const startToControlVector : Point = this.startToControlVector;			
-			const diagonalVector : Point = this.diagonalVector;
+			const startToControlVector : Point = POINT0;
+			startToControlVector.x = control.x - start.x;
+			startToControlVector.y = control.y - start.y;
+						
+			const diagonalVector : Point = POINT1;
+			diagonalVector.x = start.x - 2 * control.x + end.x;
+			diagonalVector.y = start.y - 2 * control.y + end.y;
+			
 			const curveLength : Number = length;				
 			const startToControlLenght : Number = startToControlVector.length;				
 			const startToControlLenghtPower2 : Number = startToControlLenght * startToControlLenght;				
@@ -2636,7 +2222,9 @@ package flash.geom {
 		 */
 
 		public function angleOffset(value : Number, fulcrum : Point = null) : void {
-			fulcrum = fulcrum || new Point();
+			fulcrum = fulcrum || POINT0;
+			POINT0.x = 0;
+			POINT0.y = 0;
 			
 			const startLine : Line = new Line(fulcrum, startPoint);
 			startLine.angle += value;
@@ -2708,8 +2296,13 @@ package flash.geom {
 		 * @playerversion Flash 9.0
 		 */
 		public function getPointOnCurve(point : Point) : Number {
-			const startToControlVector : Point = this.startToControlVector;			
-			const diagonalVector : Point = this.diagonalVector;
+			const startToControlVector : Point = POINT0;
+			startToControlVector.x = control.x - start.x;
+			startToControlVector.y = control.y - start.y;
+			
+			const diagonalVector : Point = POINT1;
+			diagonalVector.x = start.x - 2 * control.x + end.x;
+			diagonalVector.y = start.y - 2 * control.y + end.y;
 									
 			var squareCoefficient : Number = diagonalVector.x;
 			var linearCoefficient : Number = 2 * startToControlVector.x;
@@ -2822,14 +2415,22 @@ package flash.geom {
 				return NaN;
 			}
 				
-			var curveAsPoint : Point = this.curveAsPoint();
+			var curveAsPoint : Point = this.asPoint();
 			if (curveAsPoint) {						
 				return 0;				
 			}
-						
-			const startToControlVector : Point = this.startToControlVector;			
-			const diagonalVector : Point = this.diagonalVector;
-			const fromPointToStartVector : Point = new Point(startPoint.x - fromPoint.x, startPoint.y - fromPoint.y);	
+
+			const startToControlVector : Point = POINT0;
+			startToControlVector.x = control.x - start.x;
+			startToControlVector.y = control.y - start.y;
+			
+			const diagonalVector : Point = POINT1;
+			diagonalVector.x = start.x - 2 * control.x + end.x;
+			diagonalVector.y = start.y - 2 * control.y + end.y;
+			
+			const fromPointToStartVector : Point = POINT2;
+			fromPointToStartVector.x = startPoint.x - fromPoint.x;
+			fromPointToStartVector.y = startPoint.y - fromPoint.y;
 										
 			const startToControlLenght : Number = startToControlVector.length;				
 			const startToControlLenghtPower2 : Number = startToControlLenght * startToControlLenght;				
@@ -3039,8 +2640,13 @@ package flash.geom {
 		 * 
 		 */
 		public function getTangentAngle(time : Number = 0) : Number {
-			const startToControlVector : Point = this.startToControlVector;			
-			const diagonalVector : Point = this.diagonalVector;
+			const startToControlVector : Point = POINT0;
+			startToControlVector.x = control.x - start.x;
+			startToControlVector.y = control.y - start.y;
+			
+			const diagonalVector : Point = POINT1;
+			diagonalVector.x = start.x - 2 * control.x + end.x;
+			diagonalVector.y = start.y - 2 * control.y + end.y;
 						
 			const tangentX : Number = startToControlVector.x + diagonalVector.x * time;
 			const tangentY : Number = startToControlVector.y + diagonalVector.y * time;
@@ -3218,7 +2824,7 @@ package flash.geom {
 			var intersection : Intersection = new Intersection();
 			var i : int;
 						
-			var curveAsPoint : Point = this.curveAsPoint();
+			var curveAsPoint : Point = this.asPoint();
 			if (curveAsPoint) {				
 				intersection = target.intersectionPoint(curveAsPoint);
 				intersection.switchCurrentAndTarget();
@@ -3236,7 +2842,7 @@ package flash.geom {
 				return intersection;				
 			}
 				
-			var targetAsPoint : Point = target.lineAsPoint();
+			var targetAsPoint : Point = target.asPoint();
 			if (targetAsPoint) {				
 				intersection = this.intersectionPoint(targetAsPoint);
 				return intersection;				
@@ -3247,11 +2853,21 @@ package flash.geom {
 			// if none of the checks passed, then we have a real curve and a real line.
 			// solving a pure chance!	
 
-			const startToControlVector : Point = this.startToControlVector;			
-			const diagonalVector : Point = this.diagonalVector;
+			const startToControlVector : Point = POINT0;
+			startToControlVector.x = control.x - start.x;
+			startToControlVector.y = control.y - start.y;
 			
-			const lineVector : Point = target.endToStartVector;
-			const deltaStarts : Point = new Point(start.x - target.start.x, start.y - target.start.y);
+			const diagonalVector : Point = POINT1;
+			diagonalVector.x = start.x - 2 * control.x + end.x;
+			diagonalVector.y = start.y - 2 * control.y + end.y;
+			
+			const lineVector : Point = POINT2;
+			lineVector.x = target.start.x - target.end.x;
+			lineVector.y = target.start.y - target.end.y;
+			
+			const deltaStarts : Point = POINT3;
+			deltaStarts.x = start.x - target.start.x;
+			deltaStarts.y = start.y - target.start.y;
 			
 			var coefficientInPower2 : Number, coefficientInPower1 : Number, coefficientInPower0 : Number;
 			var solutionsForCurve : Array;
@@ -3423,15 +3039,15 @@ package flash.geom {
 			var intersection : Intersection = null;
 			var i : int;
 			var point : Point;
-						
-			var curveAsPoint : Point = this.curveAsPoint();
+					
+			const curveAsPoint : Point = this.asPoint();
 			if (curveAsPoint) {				
 				intersection = target.intersectionPoint(curveAsPoint);
 				intersection.switchCurrentAndTarget();				
 				return intersection;				
 			}
 			
-			var curveAsLine : Line = this.curveAsLine();			
+			const curveAsLine : Line = this.curveAsLine();			
 			if (curveAsLine) {
 				intersection = target.intersectionLine(curveAsLine);
 				intersection.switchCurrentAndTarget();
@@ -3442,7 +3058,7 @@ package flash.geom {
 				return intersection;
 			}
 			
-			var targetAsPoint : Point = target.curveAsPoint();
+			const targetAsPoint : Point = target.asPoint();
 			if (targetAsPoint) {				
 				intersection = this.intersectionPoint(targetAsPoint);
 				return intersection;				
@@ -3461,12 +3077,22 @@ package flash.geom {
 			// если ни одна из проверок не прошла, значит у нас две настоящих невырожденных кривых 
 			// решаем чистый случай!
 
-			const startToControlVector : Point = this.startToControlVector;			
-			const diagonalVector : Point = this.diagonalVector;
-			const targetStartToControlVector : Point = target.startToControlVector;			
-			const targetDiagonalVector : Point = target.diagonalVector;
+			const startToControlVector : Point = POINT0;
+			startToControlVector.x = control.x - start.x;
+			startToControlVector.y = control.y - start.y;
 			
-						
+			const diagonalVector : Point = POINT1;
+			diagonalVector.x = start.x - 2 * control.x + end.x;
+			diagonalVector.y = start.y - 2 * control.y + end.y;
+			
+			const targetStartToControlVector : Point = POINT2;
+			targetStartToControlVector.x = target.control.x - target.start.x; 
+			targetStartToControlVector.y = target.control.y - target.start.y; 
+			
+			const targetDiagonalVector : Point = POINT3;
+			targetDiagonalVector.x = target.start.x - 2 * target.control.x + target.end.x;
+			targetDiagonalVector.y = target.start.y - 2 * target.control.y + target.end.y; 
+			
 			const ax1 : Number = diagonalVector.x,
                   ay1 : Number = diagonalVector.y,
                   
@@ -3589,8 +3215,6 @@ package flash.geom {
 			
 			return intersection;
 		}
-
-		
 		
 		//**************************************************
 		//				UTILS 

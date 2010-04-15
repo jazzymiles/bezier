@@ -48,6 +48,15 @@ package flash.geom {
 		 * @return Point;
 		 **/
 		function getPoint(time:Number, point:Point=null):Point;
+		
+		/* *
+		 * Проверка вырожденности в точку.
+		 */
+		 
+		/**
+		 * Check for degeneration into the point. 
+		 */
+		function asPoint() : Point;
 
 		/* *
 		 * Вычисляет и возвращает time-итератор точки по дистанции от <code>start</code>.

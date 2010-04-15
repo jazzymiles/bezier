@@ -38,8 +38,8 @@ package howtodo
 		public function Step15IntersectionsTimeTest() {
 			super();
 			
-			addEventListener(Event.ADDED_TO_STAGE, onAddedTotageHandler);
-			addEventListener(Event.REMOVED_FROM_STAGE, onRemoveFromStageHandler);
+			addEventListener(Event.ADDED_TO_STAGE, onAddedToStage);
+			addEventListener(Event.REMOVED_FROM_STAGE, onRemoveFromStage);
 		}
 
 		override protected function init():void {
@@ -71,15 +71,15 @@ package howtodo
 			onPointMoved();
 		}
 		
-		private function onAddedTotageHandler(event : Event) : void
+		private function onAddedToStage(event : Event) : void
 		{			
 			intervalCookie = setInterval(updateFps, 1000);
-			stage.addEventListener(Event.ENTER_FRAME, onEnterFrameHandler);
+			addEventListener(Event.ENTER_FRAME, onEnterFrameHandler);
 		}
-		private function onRemoveFromStageHandler(event : Event) : void
+		private function onRemoveFromStage(event : Event) : void
 		{
 			clearInterval(intervalCookie);
-			stage.removeEventListener(Event.ENTER_FRAME, onEnterFrameHandler);
+			removeEventListener(Event.ENTER_FRAME, onEnterFrameHandler);
 		}
 		
 		private function addTextField(textField:TextField, x:Number, y:Number) : void 
@@ -103,6 +103,7 @@ package howtodo
 
 		private function onEnterFrameHandler(event:Event) : void
 		{
+			framesCounter += 1;
 			onPointMoved();
 		}
 		
@@ -153,7 +154,7 @@ package howtodo
 		
 		override protected function onPointMoved(event:Event = undefined):void 
 		{			
-			framesCounter += 1;
+			
 			
 			graphics.clear();
 
