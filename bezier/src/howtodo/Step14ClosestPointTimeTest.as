@@ -49,7 +49,7 @@ package howtodo {
 		}
 
 		private function addTextField(textField:TextField, x:Number, y:Number) : void 
-		{			
+		{
 			textField.selectable = false;
 			textField.wordWrap = false;
 			textField.multiline = true;
