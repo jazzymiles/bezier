@@ -15,7 +15,8 @@ package howtodo {
 
 		private const closestPoint : DragPoint = new DragPoint();
 		private const mouse : Point = new Point();
-		private var fpsTextField : TextField = new TextField();		
+		private var fpsTextField : TextField = new TextField();
+		private var previousTime : Number;		
 
 		public function Step14ClosestPointTimeTest() {
 			super();
@@ -76,7 +77,7 @@ package howtodo {
 			
 			closestPoint.position = bezier.getPoint(closestTime);						
 			closestPoint.pointName = "P(" + round(closestTime, 3) + ")";
-						
+			
 			graphics.clear();			
 			graphics.lineStyle(0, 0xFF0000, .5);
 			drawBezier(bezier.getSegment(-1, 2));
