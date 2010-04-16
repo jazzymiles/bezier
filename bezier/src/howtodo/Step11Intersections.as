@@ -237,7 +237,7 @@
 				if (small) {
 					intersection.radius -= 2;
 				} else {
-					intersection.pointName = "     t:" + time;
+					intersection.pointName = "     t:" + round(time, 3);
 				}
 				return intersection;
 			}
