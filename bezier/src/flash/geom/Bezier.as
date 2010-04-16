@@ -2223,8 +2223,8 @@ package flash.geom {
 
 		public function angleOffset(value : Number, fulcrum : Point = null) : void {
 			fulcrum = fulcrum || POINT0;
-			fulcrum.x = 0;
-			fulcrum.y = 0;
+			POINT0.x = 0;
+			POINT0.y = 0;
 			
 			const startLine : Line = new Line(fulcrum, startPoint);
 			startLine.angle += value;
