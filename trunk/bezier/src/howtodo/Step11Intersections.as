@@ -56,8 +56,8 @@
 			initControl(startGreen, GREEN, "S");
 			initControl(endGreen, GREEN, "E");
 			
-			lineGreen.isSegment = false;
-			bezierBlue.isSegment = false;
+			lineGreen.isSegment = true;
+			bezierBlue.isSegment = true;
 			
 			
 //			start.x = 200;
@@ -89,13 +89,13 @@
 			//setTestPosition(200,300,400,500,500,600,600,100,400,300,200,500);
 			// setTestPosition(400,500,500,200,500,600,500,600,500,100,400,100);
 			
-			/*setTestPosition(450,200, 300,350, 100,550, 
+			setTestPosition(450,200, 300,350, 100,550, 
 							450,350, 200,100, 450,350,
-							100,100, 100,150);*/
-			
+							100,100, 50,150);
+			/*
 			setTestPosition(100,400, 800,500, 100,600,	
 								200,700, 300,100, 400,700,	
-								100,300, 500,750);
+								100,300, 500,750);*/
 				
 			/*setTestPosition(200,200, 300,300, 600,600, 
 							200,700, 300,750, 200,800,

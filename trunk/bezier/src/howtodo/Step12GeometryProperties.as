@@ -129,7 +129,7 @@ package howtodo
 			
 			var curveText:String = "bezier is simple convex curve";
 			var curveAsPoint:Point = bezier.asPoint();
-			var curveAsLine:Line = bezier.curveAsLine();
+			var curveAsLine:Line = bezier.asLine();
 			
 			if (curveAsPoint)
 			{

@@ -749,7 +749,7 @@ package flash.geom {
 
 		// Логика работы метода - проверка, что существует такое t, при котором control = start+t*(end-start).
 		// The logic of method - check, that there exists a t, where control = start+t*(end-start).
-		public function curveAsLine() : Line {
+		public function asLine() : Line {
 			const startToControlVector : Point = POINT0;
 			startToControlVector.x = control.x - start.x;
 			startToControlVector.y = control.y - start.y;
@@ -2295,7 +2295,9 @@ package flash.geom {
 		 * @langversion 3.0
 		 * @playerversion Flash 9.0
 		 */
-		public function getPointOnCurve(point : Point) : Number {
+		 
+		public function getExistedPointIterators(point : Point) : Array
+		{
 			const startToControlVector : Point = POINT0;
 			startToControlVector.x = control.x - start.x;
 			startToControlVector.y = control.y - start.y;
@@ -2314,24 +2316,25 @@ package flash.geom {
 				linearCoefficient = 2 * startToControlVector.y;
 				freeCoefficient = start.y - point.y;
 				solutions = Equations.solveQuadraticEquation(squareCoefficient, linearCoefficient, freeCoefficient);
-				
-				if (!solutions) {
-					return Number.NaN;
-				}
 			}
 			
-			for (var i : uint = 0;i < solutions.length; i++) 
-			{
-				if ((!isSegment)||((solutions[i]>=0)&&(solutions[i]<=1)))
+			var iteratorsArray:Array = new Array();
+			
+			if (solutions) 
+			{			
+				for (var i : uint = 0;i < solutions.length; i++) 
 				{
-					var foundPoint : Point = getPoint(solutions[i]);
-					if (Point.distance(foundPoint, point) < PRECISION) {
-						return solutions[i];				
+					if ((!isSegment)||((solutions[i]>=0)&&(solutions[i]<=1)))
+					{
+						var foundPoint : Point = getPoint(solutions[i]);
+						if (Point.distance(foundPoint, point) < PRECISION) {
+							iteratorsArray.push(solutions[i]);				
+						}
 					}
 				}
 			}
 			
-			return Number.NaN;
+			return iteratorsArray;
 		}
 
 		//**************************************************
@@ -2835,14 +2838,12 @@ package flash.geom {
 				return intersection;				
 			}
 			
-			var curveAsLine : Line = this.curveAsLine();			
+			var curveAsLine : Line = this.asLine();			
 			if (curveAsLine) {
 				intersection = target.intersectionLine(curveAsLine);
 				intersection.switchCurrentAndTarget();
-				for (i = 0;i < intersection.currentTimes.length; i++) {
-					var point : Point = curveAsLine.getPoint(intersection.currentTimes[i]);
-					intersection.currentTimes[i] = this.getPointOnCurve(point);
-				}
+				intersection.translateCurrentIterators(curveAsLine, this);
+				
 				return intersection;				
 			}
 				
@@ -3042,8 +3043,7 @@ package flash.geom {
 		public function intersectionBezier(target : Bezier) : Intersection {
 			var intersection : Intersection = null;
 			var i : int;
-			var point : Point;
-					
+								
 			const curveAsPoint : Point = this.asPoint();
 			if (curveAsPoint) {				
 				intersection = target.intersectionPoint(curveAsPoint);
@@ -3051,14 +3051,12 @@ package flash.geom {
 				return intersection;				
 			}
 			
-			const curveAsLine : Line = this.curveAsLine();			
+			const curveAsLine : Line = this.asLine();			
 			if (curveAsLine) {
 				intersection = target.intersectionLine(curveAsLine);
 				intersection.switchCurrentAndTarget();
-				for (i = 0;i < intersection.currentTimes.length; i++) {
-					point = curveAsLine.getPoint(intersection.currentTimes[i]);
-					intersection.currentTimes[i] = this.getPointOnCurve(point);
-				}
+				intersection.translateCurrentIterators(curveAsLine, this);
+																
 				return intersection;
 			}
 			
@@ -3068,13 +3066,12 @@ package flash.geom {
 				return intersection;				
 			}
 			
-			var targetAsLine : Line = target.curveAsLine();			
-			if (targetAsLine) {
-				intersection = this.intersectionLine(targetAsLine);
-				for (i = 0;i < intersection.currentTimes.length; i++) {
-					point = targetAsLine.getPoint(intersection.targetTimes[i]);
-					intersection.targetTimes[i] = target.getPointOnCurve(point);
-				}
+			var targetAsLine : Line = target.asLine();			
+			if (targetAsLine) 
+			{
+				intersection = this.intersectionLine(targetAsLine);				
+				intersection.translateTargetIterators(targetAsLine, target);
+				
 				return intersection;
 			}
 			

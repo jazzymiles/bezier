@@ -128,6 +128,7 @@ package flash.geom {
 		 **/
 		function getClosest(fromPoint:Point):Number;
 		
+		function getExistedPointIterators(point : Point) : Array;
 		
 		//		function getSegment (fromTime:Number=0, toTime:Number=1):IParametric;
 		
