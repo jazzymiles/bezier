@@ -235,6 +235,58 @@ package flash.geom {
 			}			
 		}
 
+		public function translateCurrentIterators(originFigure:IParametric, finalFigure:IParametric):void
+		{			
+			var correctedCurrentTimes:Array = new Array();
+			var correctedTargetTimes:Array = new Array();
+				
+			for (var i:int = 0; i < currentTimes.length; i++) 
+			{
+				var point : Point = originFigure.getPoint(currentTimes[i]);
+				var iterators:Array = finalFigure.getExistedPointIterators(point);
+					
+				for (var j:int=0; j<iterators.length; j++)
+				{
+					correctedCurrentTimes.push(iterators[j]);
+					correctedTargetTimes.push(targetTimes[i]);
+				}					
+			}
+				
+			currentTimes.length = 0;
+			targetTimes.length = 0;
+			for (i = 0;i <correctedCurrentTimes.length; i++) 
+			{
+				currentTimes.push(correctedCurrentTimes[i]);
+				targetTimes.push(correctedTargetTimes[i]);					
+			}		
+		}
+
+		public function translateTargetIterators(originFigure:IParametric, finalFigure:IParametric):void
+		{			
+			var correctedCurrentTimes:Array = new Array();
+			var correctedTargetTimes:Array = new Array();
+				
+			for (var i:int = 0; i < targetTimes.length; i++) 
+			{
+				var point : Point = originFigure.getPoint(targetTimes[i]);
+				var iterators:Array = finalFigure.getExistedPointIterators(point);
+					
+				for (var j:int=0; j<iterators.length; j++)
+				{
+					correctedCurrentTimes.push(currentTimes[i]);
+					correctedTargetTimes.push(iterators[j]);
+				}					
+			}
+				
+			currentTimes.length = 0;
+			targetTimes.length = 0;
+			for (i = 0;i <correctedCurrentTimes.length; i++) 
+			{
+				currentTimes.push(correctedCurrentTimes[i]);
+				targetTimes.push(correctedTargetTimes[i]);					
+			}		
+		}
+
 		/* *
 		 * Добавляет новую точку в пересечение, с учетом флагов ограниченности пересекающихся фигур.
 		 * 
