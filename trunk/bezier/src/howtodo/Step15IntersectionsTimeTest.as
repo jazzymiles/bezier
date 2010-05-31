@@ -16,7 +16,6 @@ package howtodo {
 
 		private static const DESCRIPTION : String = "<B>Bezier-Bezier intersection time test</B><BR/> every frame does 1000 intersections";
 
-		private static const GREEN : uint = 0x00FF00; 
 		private static const GRAY : uint = 0x333333; 
 		private static const BLUE : uint = 0x0000FF; 
 
@@ -55,7 +54,7 @@ package howtodo {
 			bezierBlue.isSegment = false;
 			bezierGray.isSegment = false;
 			
-			setTestPosition(100, 400, 800, 500, 100, 600, 200, 700, 300, 100, 400, 700, 100, 300, 500, 750);
+			setTestPosition(100, 400, 800, 500, 100, 600, 200, 700, 300, 100, 400, 700);
 							
 			addTextField(fpsTextField, 100, 50);
 										
@@ -80,14 +79,13 @@ package howtodo {
 
 		private function onKeyUpHandler(event : KeyboardEvent) : void {
 			if (event.keyCode == Keyboard.SPACE) {
-				trace(getTestPosition());
+				// trace(getTestPosition());
 			}
 		}
 
 		private function setTestPosition(
 				s0x : Number, s0y : Number, c0x : Number, c0y : Number, e0x : Number, e0y : Number,
-				s1x : Number, s1y : Number, c1x : Number, c1y : Number, e1x : Number, e1y : Number, 
-				s2x : Number, s2y : Number, e2x : Number, e2y : Number) : void {
+				s1x : Number, s1y : Number, c1x : Number, c1y : Number, e1x : Number, e1y : Number) : void {
 			start.x = s0x;
 			start.y = s0y;
 			control.x = c0x;
@@ -103,6 +101,7 @@ package howtodo {
 			endGray.y = e1y;					
 		}
 
+		/*
 		private function getTestPosition() : String {
 			return "" + [start.x,
 			start.y,
@@ -118,6 +117,7 @@ package howtodo {
 			endGray.x,
 			endGray.y];
 		}
+		 */
 
 		
 		override protected function onPointMoved(event : Event = undefined) : void {			
