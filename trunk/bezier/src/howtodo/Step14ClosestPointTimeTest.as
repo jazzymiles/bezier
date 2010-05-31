@@ -16,7 +16,6 @@ package howtodo {
 		private const closestPoint : DragPoint = new DragPoint();
 		private const mouse : Point = new Point();
 		private var fpsTextField : TextField = new TextField();
-		private var previousTime : Number;		
 
 		public function Step14ClosestPointTimeTest() {
 			super();
