@@ -61,8 +61,8 @@ package flash.geom
 
 		protected static const PRECISION : Number = Equations.PRECISION;
 
-		protected var __start : Point;
-		protected var __end : Point;
+		protected var startPoint : Point;
+		protected var endPoint : Point;
 		protected var __isSegment : Boolean;
 		protected var __isRay : Boolean;
 
@@ -159,8 +159,8 @@ package flash.geom
 
 		protected function initInstance(start : Point = undefined, end : Point = undefined, isSegment : Boolean = true, isRay : Boolean = false) : void 
 		{
-			__start = (start as Point) || new Point();
-			__end = (end as Point) || new Point();
+			startPoint = (start as Point) || new Point();
+			endPoint = (end as Point) || new Point();
 			__isSegment = Boolean(isSegment);
 			__isRay = Boolean(isRay);
 		}
@@ -204,12 +204,12 @@ package flash.geom
 		 **/		
 		public function get start() : Point 
 		{
-			return __start;
+			return startPoint;
 		}
 
 		public function set start(value : Point) : void 
 		{
-			__start = value;
+			startPoint = value;
 		}
 
 		/* *
@@ -236,12 +236,12 @@ package flash.geom
 
 		public function get end() : Point 
 		{
-			return __end;
+			return endPoint;
 		}
 
 		public function set end(value : Point) : void 
 		{
-			__end = value;
+			endPoint = value;
 		}
 
 		/* *
@@ -412,7 +412,7 @@ package flash.geom
 
 		public function clone() : Line 
 		{
-			return new Line(__start.clone(), __end.clone(), __isSegment);
+			return new Line(startPoint.clone(), endPoint.clone(), __isSegment);
 		}
 
 		/* *
@@ -514,15 +514,15 @@ package flash.geom
 
 		public function get angle() : Number 
 		{
-			return Math.atan2(__end.y - __start.y, __end.x - __start.x);
+			return Math.atan2(endPoint.y - startPoint.y, endPoint.x - startPoint.x);
 		}
 
 		public function set angle(rad : Number) : void 
 		{
-			const distance : Number = Point.distance(__start, __end);
+			const distance : Number = Point.distance(startPoint, endPoint);
 			const polar : Point = Point.polar(distance, rad);
-			__end.x = __start.x + polar.x;
-			__end.y = __start.y + polar.y; 
+			endPoint.x = startPoint.x + polar.x;
+			endPoint.y = startPoint.y + polar.y; 
 		}
 
 		/* *
@@ -556,9 +556,9 @@ package flash.geom
 			fulcrum = fulcrum || POINT0;
 			POINT0.x = 0;
 			POINT0.y = 0;
-			const startLine : Line = new Line(fulcrum, __start);
+			const startLine : Line = new Line(fulcrum, startPoint);
 			startLine.angle += value;
-			const endLine : Line = new Line(fulcrum, __end);
+			const endLine : Line = new Line(fulcrum, endPoint);
 			endLine.angle += value;
 		}
 
@@ -587,8 +587,8 @@ package flash.geom
 
 		public function offset(dX : Number = 0, dY : Number = 0) : void 
 		{
-			__start.offset(dX, dY);
-			__end.offset(dX, dY);
+			startPoint.offset(dX, dY);
+			endPoint.offset(dX, dY);
 		}
 
 		/* *
@@ -619,7 +619,7 @@ package flash.geom
 
 		public function get length() : Number 
 		{
-			return Point.distance(__start, __end); 
+			return Point.distance(startPoint, endPoint); 
 		}
 
 		public function set length(value : Number) : void 
@@ -627,10 +627,10 @@ package flash.geom
 			var lastLength : Number = this.length;
 			if (lastLength > PRECISION) 
 			{
-				var newEndX : Number = __start.x + value * (__end.x - __start.x) / lastLength;
-				var newEndY : Number = __start.y + value * (__end.y - __start.y) / lastLength;			
-				__end.x = newEndX;
-				__end.y = newEndY;
+				var newEndX : Number = startPoint.x + value * (endPoint.x - startPoint.x) / lastLength;
+				var newEndY : Number = startPoint.y + value * (endPoint.y - startPoint.y) / lastLength;			
+				endPoint.x = newEndX;
+				endPoint.y = newEndY;
 			}
 		}
 
@@ -714,8 +714,8 @@ package flash.geom
 		public function getPoint(time : Number, point : Point = null) : Point 
 		{
 			point = (point as Point) || new Point();
-			point.x = __start.x + (__end.x - __start.x) * time;
-			point.y = __start.y + (__end.y - __start.y) * time;
+			point.x = startPoint.x + (endPoint.x - startPoint.x) * time;
+			point.y = startPoint.y + (endPoint.y - startPoint.y) * time;
 			return point;
 		}
 
@@ -899,8 +899,8 @@ package flash.geom
 			{
 				point.y = y;
 			}
-			__end.x = point.x + (point.x - __start.x) * ((1 - time) / time);
-			__end.y = point.y + (point.y - __start.y) * ((1 - time) / time);
+			endPoint.x = point.x + (point.x - startPoint.x) * ((1 - time) / time);
+			endPoint.y = point.y + (point.y - startPoint.y) * ((1 - time) / time);
 		}
 
 		/* *
@@ -963,22 +963,22 @@ package flash.geom
 
 		public function get bounds() : Rectangle 
 		{
-			if (__start.x > __end.x) 
+			if (startPoint.x > endPoint.x) 
 			{
-				if (__start.y > __end.y) 
+				if (startPoint.y > endPoint.y) 
 				{
-					return new Rectangle(__end.x, __end.y, __start.x - __end.x, __start.y - __end.y);
+					return new Rectangle(endPoint.x, endPoint.y, startPoint.x - endPoint.x, startPoint.y - endPoint.y);
 				} 
 				else 
 				{
-					return new Rectangle(__end.x, __start.y, __start.x - __end.x, __end.y - __start.y);
+					return new Rectangle(endPoint.x, startPoint.y, startPoint.x - endPoint.x, endPoint.y - startPoint.y);
 				}
 			}
-			if (__start.y > __end.y) 
+			if (startPoint.y > endPoint.y) 
 			{
-				return new Rectangle(__start.x, __end.y, __end.x - __start.x, __start.y - __end.y);
+				return new Rectangle(startPoint.x, endPoint.y, endPoint.x - startPoint.x, startPoint.y - endPoint.y);
 			} 
-			return new Rectangle(__start.x, __start.y, __end.x - __start.x, __end.y - __start.y);
+			return new Rectangle(startPoint.x, startPoint.y, endPoint.x - startPoint.x, endPoint.y - startPoint.y);
 		}
 
 		/* *
@@ -1136,7 +1136,7 @@ package flash.geom
 
 		public function getSegmentLength(time : Number) : Number 
 		{
-			return Point.distance(__start, getPoint(time));
+			return Point.distance(startPoint, getPoint(time));
 		}
 
 		/* *  
@@ -1232,7 +1232,7 @@ package flash.geom
 			const distance : Number = (startShift % step + step) % step;
 			
 			const times : Array = new Array();
-			const lineLength : Number = Point.distance(__start, __end);
+			const lineLength : Number = Point.distance(startPoint, endPoint);
 			if (distance > lineLength) 
 			{
 				return times;
@@ -1443,10 +1443,10 @@ package flash.geom
 			targetStartToEndVector.x = targetLine.end.x - targetLine.start.x;
 			targetStartToEndVector.y = targetLine.end.y - targetLine.start.y;
 			
-			const currentDeterminant : Number = startToEndVector.x * __start.y - startToEndVector.y * __start.x;
-			const targetDeterminant : Number = targetStartToEndVector.x * targetLine.__start.y - targetStartToEndVector.y * targetLine.__start.x;
+			const currentDeterminant : Number = startToEndVector.x * startPoint.y - startToEndVector.y * startPoint.x;
+			const targetDeterminant : Number = targetStartToEndVector.x * targetLine.startPoint.y - targetStartToEndVector.y * targetLine.startPoint.x;
 			const crossDeterminant : Number = startToEndVector.x * targetStartToEndVector.y - startToEndVector.y * targetStartToEndVector.x;
-			const crossDeterminant2 : Number = __start.x * targetStartToEndVector.y - __start.y * targetStartToEndVector.x;
+			const crossDeterminant2 : Number = startPoint.x * targetStartToEndVector.y - startPoint.y * targetStartToEndVector.x;
 			
 			if(Math.abs(crossDeterminant) < PRECISION) 
 			{
@@ -1465,15 +1465,15 @@ package flash.geom
 					
 					if (Math.abs(startToEndVector.x) > PRECISION) 
 					{
-						currentStartTime = - (__start.x - targetLine.__start.x) / startToEndVector.x;
-						currentEndTime = - (__start.x - targetLine.__end.x) / startToEndVector.x;
+						currentStartTime = - (startPoint.x - targetLine.startPoint.x) / startToEndVector.x;
+						currentEndTime = - (startPoint.x - targetLine.endPoint.x) / startToEndVector.x;
 					} 
 					else 
 					{ 
 						if (Math.abs(startToEndVector.y) > PRECISION) 
 						{
-							currentStartTime = (targetLine.__start.y - __start.y) / startToEndVector.y;
-							currentEndTime = (targetLine.__end.y - __start.y) / startToEndVector.y;
+							currentStartTime = (targetLine.startPoint.y - startPoint.y) / startToEndVector.y;
+							currentEndTime = (targetLine.endPoint.y - startPoint.y) / startToEndVector.y;
 						} 
 						else 
 						{
@@ -1500,10 +1500,10 @@ package flash.geom
 						coincidenceStartTime = currentEndTime;
 						coincidenceEndTime = (linesStartTime - currentStartTime) * (linesStartTime - currentEndTime) <= 0 ? linesStartTime : linesEndTime;
 					}
-					var startPoint : Point = new Point(coincidenceStartTime * startToEndVector.x + __start.x, coincidenceStartTime * startToEndVector.y + __start.y);
-					var endPoint : Point = new Point(coincidenceEndTime * startToEndVector.x + __start.x, coincidenceEndTime * startToEndVector.y + __start.y);
+					var startPt : Point = new Point(coincidenceStartTime * startToEndVector.x + startPoint.x, coincidenceStartTime * startToEndVector.y + startPoint.y);
+					var endPt : Point = new Point(coincidenceEndTime * startToEndVector.x + startPoint.x, coincidenceEndTime * startToEndVector.y + startPoint.y);
 					
-					intersection.coincidenceLine = new Line(startPoint, endPoint);
+					intersection.coincidenceLine = new Line(startPt, endPt);
 				}
 				
 				return intersection;
@@ -1517,13 +1517,13 @@ package flash.geom
 				var time : Number;
 				if (Math.abs(startToEndVector.x) > PRECISION) 
 				{
-					time = (solve.x - __start.x) / startToEndVector.x;
+					time = (solve.x - startPoint.x) / startToEndVector.x;
 				} 
 				else 
 				{
 					if (Math.abs(startToEndVector.y) > PRECISION) 
 					{
-						time = (solve.y - __start.y) / startToEndVector.y;
+						time = (solve.y - startPoint.y) / startToEndVector.y;
 					} 
 					else 
 					{
@@ -1534,13 +1534,13 @@ package flash.geom
 				var targetTime : Number;
 				if (Math.abs(targetStartToEndVector.x) > PRECISION) 
 				{
-					targetTime = (solve.x - targetLine.__start.x) / targetStartToEndVector.x;
+					targetTime = (solve.x - targetLine.startPoint.x) / targetStartToEndVector.x;
 				} 
 				else 
 				{
 					if (Math.abs(targetStartToEndVector.y) > PRECISION) 
 					{
-						targetTime = (solve.y - targetLine.__start.y) / targetStartToEndVector.y;
+						targetTime = (solve.y - targetLine.startPoint.y) / targetStartToEndVector.y;
 					} 
 					else 
 					{
@@ -1679,10 +1679,10 @@ package flash.geom
 				return 0;
 			}
 			
-			const selfProjection : Number = - startToEndVector.y * __start.x + startToEndVector.x * __start.y;
+			const selfProjection : Number = - startToEndVector.y * startPoint.x + startToEndVector.x * startPoint.y;
 			const projection : Number = (startToEndVector.y * fromPoint.x + startToEndVector.x * fromPoint.y + selfProjection) / (startToEndLength * startToEndLength);
 			const point : Point = new Point(fromPoint.x - startToEndVector.y * projection, fromPoint.y - startToEndVector.x * projection);
-			const time : Number = startToEndVector.x ? (__start.x - point.x) / startToEndVector.x : (point.y - __start.y) / startToEndVector.y;
+			const time : Number = startToEndVector.x ? (startPoint.x - point.x) / startToEndVector.x : (point.y - startPoint.y) / startToEndVector.y;
 					
 			if (! __isSegment) 
 			{
@@ -1760,7 +1760,7 @@ package flash.geom
 		 */
 		public function toString() : String 
 		{
-			return 	"(start:" + __start + ", end:" + __end + ")";
+			return 	"(start:" + startPoint + ", end:" + endPoint + ")";
 		}
 	}
 }
